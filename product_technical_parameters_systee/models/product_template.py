@@ -18,7 +18,7 @@ def is_float_or_dash(val):
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    ptp_systee_category_type_related = fields.Selection(
+    ptp_systee_category_type_related = fields.Many2one('ptp.systee.footprint', string='Footprint')
         related='categ_id.ptp_systee_component_type',
         string='Category Type (related)',
         store=False  # nepotřebujeme ukládat do DB
@@ -26,7 +26,7 @@ class ProductTemplate(models.Model):
 
     # Společná pole
     ptp_systee_part_number = fields.Char(string='Part Number')
-    ptp_systee_footprint = fields.Selection(
+    ptp_systee_footprint = fields.Many2one('ptp.systee.footprint', string='Footprint')
         [
             ('0201', '0201'),
             ('0402', '0402'),
@@ -45,7 +45,7 @@ class ProductTemplate(models.Model):
 
     # Pole pro kondenzátory
     ptp_systee_cap_value = fields.Char(string='Value (C)')
-    ptp_systee_cap_unit = fields.Selection(
+    ptp_systee_cap_unit = fields.Many2one('ptp.systee.footprint', string='Footprint')
         [
         ('pF', 'pF'),
         ('nF', 'nF'),
@@ -54,7 +54,7 @@ class ProductTemplate(models.Model):
         string='Unit (C)'
     )
     ptp_systee_cap_voltage_rating = fields.Char(string='Voltage Rating [VDC]')
-    ptp_systee_cap_dielectric = fields.Selection(
+    ptp_systee_cap_dielectric = fields.Many2one('ptp.systee.footprint', string='Footprint')
         [
             ('c0g', 'C0G (NP0)'),
             ('x5r', 'X5R'),
@@ -69,7 +69,7 @@ class ProductTemplate(models.Model):
 
     # Pole pro rezistory
     ptp_systee_res_value = fields.Char(string='Value (R)')
-    ptp_systee_res_unit = fields.Selection(
+    ptp_systee_res_unit = fields.Many2one('ptp.systee.footprint', string='Footprint')
         [
         ('mOhm', 'mΩ'),
         ('Ohm', 'Ω'),
@@ -211,3 +211,23 @@ class ProductTemplate(models.Model):
                 if not rec.ptp_systee_res_unit:
                     raise ValidationError("U rezistoru je pole 'res_unit' povinné.")
                 # ... atd.
+
+class PtpSysteeFootprint(models.Model):
+    _name = 'ptp.systee.footprint'
+    _description = 'PTP Systee Footprint'
+    name = fields.Char(string='Footprint', required=True)
+
+class PtpSysteeCapUnit(models.Model):
+    _name = 'ptp.systee.cap.unit'
+    _description = 'PTP Systee Capacitance Unit'
+    name = fields.Char(string='Capacitance Unit', required=True)
+
+class PtpSysteeCapDielectric(models.Model):
+    _name = 'ptp.systee.cap.dielectric'
+    _description = 'PTP Systee Capacitance Dielectric'
+    name = fields.Char(string='Capacitance Dielectric', required=True)
+
+class PtpSysteeResUnit(models.Model):
+    _name = 'ptp.systee.res.unit'
+    _description = 'PTP Systee Resistance Unit'
+    name = fields.Char(string='Resistance Unit', required=True)
