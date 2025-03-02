@@ -33,9 +33,7 @@ class ProductTemplate(models.Model):
     ptp_res_tolerance = fields.Float(string="Resistor Tolerance [%]", required=True)
     ptp_res_voltage_rating = fields.Float(string="Resistor Voltage Rating [V]", required=True)
     ptp_res_footprint = fields.Selection([
-        ('0201', '0201'), ('0402', '0402'), ('0603', '0603'), ('0805', '0805'),
-        ('1206', '1206'), ('1210', '1210'), ('1216', '1216'), ('2010', '2010'),
-        ('1812', '1812'), ('2220', '2220')], string="Resistor Footprint", required=True)
+        ('0201x', '0201x')], string="Resistor Footprint", required=True)
     ptp_res_note = fields.Text(string="Resistor Note")
 
     # Hodnoty dalších komponent
