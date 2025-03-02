@@ -22,16 +22,7 @@ class ProductTemplate(models.Model):
     ptp_systee_part_number = fields.Char(string='Part Number', required=True)
     ptp_systee_footprint = fields.Selection(
         [
-            ('0201', '0201'),
-            ('0402', '0402'),
-            ('0603', '0603'),
-            ('0805', '0805'),
-            ('1206', '1206'),
-            ('1210', '1210'),
-            ('1216', '1216'),
-            ('2010', '2010'),
-            ('1812', '1812'),
-            ('2220', '2220'),
+            ('0201x', '0201x')
         ],
         string='Footprint'
     )
@@ -41,21 +32,14 @@ class ProductTemplate(models.Model):
     ptp_systee_cap_value = fields.Char(string='Value (C)')
     ptp_systee_cap_unit = fields.Selection(
         [
-            ('pF', 'pF'),
-            ('nF', 'nF'),
-            ('µF', 'μF'),
+            ('pFdx', 'pFxx'),
         ],
         string='Unit (C)'
     )
     ptp_systee_cap_voltage_rating = fields.Char(string='Voltage Rating [VDC]')
     ptp_systee_cap_dielectric = fields.Selection(
         [
-            ('c0g', 'C0G (NP0)'),
-            ('x5r', 'X5R'),
-            ('x7r', 'X7R'),
-            ('x6s', 'X6S'),
-            ('x7s', 'X7S'),
-            ('x7t', 'X7T'),
+            ('x7tddc', 'X7Tcsdcs'),
         ],
         string='Dielectric'
     )
@@ -65,10 +49,7 @@ class ProductTemplate(models.Model):
     ptp_systee_res_value = fields.Char(string='Value (R)')
     ptp_systee_res_unit = fields.Selection(
         [
-            ('mOhm', 'mΩ'),
-            ('Ohm', 'Ω'),
-            ('kOhm', 'kΩ'),
-            ('MOhm', 'MΩ'),
+            ('mOhm', 'mdfd'),
         ],
         string='Unit (R)'
     )
