@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_product_category_form_inherit_systee" model="ir.ui.view">
+        <field name="name">product.category.form.inherit.systee</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group" position="inside">
+                <field name="ptp_systee_component_type"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

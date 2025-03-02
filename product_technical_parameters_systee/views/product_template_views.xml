@@ -1,0 +1,40 @@
+<odoo>
+    <record id="view_product_template_form_inherit_systee" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.systee</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+
+                <!-- Skupina s technickými parametry se zobrazí jen pokud je ptp_systee_component_type vyplněn -->
+                <group string="Technical Parameters"
+                       attrs="{'invisible': [('categ_id.ptp_systee_component_type','=',False)]}">
+                    <field name="categ_id"/>
+                    <field name="ptp_systee_part_number"/>
+                    <field name="ptp_systee_footprint"/>
+                    <field name="ptp_systee_note"/>
+                    <field name="ptp_systee_value_unit_combined" readonly="1"/>
+                </group>
+
+                <group string="Capacitor Fields"
+                       attrs="{'invisible': [('categ_id.ptp_systee_component_type','!=','capacitor')]}">
+                    <field name="ptp_systee_cap_value"/>
+                    <field name="ptp_systee_cap_unit"/>
+                    <field name="ptp_systee_cap_voltage_rating"/>
+                    <field name="ptp_systee_cap_dielectric"/>
+                    <field name="ptp_systee_cap_tolerance"/>
+                </group>
+
+                <group string="Resistor Fields"
+                       attrs="{'invisible': [('categ_id.ptp_systee_component_type','!=','resistor')]}">
+                    <field name="ptp_systee_res_value"/>
+                    <field name="ptp_systee_res_unit"/>
+                    <field name="ptp_systee_res_power_rating"/>
+                    <field name="ptp_systee_res_tolerance"/>
+                    <field name="ptp_systee_res_voltage_rating"/>
+                </group>
+
+            </xpath>
+        </field>
+    </record>
+</odoo>
