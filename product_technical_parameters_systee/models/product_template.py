@@ -70,31 +70,27 @@ class ProductTemplate(models.Model):
         store=True
     )
 
-    @api.onchange('categ_id')
-    def _onchange_categ_id_clear_fields(self):
+    def _clear_fields_for_type(self, new_type):
         """
-        Když se změní kategorie (a tedy i ptp_systee_category_type_related),
-        vymažeme pole, která se k novému typu nehodí.
+        Podle `new_type` smaže nepotřebná pole.
+        - Pokud new_type != 'capacitor', vymaže pole kondenzátoru.
+        - Pokud new_type != 'resistor', vymaže pole rezistoru.
+        - Pokud new_type = 'other' nebo None, vymaže obojí.
         """
-        new_type = self.categ_id.ptp_systee_component_type or False
+        for rec in self:
+            if new_type != 'capacitor':
+                rec.ptp_systee_cap_value = False
+                rec.ptp_systee_cap_unit = False
+                rec.ptp_systee_cap_voltage_rating = False
+                rec.ptp_systee_cap_dielectric = False
+                rec.ptp_systee_cap_tolerance = False
 
-        # Pokud nový typ NENÍ 'capacitor', vymažeme kondenzátorová pole
-        if new_type != 'capacitor':
-            self.ptp_systee_cap_value = False
-            self.ptp_systee_cap_unit = False
-            self.ptp_systee_cap_voltage_rating = False
-            self.ptp_systee_cap_dielectric = False
-            self.ptp_systee_cap_tolerance = False
-
-        # Pokud nový typ NENÍ 'resistor', vymažeme rezistorová pole
-        if new_type != 'resistor':
-            self.ptp_systee_res_value = False
-            self.ptp_systee_res_unit = False
-            self.ptp_systee_res_power_rating = False
-            self.ptp_systee_res_tolerance = False
-            self.ptp_systee_res_voltage_rating = False
-
-        # (Pokud je typ 'other' nebo None, vymažou se obě sady.)
+            if new_type != 'resistor':
+                rec.ptp_systee_res_value = False
+                rec.ptp_systee_res_unit = False
+                rec.ptp_systee_res_power_rating = False
+                rec.ptp_systee_res_tolerance = False
+                rec.ptp_systee_res_voltage_rating = False
 
     @api.depends(
         'categ_id.ptp_systee_component_type',
