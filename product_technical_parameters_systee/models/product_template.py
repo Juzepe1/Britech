@@ -162,15 +162,15 @@ class ProductTemplate(models.Model):
 
             if ctype == 'other':
                 # Zde definujte, co je povinné u Other
-                if not ptp_systee_part_number:
+                if not rec.ptp_systee_part_number:
                     raise ValidationError("U Jingo je pole 'ptp_systee_part_number' povinné.")
                 continue
 
             if ctype == 'capacitor':
                 # Zde definujte, co je povinné u kondenzátoru
-                if not ptp_systee_part_number:
+                if not rec.ptp_systee_part_number:
                     raise ValidationError("U kondenzátoru je pole 'ptp_systee_part_number' povinné.")
-                if not ptp_systee_footprint:
+                if not rec.ptp_systee_footprint:
                     raise ValidationError("U kondenzátoru je pole 'ptp_systee_footprint' povinné.")
                 if not rec.ptp_systee_cap_value:
                     raise ValidationError("U kondenzátoru je pole 'cap_value' povinné.")
@@ -182,9 +182,9 @@ class ProductTemplate(models.Model):
 
             elif ctype == 'resistor':
                 # Zde definujte, co je povinné u rezistoru
-                if not ptp_systee_part_number:
+                if not rec.ptp_systee_part_number:
                     raise ValidationError("U rezistoru je pole 'ptp_systee_part_number' povinné.")
-                if not ptp_systee_footprint:
+                if not rec.ptp_systee_footprint:
                     raise ValidationError("U rezistoru je pole 'ptp_systee_footprint' povinné.")
                 if not rec.ptp_systee_res_value:
                     raise ValidationError("U rezistoru je pole 'res_value' povinné.")
