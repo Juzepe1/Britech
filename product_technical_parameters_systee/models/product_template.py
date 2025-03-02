@@ -47,7 +47,9 @@ class ProductTemplate(models.Model):
     ptp_systee_cap_value = fields.Char(string='Value (C)')
     ptp_systee_cap_unit = fields.Selection(
         [
-            ('pFdx', 'pFxx')
+        ('pF', 'pF'),
+        ('nF', 'nF'),
+        ('µF', 'μF'),
         ],
         string='Unit (C)'
     )
