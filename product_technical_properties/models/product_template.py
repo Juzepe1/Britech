@@ -9,24 +9,23 @@ class ProductTemplate(models.Model):
     # Hodnoty kondenzátoru
     ptp_cap_part_number = fields.Char(string="Capacitor Part Number", required=True)
     ptp_cap_value = fields.Float(string="Capacitor Value", required=True)
-    ptp_cap_unit = fields.Selection([], string="Capacitor Unit", required=True)
+    ptp_cap_unit = fields.Char( string="Capacitor Unit", required=True)
     ptp_cap_full_value = fields.Char(string="Capacitor Full Value", compute="_compute_full_values", store=True)
     ptp_cap_voltage_rating = fields.Float(string="Capacitor Voltage Rating [VDC]", required=True)
-    ptp_cap_dielectric = fields.Selection([], string="Capacitor Dielectric", required=True)
+    ptp_cap_dielectric = fields.Char( string="Capacitor Dielectric", required=True)
     ptp_cap_tolerance = fields.Float(string="Capacitor Tolerance [%]")
-    ptp_cap_footprint = fields.Selection([], string="Capacitor Footprint", required=True)
+    ptp_cap_footprint = fields.Char( string="Capacitor Footprint", required=True)
     ptp_cap_note = fields.Text(string="Capacitor Note")
 
     # Hodnoty rezistoru
     ptp_res_part_number = fields.Char(string="Resistor Part Number", required=True)
     ptp_res_value = fields.Float(string="Resistor Value", required=True)
-    ptp_res_unit = fields.Selection([], string="Resistor Unit", required=True)
+    ptp_res_unit = fields.Char(string="Resistor Unit", required=True)
     ptp_res_full_value = fields.Char(string="Resistor Full Value", compute="_compute_full_values", store=True)
     ptp_res_power_rating = fields.Char(string="Resistor Power Rating", required=True)
     ptp_res_tolerance = fields.Float(string="Resistor Tolerance [%]", required=True)
     ptp_res_voltage_rating = fields.Float(string="Resistor Voltage Rating [V]", required=True)
-    ptp_res_footprint = fields.Selection([
-        ('0201x', '0201x')], string="Resistor Footprint", required=True)
+    ptp_res_footprint = fields.Char( string="Resistor Footprint", required=True)
     ptp_res_note = fields.Text(string="Resistor Note")
 
     # Hodnoty dalších komponent
