@@ -9,6 +9,7 @@
         'views/product_category_views.xml',
         'views/product_template_views.xml',
         'views/product_template_search.xml',
+        'views/product_template_tree.xml',
     ],
     'installable': True,
     'application': False,

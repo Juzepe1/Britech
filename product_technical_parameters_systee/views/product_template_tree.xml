@@ -1,0 +1,15 @@
+<odoo>
+    <record id="view_product_template_tree_inherit_systee" model="ir.ui.view">
+        <field name="name">product.template.tree.inherit.systee</field>
+        <field name="model">product.template</field>
+        <!-- Odkaz na původní tree view pro produkty -->
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <!-- Vložíme nový sloupec přímo do stromu -->
+            <xpath expr="//tree" position="inside">
+                <!-- Název sloupce si můžete libovolně změnit -->
+                <field name="ptp_systee_value_unit_combined" string="Value + Unit"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
