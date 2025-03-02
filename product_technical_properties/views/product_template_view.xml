@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+        <record id="view_product_template_form" model="ir.ui.view">
+            <field name="name">product.template.form.ptp</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <sheet position="inside">
+                    <notebook position="inside">
+                        <page string="Capacitor Properties" attrs="{'invisible': [('categ_id.ptp_component_type', '!=', 'capacitor')]}">
+                            <group>
+                                <field name="ptp_cap_part_number"/>
+                                <field name="ptp_cap_value"/>
+                                <field name="ptp_cap_unit"/>
+                                <field name="ptp_cap_full_value" readonly="1"/>
+                                <field name="ptp_cap_voltage_rating"/>
+                                <field name="ptp_cap_dielectric"/>
+                                <field name="ptp_cap_tolerance"/>
+                                <field name="ptp_cap_footprint"/>
+                                <field name="ptp_cap_note"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </field>
+        </record>
+    </data>
+</odoo>
