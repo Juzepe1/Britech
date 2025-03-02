@@ -1,0 +1,17 @@
+<odoo>
+    <record id="view_product_template_search_inherit_systee" model="ir.ui.view">
+        <field name="name">product.template.search.inherit.systee</field>
+        <field name="model">product.template</field>
+        <!-- Odkaz na původní search view pro produkty -->
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <!-- Uvnitř <search> tagu vložíme nové pole -->
+            <xpath expr="//search" position="inside">
+                <!-- Jednoduché textové vyhledávání (full-text) podle Value + Unit -->
+                <field name="ptp_systee_value_unit_combined" 
+                       string="Value + Unit" 
+                       placeholder="Hledat dle Value+Unit..."/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

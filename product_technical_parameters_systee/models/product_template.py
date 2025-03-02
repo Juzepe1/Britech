@@ -67,7 +67,8 @@ class ProductTemplate(models.Model):
     ptp_systee_value_unit_combined = fields.Char(
         string='Full Value and Unit',
         compute='_compute_value_unit_combined',
-        store=True
+        store=True,
+        index=True
     )
 
     @api.depends(
