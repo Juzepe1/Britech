@@ -3,6 +3,7 @@
 from odoo import models, fields, api
 
 class ProductTemplate(models.Model):
+    _name = 'product.template'
     _inherit = 'product.template'
 
     # Hodnoty kondenzátoru
@@ -13,7 +14,7 @@ class ProductTemplate(models.Model):
     ptp_cap_full_value = fields.Char(string="Capacitor Full Value", compute="_compute_full_values", store=True)
     ptp_cap_voltage_rating = fields.Float(string="Capacitor Voltage Rating [VDC]", required=True)
     ptp_cap_dielectric = fields.Selection([
-        ('C0G (NP0)', 'C0G (NP0)'), ('X5R', 'X5R'), ('X7R', 'X7R'),
+        ('C0G_NP0', 'C0G (NP0)'), ('X5R', 'X5R'), ('X7R', 'X7R'),
         ('X6S', 'X6S'), ('X7S', 'X7S'), ('X7T', 'X7T')], string="Capacitor Dielectric", required=True)
     ptp_cap_tolerance = fields.Float(string="Capacitor Tolerance [%]")
     ptp_cap_footprint = fields.Selection([
