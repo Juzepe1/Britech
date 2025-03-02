@@ -2,17 +2,16 @@
     <record id="view_product_template_form_inherit_systee" model="ir.ui.view">
         <field name="name">product.template.form.inherit.systee</field>
         <field name="model">product.template</field>
-        <!-- Dědíme standardní formulář product.template -->
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
-            <!-- Vložíme novou záložku do existujícího notebooku -->
             <xpath expr="//sheet/notebook" position="inside">
-
-                <!-- Nová záložka "Technical Parameters" -->
+                <!-- Záložka "Technical Parameters" -->
                 <page string="Technical Parameters">
-                    <!-- Skryjeme celou záložku, pokud typ součástky NENÍ vyplněn 
-                         (tj. ptp_systee_category_type_related je False/None). -->
-                    <attribute name="invisible">not ptp_systee_category_type_related</attribute>
+                    <!-- 
+                      Schovat záložku, pokud `record.ptp_systee_category_type_related` je prázdné (False).
+                      Nepište do uvozovek, jinak se to zobrazí jako text.
+                    -->
+                    <attribute name="invisible">not record.ptp_systee_category_type_related</attribute>
 
                     <group>
                         <field name="categ_id"/>
@@ -24,8 +23,9 @@
 
                     <!-- Skupina pro kondenzátor -->
                     <group string="Capacitor Fields">
-                        <!-- Bude neviditelná, pokud typ není 'capacitor' -->
-                        <attribute name="invisible">ptp_systee_category_type_related != 'capacitor'</attribute>
+                        <!-- Skryje se, pokud typ není 'capacitor' -->
+                        <attribute name="invisible">record.ptp_systee_category_type_related != 'capacitor'</attribute>
+                        
                         <field name="ptp_systee_cap_value"/>
                         <field name="ptp_systee_cap_unit"/>
                         <field name="ptp_systee_cap_voltage_rating"/>
@@ -35,8 +35,9 @@
 
                     <!-- Skupina pro rezistor -->
                     <group string="Resistor Fields">
-                        <!-- Bude neviditelná, pokud typ není 'resistor' -->
-                        <attribute name="invisible">ptp_systee_category_type_related != 'resistor'</attribute>
+                        <!-- Skryje se, pokud typ není 'resistor' -->
+                        <attribute name="invisible">record.ptp_systee_category_type_related != 'resistor'</attribute>
+                        
                         <field name="ptp_systee_res_value"/>
                         <field name="ptp_systee_res_unit"/>
                         <field name="ptp_systee_res_power_rating"/>
@@ -44,7 +45,6 @@
                         <field name="ptp_systee_res_voltage_rating"/>
                     </group>
                 </page>
-
             </xpath>
         </field>
     </record>
