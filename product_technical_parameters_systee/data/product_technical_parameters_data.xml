@@ -45,35 +45,35 @@
 
   <!-- Záznamy pro systee.cap.dielectric -->
   <record id="systee_cap_dielectric_c0g" model="systee.cap.dielectric">
-    <field name="name">c0g</field>
+    <field name="name">COG (NP0)</field>
   </record>
   <record id="systee_cap_dielectric_x5r" model="systee.cap.dielectric">
-    <field name="name">x5r</field>
+    <field name="name">X5R</field>
   </record>
   <record id="systee_cap_dielectric_x7r" model="systee.cap.dielectric">
-    <field name="name">x7r</field>
+    <field name="name">X7R</field>
   </record>
   <record id="systee_cap_dielectric_x6s" model="systee.cap.dielectric">
-    <field name="name">x6s</field>
+    <field name="name">X6S</field>
   </record>
   <record id="systee_cap_dielectric_x7s" model="systee.cap.dielectric">
-    <field name="name">x7s</field>
+    <field name="name">X7S</field>
   </record>
   <record id="systee_cap_dielectric_x7t" model="systee.cap.dielectric">
-    <field name="name">x7t</field>
+    <field name="name">X7T</field>
   </record>
 
   <!-- Záznamy pro systee.res.unit -->
   <record id="systee_res_unit_mOhm" model="systee.res.unit">
-    <field name="name">mOhm</field>
+    <field name="name">mΩ</field>
   </record>
   <record id="systee_res_unit_Ohm" model="systee.res.unit">
-    <field name="name">Ohm</field>
+    <field name="name">Ω</field>
   </record>
   <record id="systee_res_unit_kOhm" model="systee.res.unit">
-    <field name="name">kOhm</field>
+    <field name="name">kΩ</field>
   </record>
   <record id="systee_res_unit_MOhm" model="systee.res.unit">
-    <field name="name">MOhm</field>
+    <field name="name">MΩ</field>
   </record>
 </odoo>
