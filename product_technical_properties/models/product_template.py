@@ -1,13 +1,5 @@
+
 from odoo import models, fields, api
-
-class ProductCategory(models.Model):
-    _inherit = 'product.category'
-
-    ptp_component_type = fields.Selection([
-        ('capacitor', 'Kondenzátor'),
-        ('resistor', 'Rezistor'),
-        ('other', 'Ostatní')
-    ], string="Component Type")
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'

@@ -20,6 +20,25 @@
                                 <field name="ptp_cap_note"/>
                             </group>
                         </page>
+                        <page string="Resistor Properties" attrs="{'invisible': [('categ_id.ptp_component_type', '!=', 'resistor')]}">
+                            <group>
+                                <field name="ptp_res_part_number"/>
+                                <field name="ptp_res_value"/>
+                                <field name="ptp_res_unit"/>
+                                <field name="ptp_res_full_value" readonly="1"/>
+                                <field name="ptp_res_power_rating"/>
+                                <field name="ptp_res_tolerance"/>
+                                <field name="ptp_res_voltage_rating"/>
+                                <field name="ptp_res_footprint"/>
+                                <field name="ptp_res_note"/>
+                            </group>
+                        </page>
+                        <page string="Other Components" attrs="{'invisible': [('categ_id.ptp_component_type', '!=', 'other')]}">
+                            <group>
+                                <field name="ptp_other_part_number"/>
+                                <field name="ptp_other_note"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </field>
