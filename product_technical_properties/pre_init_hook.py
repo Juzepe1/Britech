@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, SUPERUSER_ID
-
 def pre_init_hook(cr):
     """Kompletně odstraní konfliktní výběrové hodnoty v ir.model.fields a ir.model.fields.selection."""
     cr.execute("""
