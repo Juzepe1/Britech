@@ -150,8 +150,8 @@ class ProductTemplate(models.Model):
         'ptp_systee_cap_value', 'ptp_systee_cap_unit', 'ptp_systee_cap_voltage_rating',
         'ptp_systee_cap_dielectric', 'ptp_systee_cap_tolerance',
         'ptp_systee_res_value', 'ptp_systee_res_unit', 'ptp_systee_res_power_rating',
-        'ptp_systee_res_tolerance', 'ptp_systee_res_voltage_rating'
-    )
+        'ptp_systee_res_tolerance', 'ptp_systee_res_voltage_rating', 'ptp_systee_part_number', 'ptp_systee_footprint', 'ptp_systee_note', 'ptp_systee_value_unit_combined')
+
     def _check_required_fields(self):
         for rec in self:
             ctype = rec.categ_id.ptp_systee_component_type
