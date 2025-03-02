@@ -5,7 +5,6 @@
     'summary': 'Adds technical properties fields to products',
     'depends': ['product'],
     'data': [
-        'views/product_template_view.xml',
         'views/product_category_view.xml',
     ],
     'installable': True,
