@@ -65,7 +65,7 @@ class ProductTemplate(models.Model):
 
     # Počítané pole: sloučená hodnota + jednotka
     ptp_systee_value_unit_combined = fields.Char(
-        string='Value + Unit',
+        string='Full Value and Unit',
         compute='_compute_value_unit_combined',
         store=True
     )
@@ -114,6 +114,10 @@ class ProductTemplate(models.Model):
         pokud se k novému typu nehodí.
         """
         for rec in self:
+            rec.ptp_systee_part_number = False
+            rec.ptp_systee_footprint = False
+            rec.ptp_systee_note = False
+            rec.ptp_systee_value_unit_combined = False
             # Není capacitor => vymažeme kondenzátorová pole
             if new_type != 'capacitor':
                 rec.ptp_systee_cap_value = False
