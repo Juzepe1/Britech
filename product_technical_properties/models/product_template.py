@@ -10,7 +10,7 @@ class ProductTemplate(models.Model):
     ptp_cap_part_number = fields.Char(string="Capacitor Part Number", required=True)
     ptp_cap_value = fields.Float(string="Capacitor Value", required=True)
     ptp_cap_unit = fields.Selection([
-        ('pF', 'pF'), ('nF', 'nF'), ('uF', 'uF')], string="Capacitor Unit", required=True)
+        ('pF', 'pF'), ('nF', 'nF'), ('μF', 'μF')], string="Capacitor Unit", required=True)
     ptp_cap_full_value = fields.Char(string="Capacitor Full Value", compute="_compute_full_values", store=True)
     ptp_cap_voltage_rating = fields.Float(string="Capacitor Voltage Rating [VDC]", required=True)
     ptp_cap_dielectric = fields.Selection([
@@ -27,7 +27,7 @@ class ProductTemplate(models.Model):
     ptp_res_part_number = fields.Char(string="Resistor Part Number", required=True)
     ptp_res_value = fields.Float(string="Resistor Value", required=True)
     ptp_res_unit = fields.Selection([
-        ('mOhm', 'mOhm'), ('Ohm', 'Ohm'), ('kOhm', 'kOhm'), ('MOhm', 'MOhm')], string="Resistor Unit", required=True)
+        ('mΩ', 'mΩ'), ('Ω', 'Ω'), ('kΩ', 'kΩ'), ('MΩ', 'MΩ')], string="Resistor Unit", required=True)
     ptp_res_full_value = fields.Char(string="Resistor Full Value", compute="_compute_full_values", store=True)
     ptp_res_power_rating = fields.Char(string="Resistor Power Rating", required=True)
     ptp_res_tolerance = fields.Float(string="Resistor Tolerance [%]", required=True)
