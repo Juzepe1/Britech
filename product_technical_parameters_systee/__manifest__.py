@@ -1,10 +1,11 @@
 {
     'name': 'Product Technical Parameters Systee',
-    'version': '1.0.0',
+    'version': '2.0.0',
     'category': 'Product',
     'summary': 'Rozšíření product.category o volitelný typ součástky a úprava product.template (Systee)',
     'author': 'Vaše jméno / firma',
-    'depends': ['product','base'],
+    'license': 'LGPL-3',
+    'depends': ['product', 'base'],
     'data': [
         'security/ir.model.access.csv',
         'views/product_category_views.xml',
