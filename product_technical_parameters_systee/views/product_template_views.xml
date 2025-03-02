@@ -6,9 +6,8 @@
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="inside">
 
-                <!-- Skupina s technickými parametry se zobrazí jen pokud je ptp_systee_component_type vyplněn -->
-                <group string="Technical Parameters"
-                       attrs="{'invisible': [('categ_id.ptp_systee_component_type','=',False)]}">
+                <!-- Zobrazit skupinu s technickými parametry jen pokud je typ součástky vyplněn -->
+                <group string="Technical Parameters" if="record.categ_id.ptp_systee_component_type">
                     <field name="categ_id"/>
                     <field name="ptp_systee_part_number"/>
                     <field name="ptp_systee_footprint"/>
@@ -16,8 +15,9 @@
                     <field name="ptp_systee_value_unit_combined" readonly="1"/>
                 </group>
 
+                <!-- Sekce pro kondenzátor (pokud je ctype == 'capacitor') -->
                 <group string="Capacitor Fields"
-                       attrs="{'invisible': [('categ_id.ptp_systee_component_type','!=','capacitor')]}">
+                       if="record.categ_id.ptp_systee_component_type == 'capacitor'">
                     <field name="ptp_systee_cap_value"/>
                     <field name="ptp_systee_cap_unit"/>
                     <field name="ptp_systee_cap_voltage_rating"/>
@@ -25,8 +25,9 @@
                     <field name="ptp_systee_cap_tolerance"/>
                 </group>
 
+                <!-- Sekce pro rezistor (pokud je ctype == 'resistor') -->
                 <group string="Resistor Fields"
-                       attrs="{'invisible': [('categ_id.ptp_systee_component_type','!=','resistor')]}">
+                       if="record.categ_id.ptp_systee_component_type == 'resistor'">
                     <field name="ptp_systee_res_value"/>
                     <field name="ptp_systee_res_unit"/>
                     <field name="ptp_systee_res_power_rating"/>
