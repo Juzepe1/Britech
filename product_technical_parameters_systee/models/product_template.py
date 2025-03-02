@@ -22,7 +22,7 @@ class ProductTemplate(models.Model):
     ptp_systee_category_type_related = fields.Selection(
         related='categ_id.ptp_systee_component_type',
         string='Category Type (related)',
-        store=False  # nepotřebujeme ukládat do DB
+        store=True
     )
 
     # Společná pole
