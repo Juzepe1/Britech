@@ -8,15 +8,15 @@ class ProductTemplate(models.Model):
     # Hodnoty kondenzátoru
     ptp_cap_part_number = fields.Char(string="Capacitor Part Number", required=True)
     ptp_cap_value = fields.Float(string="Capacitor Value", required=True)
-    ptp_cap_unit = fields.Selection(selection_add=[
+    ptp_cap_unit = fields.Selection([
         ('pF', 'pF'), ('nF', 'nF'), ('μF', 'μF')], string="Capacitor Unit", required=True)
     ptp_cap_full_value = fields.Char(string="Capacitor Full Value", compute="_compute_full_values", store=True)
     ptp_cap_voltage_rating = fields.Float(string="Capacitor Voltage Rating [VDC]", required=True)
-    ptp_cap_dielectric = fields.Selection(selection_add=[
+    ptp_cap_dielectric = fields.Selection([
         ('C0G (NP0)', 'C0G (NP0)'), ('X5R', 'X5R'), ('X7R', 'X7R'),
         ('X6S', 'X6S'), ('X7S', 'X7S'), ('X7T', 'X7T')], string="Capacitor Dielectric", required=True)
     ptp_cap_tolerance = fields.Float(string="Capacitor Tolerance [%]")
-    ptp_cap_footprint = fields.Selection(selection_add=[
+    ptp_cap_footprint = fields.Selection([
         ('0201', '0201'), ('0402', '0402'), ('0603', '0603'), ('0805', '0805'),
         ('1206', '1206'), ('1210', '1210'), ('1216', '1216'), ('2010', '2010'),
         ('1812', '1812'), ('2220', '2220')], string="Capacitor Footprint", required=True)
@@ -25,13 +25,13 @@ class ProductTemplate(models.Model):
     # Hodnoty rezistoru
     ptp_res_part_number = fields.Char(string="Resistor Part Number", required=True)
     ptp_res_value = fields.Float(string="Resistor Value", required=True)
-    ptp_res_unit = fields.Selection(selection_add=[
+    ptp_res_unit = fields.Selection([
         ('mΩ', 'mΩ'), ('Ω', 'Ω'), ('kΩ', 'kΩ'), ('MΩ', 'MΩ')], string="Resistor Unit", required=True)
     ptp_res_full_value = fields.Char(string="Resistor Full Value", compute="_compute_full_values", store=True)
     ptp_res_power_rating = fields.Char(string="Resistor Power Rating", required=True)
     ptp_res_tolerance = fields.Float(string="Resistor Tolerance [%]", required=True)
     ptp_res_voltage_rating = fields.Float(string="Resistor Voltage Rating [V]", required=True)
-    ptp_res_footprint = fields.Selection(selection_add=[
+    ptp_res_footprint = fields.Selection([
         ('0201', '0201'), ('0402', '0402'), ('0603', '0603'), ('0805', '0805'),
         ('1206', '1206'), ('1210', '1210'), ('1216', '1216'), ('2010', '2010'),
         ('1812', '1812'), ('2220', '2220')], string="Resistor Footprint", required=True)
