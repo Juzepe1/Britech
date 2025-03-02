@@ -54,7 +54,12 @@ class ProductTemplate(models.Model):
     ptp_systee_cap_voltage_rating = fields.Char(string='Voltage Rating [VDC]')
     ptp_systee_cap_dielectric = fields.Selection(
         [
-            ('x7tddc', 'X7Tcsdcs')
+            ('c0g', 'C0G (NP0)'),
+            ('x5r', 'X5R'),
+            ('x7r', 'X7R'),
+            ('x6s', 'X6S'),
+            ('x7s', 'X7S'),
+            ('x7t', 'X7T'),
         ],
         string='Dielectric'
     )
