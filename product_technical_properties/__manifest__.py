@@ -7,9 +7,8 @@
     'data': [
         'views/product_template_view.xml',
         'views/product_category_view.xml',
+        'data/selections.xml',
     ],
     'installable': True,
-    'application': False,
-    'pre_init_hook': 'pre_init_hook',
-    'post_init_hook': 'post_init_hook',
+    'application': False
 }

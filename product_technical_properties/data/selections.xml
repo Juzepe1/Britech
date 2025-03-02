@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ptp_cap_unit_pF" model="ir.model.fields.selection">
+        <field name="field_id" ref="product.field_product_template_ptp_cap_unit"/>
+        <field name="value">pF</field>
+    </record>
+    <record id="ptp_cap_unit_nF" model="ir.model.fields.selection">
+        <field name="field_id" ref="product.field_product_template_ptp_cap_unit"/>
+        <field name="value">nF</field>
+    </record>
+    <record id="ptp_cap_unit_uF" model="ir.model.fields.selection">
+        <field name="field_id" ref="product.field_product_template_ptp_cap_unit"/>
+        <field name="value">μF</field>
+    </record>
+
+    <record id="ptp_res_unit_mOhm" model="ir.model.fields.selection">
+        <field name="field_id" ref="product.field_product_template_ptp_res_unit"/>
+        <field name="value">mΩ</field>
+    </record>
+    <record id="ptp_res_unit_Ohm" model="ir.model.fields.selection">
+        <field name="field_id" ref="product.field_product_template_ptp_res_unit"/>
+        <field name="value">Ω</field>
+    </record>
+    <record id="ptp_res_unit_kOhm" model="ir.model.fields.selection">
+        <field name="field_id" ref="product.field_product_template_ptp_res_unit"/>
+        <field name="value">kΩ</field>
+    </record>
+    <record id="ptp_res_unit_MOhm" model="ir.model.fields.selection">
+        <field name="field_id" ref="product.field_product_template_ptp_res_unit"/>
+        <field name="value">MΩ</field>
+    </record>
+
+    <record id="ptp_component_type_capacitor" model="ir.model.fields.selection">
+        <field name="field_id" ref="product.field_product_category_ptp_component_type"/>
+        <field name="value">capacitor</field>
+    </record>
+    <record id="ptp_component_type_resistor" model="ir.model.fields.selection">
+        <field name="field_id" ref="product.field_product_category_ptp_component_type"/>
+        <field name="value">resistor</field>
+    </record>
+    <record id="ptp_component_type_other" model="ir.model.fields.selection">
+        <field name="field_id" ref="product.field_product_category_ptp_component_type"/>
+        <field name="value">other</field>
+    </record>
+</odoo>
