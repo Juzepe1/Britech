@@ -17,7 +17,7 @@
 
                 <!-- Sekce pro kondenzátor (pokud je ctype == 'capacitor') -->
                 <group string="Capacitor Fields"
-                       if="record.categ_id.ptp_systee_component_type == 'capacitor'">
+                       invisibleIf="record.categ_id.ptp_systee_component_type != 'capacitor'">
                     <field name="ptp_systee_cap_value"/>
                     <field name="ptp_systee_cap_unit"/>
                     <field name="ptp_systee_cap_voltage_rating"/>
@@ -27,7 +27,7 @@
 
                 <!-- Sekce pro rezistor (pokud je ctype == 'resistor') -->
                 <group string="Resistor Fields"
-                       if="record.categ_id.ptp_systee_component_type == 'resistor'">
+                       invisibleIf="record.categ_id.ptp_systee_component_type != 'resistor'">
                     <field name="ptp_systee_res_value"/>
                     <field name="ptp_systee_res_unit"/>
                     <field name="ptp_systee_res_power_rating"/>
