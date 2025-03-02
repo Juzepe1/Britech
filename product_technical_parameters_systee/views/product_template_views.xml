@@ -15,7 +15,6 @@
                     -->
 
                     <group>
-                        <!-- Zobrazíme related field namísto původního categ_id -->
                         <field name="ptp_systee_category_type_related" readonly="1"/>
 
                         <field name="ptp_systee_part_number"/>
