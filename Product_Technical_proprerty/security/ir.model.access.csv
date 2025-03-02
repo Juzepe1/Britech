@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_product_property,access_product_property,model_product_property,,1,1,1,1
-access_product_property_category,access_product_property_category,model_product_property_category,,1,1,1,1
