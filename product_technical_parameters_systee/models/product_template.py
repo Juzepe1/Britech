@@ -71,7 +71,10 @@ class ProductTemplate(models.Model):
     ptp_systee_res_value = fields.Char(string='Value (R)')
     ptp_systee_res_unit = fields.Selection(
         [
-            ('mOhm', 'mdfd')
+        ('mOhm', 'mΩ'),
+        ('Ohm', 'Ω'),
+        ('kOhm', 'kΩ'),
+        ('MOhm', 'MΩ'),
         ],
         string='Unit (R)'
     )
