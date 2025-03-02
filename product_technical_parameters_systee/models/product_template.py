@@ -18,11 +18,27 @@ def is_float_or_dash(val):
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
+    # RELATED POLE: zjednoduší práci v XML
+    ptp_systee_category_type_related = fields.Selection(
+        related='categ_id.ptp_systee_component_type',
+        string='Category Type (related)',
+        store=False  # nepotřebujeme ukládat do DB
+    )
+
     # Společná pole
     ptp_systee_part_number = fields.Char(string='Part Number', required=True)
     ptp_systee_footprint = fields.Selection(
         [
-            ('0201x', '0201x')
+            ('0201', '0201'),
+            ('0402', '0402'),
+            ('0603', '0603'),
+            ('0805', '0805'),
+            ('1206', '1206'),
+            ('1210', '1210'),
+            ('1216', '1216'),
+            ('2010', '2010'),
+            ('1812', '1812'),
+            ('2220', '2220'),
         ],
         string='Footprint'
     )
@@ -32,14 +48,21 @@ class ProductTemplate(models.Model):
     ptp_systee_cap_value = fields.Char(string='Value (C)')
     ptp_systee_cap_unit = fields.Selection(
         [
-            ('pFdx', 'pFxx'),
+            ('pF', 'pF'),
+            ('nF', 'nF'),
+            ('µF', 'μF'),
         ],
         string='Unit (C)'
     )
     ptp_systee_cap_voltage_rating = fields.Char(string='Voltage Rating [VDC]')
     ptp_systee_cap_dielectric = fields.Selection(
         [
-            ('x7tddc', 'X7Tcsdcs'),
+            ('c0g', 'C0G (NP0)'),
+            ('x5r', 'X5R'),
+            ('x7r', 'X7R'),
+            ('x6s', 'X6S'),
+            ('x7s', 'X7S'),
+            ('x7t', 'X7T'),
         ],
         string='Dielectric'
     )
@@ -49,7 +72,10 @@ class ProductTemplate(models.Model):
     ptp_systee_res_value = fields.Char(string='Value (R)')
     ptp_systee_res_unit = fields.Selection(
         [
-            ('mOhm', 'mdfd'),
+            ('mOhm', 'mΩ'),
+            ('Ohm', 'Ω'),
+            ('kOhm', 'kΩ'),
+            ('MOhm', 'MΩ'),
         ],
         string='Unit (R)'
     )
@@ -65,13 +91,13 @@ class ProductTemplate(models.Model):
     )
 
     @api.depends(
-        'categ_id.ptp_systee_component_type',
+        'ptp_systee_category_type_related',
         'ptp_systee_cap_value', 'ptp_systee_cap_unit',
         'ptp_systee_res_value', 'ptp_systee_res_unit'
     )
     def _compute_value_unit_combined(self):
         for rec in self:
-            ctype = rec.categ_id.ptp_systee_component_type
+            ctype = rec.ptp_systee_category_type_related
             if ctype == 'capacitor' and rec.ptp_systee_cap_value and rec.ptp_systee_cap_unit:
                 rec.ptp_systee_value_unit_combined = f"{rec.ptp_systee_cap_value} {rec.ptp_systee_cap_unit}"
             elif ctype == 'resistor' and rec.ptp_systee_res_value and rec.ptp_systee_res_unit:
@@ -100,7 +126,7 @@ class ProductTemplate(models.Model):
                     setattr(rec, field_name, val.replace('.', ','))
 
     @api.constrains(
-        'categ_id',
+        'ptp_systee_category_type_related',
         'ptp_systee_cap_value', 'ptp_systee_cap_unit', 'ptp_systee_cap_voltage_rating',
         'ptp_systee_cap_dielectric', 'ptp_systee_cap_tolerance',
         'ptp_systee_res_value', 'ptp_systee_res_unit', 'ptp_systee_res_power_rating',
@@ -111,7 +137,7 @@ class ProductTemplate(models.Model):
         Kontrola povinných polí jen pokud je v kategorii vyplněný typ součástky.
         """
         for rec in self:
-            ctype = rec.categ_id.ptp_systee_component_type
+            ctype = rec.ptp_systee_category_type_related
             if not ctype:
                 # Pokud není vyplněno, produkt se nebere jako součástka -> žádné validace
                 continue
