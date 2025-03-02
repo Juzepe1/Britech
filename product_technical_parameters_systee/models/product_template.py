@@ -25,7 +25,7 @@ class ProductTemplate(models.Model):
     )
 
     # Společná pole
-    ptp_systee_part_number = fields.Char(string='Part Number', required=True)
+    ptp_systee_part_number = fields.Char(string='Part Number')
     ptp_systee_footprint = fields.Selection(
         [
             ('0201x', '0201x')
@@ -157,11 +157,21 @@ class ProductTemplate(models.Model):
             ctype = rec.categ_id.ptp_systee_component_type
             # Pokud typ není vyplněn (False) nebo je 'other', 
             # žádné speciální validace nepotřebujeme.
-            if not ctype or ctype == 'other':
+            if not ctype:
+                continue
+
+            if ctype == 'other':
+                # Zde definujte, co je povinné u Other
+                if not ptp_systee_part_number:
+                    raise ValidationError("U Jingo je pole 'ptp_systee_part_number' povinné.")
                 continue
 
             if ctype == 'capacitor':
                 # Zde definujte, co je povinné u kondenzátoru
+                if not ptp_systee_part_number:
+                    raise ValidationError("U kondenzátoru je pole 'ptp_systee_part_number' povinné.")
+                if not ptp_systee_footprint:
+                    raise ValidationError("U kondenzátoru je pole 'ptp_systee_footprint' povinné.")
                 if not rec.ptp_systee_cap_value:
                     raise ValidationError("U kondenzátoru je pole 'cap_value' povinné.")
                 if not rec.ptp_systee_cap_unit:
@@ -172,10 +182,12 @@ class ProductTemplate(models.Model):
 
             elif ctype == 'resistor':
                 # Zde definujte, co je povinné u rezistoru
+                if not ptp_systee_part_number:
+                    raise ValidationError("U rezistoru je pole 'ptp_systee_part_number' povinné.")
+                if not ptp_systee_footprint:
+                    raise ValidationError("U rezistoru je pole 'ptp_systee_footprint' povinné.")
                 if not rec.ptp_systee_res_value:
                     raise ValidationError("U rezistoru je pole 'res_value' povinné.")
                 if not rec.ptp_systee_res_unit:
                     raise ValidationError("U rezistoru je pole 'res_unit' povinné.")
                 # ... atd.
-
-            # ctype == 'other' => nic, to už je nahoře ošetřeno
