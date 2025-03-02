@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_systee_footprint_user,systee.footprint user,model_systee_footprint,base.group_user,1,0,0,0
+access_systee_cap_unit_user,systee.cap.unit user,model_systee_cap_unit,base.group_user,1,0,0,0
+access_systee_cap_dielectric_user,systee.cap.dielectric user,model_systee_cap_dielectric,base.group_user,1,0,0,0
+access_systee_res_unit_user,systee.res.unit user,model_systee_res_unit,base.group_user,1,0,0,0
