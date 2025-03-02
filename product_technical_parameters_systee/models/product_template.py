@@ -18,7 +18,7 @@ def is_float_or_dash(val):
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    ptp_systee_category_type_related = fields.Many2one('ptp.systee.footprint', string='Footprint')
+    ptp_systee_category_type_related = fields.Selection(
         related='categ_id.ptp_systee_component_type',
         string='Category Type (related)',
         store=False  # nepotřebujeme ukládat do DB
@@ -26,56 +26,29 @@ class ProductTemplate(models.Model):
 
     # Společná pole
     ptp_systee_part_number = fields.Char(string='Part Number')
-    ptp_systee_footprint = fields.Many2one('ptp.systee.footprint', string='Footprint')
-        [
-            ('0201', '0201'),
-            ('0402', '0402'),
-            ('0603', '0603'),
-            ('0805', '0805'),
-            ('1206', '1206'),
-            ('1210', '1210'),
-            ('1216', '1216'),
-            ('2010', '2010'),
-            ('1812', '1812'),
-            ('2220', '2220'),
-        ],
+    ptp_systee_footprint = fields.Many2one(
+        'systee.footprint',
         string='Footprint'
     )
     ptp_systee_note = fields.Text(string='Note')
 
     # Pole pro kondenzátory
     ptp_systee_cap_value = fields.Char(string='Value (C)')
-    ptp_systee_cap_unit = fields.Many2one('ptp.systee.footprint', string='Footprint')
-        [
-        ('pF', 'pF'),
-        ('nF', 'nF'),
-        ('µF', 'μF'),
-        ],
+    ptp_systee_cap_unit = fields.Many2one(
+        'systee.cap.unit',
         string='Unit (C)'
     )
     ptp_systee_cap_voltage_rating = fields.Char(string='Voltage Rating [VDC]')
-    ptp_systee_cap_dielectric = fields.Many2one('ptp.systee.footprint', string='Footprint')
-        [
-            ('c0g', 'C0G (NP0)'),
-            ('x5r', 'X5R'),
-            ('x7r', 'X7R'),
-            ('x6s', 'X6S'),
-            ('x7s', 'X7S'),
-            ('x7t', 'X7T'),
-        ],
+    ptp_systee_cap_dielectric = fields.Many2one(
+        'systee.cap.dielectric',
         string='Dielectric'
     )
     ptp_systee_cap_tolerance = fields.Char(string='Tolerance [%]')
 
     # Pole pro rezistory
     ptp_systee_res_value = fields.Char(string='Value (R)')
-    ptp_systee_res_unit = fields.Many2one('ptp.systee.footprint', string='Footprint')
-        [
-        ('mOhm', 'mΩ'),
-        ('Ohm', 'Ω'),
-        ('kOhm', 'kΩ'),
-        ('MOhm', 'MΩ'),
-        ],
+    ptp_systee_res_unit = fields.Many2one(
+        'systee.res.unit',
         string='Unit (R)'
     )
     ptp_systee_res_power_rating = fields.Char(string='Power Rating')
@@ -99,9 +72,9 @@ class ProductTemplate(models.Model):
         for rec in self:
             ctype = rec.categ_id.ptp_systee_component_type
             if ctype == 'capacitor' and rec.ptp_systee_cap_value and rec.ptp_systee_cap_unit:
-                rec.ptp_systee_value_unit_combined = f"{rec.ptp_systee_cap_value} {rec.ptp_systee_cap_unit}"
+                rec.ptp_systee_value_unit_combined = f"{rec.ptp_systee_cap_value} {rec.ptp_systee_cap_unit.name or ''}"
             elif ctype == 'resistor' and rec.ptp_systee_res_value and rec.ptp_systee_res_unit:
-                rec.ptp_systee_value_unit_combined = f"{rec.ptp_systee_res_value} {rec.ptp_systee_res_unit}"
+                rec.ptp_systee_value_unit_combined = f"{rec.ptp_systee_res_value} {rec.ptp_systee_res_unit.name or ''}"
             else:
                 rec.ptp_systee_value_unit_combined = False
 
@@ -170,8 +143,9 @@ class ProductTemplate(models.Model):
         'ptp_systee_cap_value', 'ptp_systee_cap_unit', 'ptp_systee_cap_voltage_rating',
         'ptp_systee_cap_dielectric', 'ptp_systee_cap_tolerance',
         'ptp_systee_res_value', 'ptp_systee_res_unit', 'ptp_systee_res_power_rating',
-        'ptp_systee_res_tolerance', 'ptp_systee_res_voltage_rating', 'ptp_systee_part_number', 'ptp_systee_footprint')
-
+        'ptp_systee_res_tolerance', 'ptp_systee_res_voltage_rating', 
+        'ptp_systee_part_number', 'ptp_systee_footprint'
+    )
     def _check_required_fields(self):
         for rec in self:
             ctype = rec.categ_id.ptp_systee_component_type
@@ -198,7 +172,7 @@ class ProductTemplate(models.Model):
                     raise ValidationError("U kondenzátoru je pole 'cap_unit' povinné.")
                 if not rec.ptp_systee_cap_dielectric:
                     raise ValidationError("U kondenzátoru je pole 'cap_dielectric' povinné.")
-                # ... atd. (další logika, např. reálné číslo)
+                # Další logika validace může následovat...
 
             elif ctype == 'resistor':
                 # Zde definujte, co je povinné u rezistoru
@@ -210,24 +184,34 @@ class ProductTemplate(models.Model):
                     raise ValidationError("U rezistoru je pole 'res_value' povinné.")
                 if not rec.ptp_systee_res_unit:
                     raise ValidationError("U rezistoru je pole 'res_unit' povinné.")
-                # ... atd.
+                # Další logika validace může následovat...
 
-class PtpSysteeFootprint(models.Model):
-    _name = 'ptp.systee.footprint'
-    _description = 'PTP Systee Footprint'
-    name = fields.Char(string='Footprint', required=True)
 
-class PtpSysteeCapUnit(models.Model):
-    _name = 'ptp.systee.cap.unit'
-    _description = 'PTP Systee Capacitance Unit'
-    name = fields.Char(string='Capacitance Unit', required=True)
+# --- Definice referenčních modelů pro many2one pole ---
 
-class PtpSysteeCapDielectric(models.Model):
-    _name = 'ptp.systee.cap.dielectric'
-    _description = 'PTP Systee Capacitance Dielectric'
-    name = fields.Char(string='Capacitance Dielectric', required=True)
+class SysteeFootprint(models.Model):
+    _name = 'systee.footprint'
+    _description = 'Systee Footprint'
 
-class PtpSysteeResUnit(models.Model):
-    _name = 'ptp.systee.res.unit'
-    _description = 'PTP Systee Resistance Unit'
-    name = fields.Char(string='Resistance Unit', required=True)
+    name = fields.Char(string="Footprint", required=True)
+
+
+class SysteeCapUnit(models.Model):
+    _name = 'systee.cap.unit'
+    _description = 'Capacitor Unit'
+
+    name = fields.Char(string="Unit", required=True)
+
+
+class SysteeCapDielectric(models.Model):
+    _name = 'systee.cap.dielectric'
+    _description = 'Capacitor Dielectric'
+
+    name = fields.Char(string="Dielectric", required=True)
+
+
+class SysteeResUnit(models.Model):
+    _name = 'systee.res.unit'
+    _description = 'Resistor Unit'
+
+    name = fields.Char(string="Unit", required=True)

@@ -4,11 +4,12 @@
     'category': 'Product',
     'summary': 'Rozšíření product.category o volitelný typ součástky a úprava product.template (Systee)',
     'author': 'Vaše jméno / firma',
-    'depends': ['product'],
+    'depends': ['product','base'],
     'data': [
         'views/product_category_views.xml',
         'views/product_template_views.xml',
         'views/product_template_search.xml',
+        'data/product_technical_parameters_data.xml',
     ],
     'installable': True,
     'application': False,

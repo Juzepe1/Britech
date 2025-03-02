@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!-- Záznamy pro systee.footprint -->
+  <record id="systee_footprint_0201" model="systee.footprint">
+    <field name="name">0201</field>
+  </record>
+  <record id="systee_footprint_0402" model="systee.footprint">
+    <field name="name">0402</field>
+  </record>
+  <record id="systee_footprint_0603" model="systee.footprint">
+    <field name="name">0603</field>
+  </record>
+  <record id="systee_footprint_0805" model="systee.footprint">
+    <field name="name">0805</field>
+  </record>
+  <record id="systee_footprint_1206" model="systee.footprint">
+    <field name="name">1206</field>
+  </record>
+  <record id="systee_footprint_1210" model="systee.footprint">
+    <field name="name">1210</field>
+  </record>
+  <record id="systee_footprint_1216" model="systee.footprint">
+    <field name="name">1216</field>
+  </record>
+  <record id="systee_footprint_2010" model="systee.footprint">
+    <field name="name">2010</field>
+  </record>
+  <record id="systee_footprint_1812" model="systee.footprint">
+    <field name="name">1812</field>
+  </record>
+  <record id="systee_footprint_2220" model="systee.footprint">
+    <field name="name">2220</field>
+  </record>
+
+  <!-- Záznamy pro systee.cap.unit -->
+  <record id="systee_cap_unit_pF" model="systee.cap.unit">
+    <field name="name">pF</field>
+  </record>
+  <record id="systee_cap_unit_nF" model="systee.cap.unit">
+    <field name="name">nF</field>
+  </record>
+  <record id="systee_cap_unit_uF" model="systee.cap.unit">
+    <field name="name">µF</field>
+  </record>
+
+  <!-- Záznamy pro systee.cap.dielectric -->
+  <record id="systee_cap_dielectric_c0g" model="systee.cap.dielectric">
+    <field name="name">c0g</field>
+  </record>
+  <record id="systee_cap_dielectric_x5r" model="systee.cap.dielectric">
+    <field name="name">x5r</field>
+  </record>
+  <record id="systee_cap_dielectric_x7r" model="systee.cap.dielectric">
+    <field name="name">x7r</field>
+  </record>
+  <record id="systee_cap_dielectric_x6s" model="systee.cap.dielectric">
+    <field name="name">x6s</field>
+  </record>
+  <record id="systee_cap_dielectric_x7s" model="systee.cap.dielectric">
+    <field name="name">x7s</field>
+  </record>
+  <record id="systee_cap_dielectric_x7t" model="systee.cap.dielectric">
+    <field name="name">x7t</field>
+  </record>
+
+  <!-- Záznamy pro systee.res.unit -->
+  <record id="systee_res_unit_mOhm" model="systee.res.unit">
+    <field name="name">mOhm</field>
+  </record>
+  <record id="systee_res_unit_Ohm" model="systee.res.unit">
+    <field name="name">Ohm</field>
+  </record>
+  <record id="systee_res_unit_kOhm" model="systee.res.unit">
+    <field name="name">kOhm</field>
+  </record>
+  <record id="systee_res_unit_MOhm" model="systee.res.unit">
+    <field name="name">MOhm</field>
+  </record>
+</odoo>
