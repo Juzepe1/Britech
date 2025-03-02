@@ -28,7 +28,16 @@ class ProductTemplate(models.Model):
     ptp_systee_part_number = fields.Char(string='Part Number')
     ptp_systee_footprint = fields.Selection(
         [
-            ('0201x', '0201x')
+            ('0201', '0201'),
+            ('0402', '0402'),
+            ('0603', '0603'),
+            ('0805', '0805'),
+            ('1206', '1206'),
+            ('1210', '1210'),
+            ('1216', '1216'),
+            ('2010', '2010'),
+            ('1812', '1812'),
+            ('2220', '2220'),
         ],
         string='Footprint'
     )
