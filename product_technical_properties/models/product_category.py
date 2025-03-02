@@ -3,9 +3,10 @@
 from odoo import models, fields
 
 class ProductCategory(models.Model):
+    _name = 'product.category'
     _inherit = 'product.category'
 
-    ptp_component_type = fields.Selection(selection_add=[
+    ptp_component_type = fields.Selection([
         ('capacitor', 'Kondenzátor'),
         ('resistor', 'Rezistor'),
         ('other', 'Ostatní')
