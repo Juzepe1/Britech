@@ -6,9 +6,8 @@
         <field name="inherit_id" ref="product.product_template_tree_view"/>
         <field name="arch" type="xml">
             <!-- Vložíme nový sloupec přímo do stromu -->
-            <xpath expr="//list" position="inside">
-                <!-- Název sloupce si můžete libovolně změnit -->
-                <field name="ptp_systee_value_unit_combined" string="Value + Unit"/>
+            <xpath expr="//field[@name='default_code']" position="after">
+              <field name="ptp_systee_value_unit_combined" optional="show"/>
             </xpath>
         </field>
     </record>
