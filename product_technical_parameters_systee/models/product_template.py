@@ -325,9 +325,11 @@ class ProductTemplate(models.Model):
         if new_category and new_category.ptp_component_type:
             self._ensure_product_name(vals)
 
-        self._check_required_fields()
+        result = super().write(vals)
+        if category_changed:
+            self._check_required_fields()
 
-        return super().write(vals)
+        return result
 
 
 # --- Definice referenčních modelů pro many2one pole ---
