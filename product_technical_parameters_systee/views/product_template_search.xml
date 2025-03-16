@@ -1,5 +1,5 @@
 <odoo>
-    <record id="view_product_template_search_inherit_systee" model="ir.ui.view">
+    <record id="view_product_template_search_inherit" model="ir.ui.view">
         <field name="name">product.template.search.inherit.systee</field>
         <field name="model">product.template</field>
         <!-- Odkaz na původní search view pro produkty -->
@@ -8,7 +8,7 @@
             <!-- Uvnitř <search> tagu vložíme nové pole -->
             <xpath expr="//search" position="inside">
                 <!-- Jednoduché textové vyhledávání (full-text) podle Value + Unit -->
-                <field name="ptp_systee_value_unit_combined" 
+                <field name="ptp_value_unit_combined" 
                        string="Value + Unit" 
                        placeholder="Hledat dle Value+Unit..."/>
             </xpath>

@@ -1,5 +1,5 @@
 <odoo>
-    <record id="view_product_template_tree_inherit_systee" model="ir.ui.view">
+    <record id="view_product_template_tree_inherit" model="ir.ui.view">
         <field name="name">product.template.list.inherit.systee</field>
         <field name="model">product.template</field>
         <!-- Odkaz na původní list view pro produkty -->
@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <!-- Vložíme nový sloupec přímo do stromu -->
             <xpath expr="//field[@name='default_code']" position="after">
-              <field name="ptp_systee_value_unit_combined" optional="show"/>
+              <field name="ptp_value_unit_combined" optional="show"/>
             </xpath>
         </field>
     </record>
