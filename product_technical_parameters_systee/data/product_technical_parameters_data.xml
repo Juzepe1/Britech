@@ -1,79 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
   <!-- Záznamy pro systee.footprint -->
-  <record id="systee_footprint_0201" model="systee.footprint">
+  <record id="ptp_footprint_0201" model="ptp.footprint">
     <field name="name">0201</field>
   </record>
-  <record id="systee_footprint_0402" model="systee.footprint">
+  <record id="ptp_footprint_0402" model="ptp.footprint">
     <field name="name">0402</field>
   </record>
-  <record id="systee_footprint_0603" model="systee.footprint">
+  <record id="ptp_footprint_0603" model="ptp.footprint">
     <field name="name">0603</field>
   </record>
-  <record id="systee_footprint_0805" model="systee.footprint">
+  <record id="ptp_footprint_0805" model="ptp.footprint">
     <field name="name">0805</field>
   </record>
-  <record id="systee_footprint_1206" model="systee.footprint">
+  <record id="ptp_footprint_1206" model="ptp.footprint">
     <field name="name">1206</field>
   </record>
-  <record id="systee_footprint_1210" model="systee.footprint">
+  <record id="ptp_footprint_1210" model="ptp.footprint">
     <field name="name">1210</field>
   </record>
-  <record id="systee_footprint_1216" model="systee.footprint">
+  <record id="ptp_footprint_1216" model="ptp.footprint">
     <field name="name">1216</field>
   </record>
-  <record id="systee_footprint_2010" model="systee.footprint">
+  <record id="ptp_footprint_2010" model="ptp.footprint">
     <field name="name">2010</field>
   </record>
-  <record id="systee_footprint_1812" model="systee.footprint">
+  <record id="ptp_footprint_1812" model="ptp.footprint">
     <field name="name">1812</field>
   </record>
-  <record id="systee_footprint_2220" model="systee.footprint">
+  <record id="ptp_footprint_2220" model="ptp.footprint">
     <field name="name">2220</field>
   </record>
 
   <!-- Záznamy pro systee.cap.unit -->
-  <record id="systee_cap_unit_pF" model="systee.cap.unit">
+  <record id="ptp_cap_unit_pF" model="ptp.cap.unit">
     <field name="name">pF</field>
   </record>
-  <record id="systee_cap_unit_nF" model="systee.cap.unit">
+  <record id="ptp_cap_unit_nF" model="ptp.cap.unit">
     <field name="name">nF</field>
   </record>
-  <record id="systee_cap_unit_uF" model="systee.cap.unit">
+  <record id="ptp_cap_unit_uF" model="ptp.cap.unit">
     <field name="name">µF</field>
   </record>
 
   <!-- Záznamy pro systee.cap.dielectric -->
-  <record id="systee_cap_dielectric_c0g" model="systee.cap.dielectric">
+  <record id="ptp_cap_dielectric_c0g" model="ptp.cap.dielectric">
     <field name="name">COG (NP0)</field>
   </record>
-  <record id="systee_cap_dielectric_x5r" model="systee.cap.dielectric">
+  <record id="ptp_cap_dielectric_x5r" model="ptp.cap.dielectric">
     <field name="name">X5R</field>
   </record>
-  <record id="systee_cap_dielectric_x7r" model="systee.cap.dielectric">
+  <record id="ptp_cap_dielectric_x7r" model="ptp.cap.dielectric">
     <field name="name">X7R</field>
   </record>
-  <record id="systee_cap_dielectric_x6s" model="systee.cap.dielectric">
+  <record id="ptp_cap_dielectric_x6s" model="ptp.cap.dielectric">
     <field name="name">X6S</field>
   </record>
-  <record id="systee_cap_dielectric_x7s" model="systee.cap.dielectric">
+  <record id="ptp_cap_dielectric_x7s" model="ptp.cap.dielectric">
     <field name="name">X7S</field>
   </record>
-  <record id="systee_cap_dielectric_x7t" model="systee.cap.dielectric">
+  <record id="ptp_cap_dielectric_x7t" model="ptp.cap.dielectric">
     <field name="name">X7T</field>
   </record>
 
   <!-- Záznamy pro systee.res.unit -->
-  <record id="systee_res_unit_mOhm" model="systee.res.unit">
+  <record id="ptp_res_unit_mOhm" model="ptp.res.unit">
     <field name="name">mΩ</field>
   </record>
-  <record id="systee_res_unit_Ohm" model="systee.res.unit">
+  <record id="ptp_res_unit_Ohm" model="ptp.res.unit">
     <field name="name">Ω</field>
   </record>
-  <record id="systee_res_unit_kOhm" model="systee.res.unit">
+  <record id="ptp_res_unit_kOhm" model="ptp.res.unit">
     <field name="name">kΩ</field>
   </record>
-  <record id="systee_res_unit_MOhm" model="systee.res.unit">
+  <record id="ptp_res_unit_MOhm" model="ptp.res.unit">
     <field name="name">MΩ</field>
   </record>
 </odoo>
