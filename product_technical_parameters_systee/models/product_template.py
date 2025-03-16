@@ -319,4 +319,50 @@ class SysteeResUnit(models.Model):
 
     name = fields.Char(string="Unit", required=True)
 
+class SysteeImpUnit(models.Model):
+    _name = 'systee.imp.unit'
+    _description = 'Ferrite Bead Unit'
+
+    name = fields.Char(string="Impedance Unit", required=True)
+
+# --- Induktory ---
+class SysteeIndUnit(models.Model):
+    _name = 'systee.ind.unit'
+    _description = 'Inductor Unit'
+
+    name = fields.Char(string="Inductance Unit", required=True)
+
+# --- Tranzistory ---
+class SysteeTranPolarity(models.Model):
+    _name = 'systee.tran.polarity'
+    _description = 'Transistor Polarity'
+
+    name = fields.Char(string="Polarity", required=True)
+
+class SysteeTranType(models.Model):
+    _name = 'systee.tran.type'
+    _description = 'Transistor Type'
+
+    name = fields.Char(string="Type", required=True)
+
+# --- TVS diody ---
+class SysteeTvsPolarity(models.Model):
+    _name = 'systee.tvs.polarity'
+    _description = 'TVS Diode Polarity'
+
+    name = fields.Char(string="Polarity", required=True)
+
+class SysteeTvsChannel(models.Model):
+    _name = 'systee.tvs.chanel'
+    _description = 'TVS Diode Channel Count'
+
+    name = fields.Char(string="Channel Count", required=True)
+
+# --- LED ---
+class SysteeLedColor(models.Model):
+    _name = 'systee.led.color'
+    _description = 'LED Color'
+
+    name = fields.Char(string="Color", required=True)
+
 
