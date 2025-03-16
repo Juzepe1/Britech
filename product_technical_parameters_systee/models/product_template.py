@@ -71,7 +71,7 @@ class ProductTemplate(models.Model):
 
     @api.depends(
         'categ_id.ptp_systee_component_type',
-        'ptp_systee_cap_value', 'ptp_systee_cap_unit',
+        'ptp_systee_cap_value', 'ptp_systee_cap_unit', 'ptp_systee_cap_voltage_rating','ptp_systee_cap_dielectric', 'ptp_systee_cap_tolerance',
         'ptp_systee_res_value', 'ptp_systee_res_unit'
     )
     def _compute_value_unit_combined(self):
@@ -82,7 +82,7 @@ class ProductTemplate(models.Model):
 
             # Zjistíme, jaká pole jsou pro kategorii relevantní
             category_type = rec.categ_id.ptp_systee_component_type
-            ptp_fields = [field for field in rec._fields if field.startswith('ptp_systee_') and not field.endswith('_combined')]
+            ptp_fields = [field for field in rec._fields if field.startswith('ptp_systee_') and not field.endswith('_combined' and not field.endswith('_related' and not field.endswith('_note')]
 
             # Seznam hodnot, které mají být spojeny
             value_parts = []
