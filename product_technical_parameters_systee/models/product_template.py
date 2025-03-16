@@ -251,6 +251,32 @@ class ProductTemplate(models.Model):
                     raise ValidationError("U rezistoru je pole 'res_unit' povinné.")
                 # Další logika validace může následovat...
 
+    def _ensure_default_code(self, vals, new_sequence=False):
+        """
+        Vždy vygeneruje `default_code`. Pokud `new_sequence=True`, vytvoří nové číslo sekvence,
+        jinak zachová původní číslo sekvence.
+        """
+        category_id = vals.get('categ_id', self.categ_id.id)
+        category = self.env['product.category'].browse(category_id) if category_id else None
+        category_code = category.ptp_code if category and category.ptp_code else '000'
+
+        if new_sequence or not self.default_code:
+            # **Pokud se jedná o nový produkt, vytvoříme nové číslo sekvence**
+            sequence = self.env['ir.sequence'].next_by_code('product.template.default_code')
+        else:
+            # **Při změně kategorie zachováme číslo sekvence**
+            parts = self.default_code.split('-')
+            sequence = parts[-1] if len(parts) == 3 else self.default_code
+
+        vals['default_code'] = f'ITM-{category_code}-{sequence}'
+        _logger.info(f"Generated default_code: {vals['default_code']}")
+
+    def _ensure_product_name(self, vals):
+        """
+        Vždy aktualizuje `name` podle `default_code`, aby nedocházelo k duplikacím.
+        """
+        vals['name'] = self._generate_product_name(vals)
+
     def _generate_product_name(self, vals):
         """
         Generuje správný název produktu a zabraňuje chybě `AttributeError: 'bool' object has no attribute 'strip'`.
@@ -275,37 +301,24 @@ class ProductTemplate(models.Model):
 
         return new_name
 
-    def _ensure_default_code(self, vals):
-        """
-        Vždy vygeneruje nový `default_code`, pokud není explicitně uveden v `vals`.
-        """
-        category_id = vals.get('categ_id', self.categ_id.id)
-        category = self.env['product.category'].browse(category_id) if category_id else None
-        category_code = category.ptp_code if category and category.ptp_code else '000'
-
-        # Vždy generujeme nový unikátní `default_code`
-        sequence = self.env['ir.sequence'].next_by_code('product.template.default_code')
-        vals['default_code'] = f'ITM-{category_code}-{sequence}'
-        _logger.info(f"Generated default_code: {vals['default_code']}")
-
     @api.model_create_multi
     def create(self, vals_list):
         """
         Při vytváření produktu se vždy nastaví `default_code` a `name`.
         """
         for vals in vals_list:
-            self._ensure_default_code(vals)
-            vals['name'] = self._generate_product_name(vals)
+            self._ensure_default_code(vals, new_sequence=True)  # Nové číslo sekvence
+            self._ensure_product_name(vals)
 
         return super().create(vals_list)
 
     def write(self, vals):
         """
         Při změně kategorie (`categ_id`) nebo jiných relevantních polí
-        se **vždy** aktualizuje `default_code` a `name`.
+        se **vždy** aktualizuje `default_code` a `name`. Zachovává stejné číslo sekvence.
         """
-        self._ensure_default_code(vals)
-        vals['name'] = self._generate_product_name(vals)
+        self._ensure_default_code(vals, new_sequence=False)  # Zachovat stejné číslo
+        self._ensure_product_name(vals)
 
         return super().write(vals)
 
