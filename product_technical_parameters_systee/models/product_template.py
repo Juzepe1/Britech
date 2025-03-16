@@ -298,74 +298,74 @@ class ProductTemplate(models.Model):
 # --- Definice referenčních modelů pro many2one pole ---
 
 class SysteeFootprint(models.Model):
-    _name = 'systee.footprint'
+    _name = 'ptp.footprint'
     _description = 'Systee Footprint'
 
     name = fields.Char(string="Footprint", required=True)
 
 
 class SysteeCapUnit(models.Model):
-    _name = 'systee.cap.unit'
+    _name = 'ptp.cap.unit'
     _description = 'Capacitor Unit'
 
     name = fields.Char(string="Unit", required=True)
 
 
 class SysteeCapDielectric(models.Model):
-    _name = 'systee.cap.dielectric'
+    _name = 'ptp.cap.dielectric'
     _description = 'Capacitor Dielectric'
 
     name = fields.Char(string="Dielectric", required=True)
 
 
 class SysteeResUnit(models.Model):
-    _name = 'systee.res.unit'
+    _name = 'ptp.res.unit'
     _description = 'Resistor Unit'
 
     name = fields.Char(string="Unit", required=True)
 
 class SysteeImpUnit(models.Model):
-    _name = 'systee.imp.unit'
+    _name = 'ptp.imp.unit'
     _description = 'Ferrite Bead Unit'
 
     name = fields.Char(string="Impedance Unit", required=True)
 
 # --- Induktory ---
 class SysteeIndUnit(models.Model):
-    _name = 'systee.ind.unit'
+    _name = 'ptp.ind.unit'
     _description = 'Inductor Unit'
 
     name = fields.Char(string="Inductance Unit", required=True)
 
 # --- Tranzistory ---
 class SysteeTranPolarity(models.Model):
-    _name = 'systee.tran.polarity'
+    _name = 'ptp.tran.polarity'
     _description = 'Transistor Polarity'
 
     name = fields.Char(string="Polarity", required=True)
 
 class SysteeTranType(models.Model):
-    _name = 'systee.tran.type'
+    _name = 'ptp.tran.type'
     _description = 'Transistor Type'
 
     name = fields.Char(string="Type", required=True)
 
 # --- TVS diody ---
 class SysteeTvsPolarity(models.Model):
-    _name = 'systee.tvs.polarity'
+    _name = 'ptp.tvs.polarity'
     _description = 'TVS Diode Polarity'
 
     name = fields.Char(string="Polarity", required=True)
 
 class SysteeTvsChannel(models.Model):
-    _name = 'systee.tvs.chanel'
+    _name = 'ptp.tvs.chanel'
     _description = 'TVS Diode Channel Count'
 
     name = fields.Char(string="Channel Count", required=True)
 
 # --- LED ---
 class SysteeLedColor(models.Model):
-    _name = 'systee.led.color'
+    _name = 'ptp.led.color'
     _description = 'LED Color'
 
     name = fields.Char(string="Color", required=True)
