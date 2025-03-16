@@ -275,10 +275,10 @@ class ProductTemplate(models.Model):
             category_id = vals.get('categ_id')
             category = self.env['product.category'].browse(category_id) if category_id else None
 
-            if category and category.ptp_code and not vals.get('default_code'):
-                sequence = self.env['ir.sequence'].next_by_code('product.template.default_code')
-                vals['default_code'] = f'ITM-{category.ptp_code}-{sequence}'
-                _logger.info(f"Generated default_code: {vals['default_code']}")
+            category_code = category.ptp_code if category and category.ptp_code else '000'
+            sequence = self.env['ir.sequence'].next_by_code('product.template.default_code')
+            vals['default_code'] = f'ITM-{category.ptp_code}-{sequence}'
+            _logger.info(f"Generated default_code: {vals['default_code']}")
 
             vals['name'] = self._generate_product_name(vals)
 
