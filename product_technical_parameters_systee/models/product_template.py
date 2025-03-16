@@ -317,13 +317,18 @@ class ProductTemplate(models.Model):
         return records
 
     def write(self, vals):
-        """Při úpravě produktu se vždy aktualizuje `default_code`, ale `name` se mění jen pokud `categ_id` má typ."""
+
         if 'categ_id' in vals:
             self._ensure_default_code(vals, new_sequence=False)
 
         new_category = self.env['product.category'].browse(vals['categ_id']) if vals.get('categ_id') else self.categ_id
         if new_category and new_category.ptp_component_type:
             self._ensure_product_name(vals)
+        category_changed = 'categ_id' in vals  #  Kontrola, zda se mění kategorie
+
+        if category_changed:
+            old_categories = {rec.id: rec.categ_id for rec in self}  # Uložení staré kategorie
+            self._ensure_default_code(vals, new_sequence=False)
 
         result = super().write(vals)
         if category_changed:
