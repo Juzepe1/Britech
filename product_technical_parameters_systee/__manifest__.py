@@ -11,6 +11,7 @@
         'views/product_category_views.xml',
         'views/product_template_views.xml',
         'views/product_template_search.xml',
+        'views/product_template_tree.xml',
         'data/product_technical_parameters_data.xml',
         'data/ir_sequence_data.xml',
     ],
