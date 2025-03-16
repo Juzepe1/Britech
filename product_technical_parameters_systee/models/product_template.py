@@ -36,6 +36,7 @@ class ProductTemplate(models.Model):
         'systee.footprint',
         string='Footprint'
     )
+    ptp_systee_package = fields.Char(string="Pouzdro")
     ptp_systee_note = fields.Text(string='Note')
 
     # Pole pro kondenzátory
@@ -60,6 +61,43 @@ class ProductTemplate(models.Model):
     ptp_systee_res_power_rating = fields.Char(string='Power Rating')
     ptp_systee_res_tolerance = fields.Char(string='Tolerance [%]')
     ptp_systee_res_voltage_rating = fields.Char(string='Voltage Rating [V]')
+
+    # Pole pro Feritové perličky
+    ptp_systee_imp_value = fields.Char(string="Impedance")
+    ptp_systee_imp_unit = fields.Many2one(
+        'systee.imp.unit',
+        string='Unit (Z)'
+    )
+    # Pole pro Induktory
+    ptp_systee_ind_value = fields.Char(string="Induktance")
+    ptp_systee_ind_unit = fields.Many2one(
+        'systee.ind.unit',
+        string='Unit (X)'
+    )
+
+    # Pole pro Tranzistory
+    ptp_systee_tran_polarity = fields.Many2one(
+        'systee.tran.polarity',
+        string='Tranzistor polarity'
+    ptp_systee_tran_type = fields.Many2one(
+        'systee.tran.type',
+        string='Tranzistor typ'
+    )
+
+    # Pole pro TVS diody
+    ptp_systee_tvs_polarity = fields.Many2one(
+        'systee.tvs.polarity',
+        string='TVS dioda polarity'
+    ptp_systee_tvs_chanel = fields.Many2one(
+        'systee.tvs.chanel',
+        string='TVS dioda počet kanálů'
+    )
+
+    # Pole pro LED
+    ptp_systee_led_color = fields.Many2one(
+        'systee.led.color',
+        string='LED barva'
+    )
 
     # Počítané pole: sloučená hodnota + jednotka
     ptp_systee_value_unit_combined = fields.Char(

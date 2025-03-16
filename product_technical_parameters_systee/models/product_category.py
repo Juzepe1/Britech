@@ -6,6 +6,11 @@ class ProductCategory(models.Model):
     ptp_systee_component_type = fields.Selection([
         ('capacitor', 'Capacitor'),
         ('resistor', 'Resistor'),
+        ('ferrite_bead', 'Ferrite Bead'),
+        ('inductor', 'Inductor'),
+        ('transistor', 'Transistor'),
+        ('tvs_diode', 'TVS Diode'),
+        ('led', 'LED'),
         ('other', 'Other'),
     ], string='Component Type', required=False)
 
