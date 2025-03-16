@@ -263,12 +263,11 @@ class ProductTemplate(models.Model):
         # Sestavení základního formátu
         base_name = " ".join(filter(None, [default_code, part_number])).strip()
 
-    # Ověření, zda `existing_name` už obsahuje `default_code`
-        if existing_name and (existing_name.startswith(base_name) or default_code in existing_name):
-            return existing_name  # Necháme původní název, pokud už obsahuje správný kód
+        name_parts = existing_name.split()
+        name_parts = [part for part in name_parts if not part.startswith("ITM-")]  # Odebereme starý default_code
+        new_name = " ".join([base_name] + name_parts).strip()  # Přidáme nový base_name na začátek
 
-        # Pokud name neobsahuje očekávaný formát, přidáme ho na začátek
-        return f"{base_name} {existing_name}".strip()
+        return new_name
 
     @api.model_create_multi
     def create(self, vals_list):
