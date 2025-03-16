@@ -253,13 +253,16 @@ class ProductTemplate(models.Model):
 
     def _generate_product_name(self, vals):
         """
-        Generuje nový `name` tak, aby:
-        - Vždy obsahoval `default_code`.
-        - Pokud už `default_code` v `name` existuje, nahradí ho.
-        - Nevytvářel duplicity.
+        Generuje správný název produktu a zabraňuje chybě `AttributeError: 'bool' object has no attribute 'strip'`.
         """
         default_code = vals.get('default_code', self.default_code or "").strip()
-        part_number = vals.get('ptp_part_number', self.ptp_part_number or "").strip()
+        part_number = vals.get('ptp_part_number', self.ptp_part_number or "")
+
+        # **Oprava: Zajistíme, že `part_number` je vždy string**
+        if not isinstance(part_number, str):
+            part_number = ""
+
+        part_number = part_number.strip()
         existing_name = vals.get('name', self.name or "").strip()
 
         # **Sestavení základního formátu**
