@@ -192,6 +192,21 @@ class ProductTemplate(models.Model):
                     raise ValidationError("U rezistoru je pole 'res_unit' povinné.")
                 # Další logika validace může následovat...
 
+    def _generate_product_name(self, vals):
+        default_code = vals.get('default_code', self.default_code)
+        part_number = vals.get('ptp_systee_part_number', self.ptp_systee_part_number or "")
+
+        # Existující name (pokud uživatel něco přidal)
+        existing_name = vals.get('name', self.name or "")
+
+        # Zkontrolujeme, zda už name nezačíná očekávanou kombinací
+        base_name = f"{default_code} {part_number}".strip()
+        if existing_name.startswith(base_name):
+            return existing_name  # Pokud už name začíná očekávaným formátem, ponecháme ho
+
+        # Pokud name neobsahuje očekávaný formát, přidáme ho na začátek
+        return f"{base_name} {existing_name}".strip()
+
     @api.model
     def create(self, vals):
         if 'default_code' not in vals or not vals.get('default_code'):
@@ -202,6 +217,7 @@ class ProductTemplate(models.Model):
             vals['default_code'] = f'ITM-{category_code}-{sequence}'
 
             _logger.info(f"Generated default_code: {vals['default_code']}")
+            vals['name'] = self._generate_product_name(vals)
 
         return super(ProductTemplate, self).create(vals)
 
@@ -213,6 +229,10 @@ class ProductTemplate(models.Model):
             vals['default_code'] = f'ITM-{category_code}-{sequence}'
 
             _logger.info(f"Updated default_code: {vals['default_code']}")
+
+        # Pokud se změnilo default_code nebo ptp_systee_part_number, aktualizujeme name
+        if 'default_code' in vals or 'ptp_systee_part_number' in vals or 'name' in vals:
+            vals['name'] = self._generate_product_name(vals)
 
         return super(ProductTemplate, self).write(vals)
 
