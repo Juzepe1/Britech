@@ -308,17 +308,21 @@ class ProductTemplate(models.Model):
         """
         for vals in vals_list:
             self._ensure_default_code(vals, new_sequence=True)  # Nové číslo sekvence
-            self._ensure_product_name(vals)
+            if self.categ_id.ptp_component_type:
+                self._ensure_product_name(vals)
+            self._validate_required_fields(vals)
 
         return super().create(vals_list)
 
     def write(self, vals):
-        """
-        Při změně kategorie (`categ_id`) nebo jiných relevantních polí
-        se **vždy** aktualizuje `default_code` a `name`. Zachovává stejné číslo sekvence.
-        """
-        self._ensure_default_code(vals, new_sequence=False)  # Zachovat stejné číslo
-        self._ensure_product_name(vals)
+        """Při úpravě produktu se vždy aktualizuje `default_code`, ale `name` se mění jen pokud `categ_id` má typ."""
+        if 'categ_id' in vals:
+            self._ensure_default_code(vals, new_sequence=False)
+
+        if self.categ_id.ptp_component_type:
+            self._ensure_product_name(vals)
+
+        self._validate_required_fields(vals)
 
         return super().write(vals)
 
