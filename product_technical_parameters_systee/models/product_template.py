@@ -327,7 +327,13 @@ class ProductTemplate(models.Model):
 
         result = super().write(vals)
         if category_changed:
-            self._check_required_fields()
+            for record in self:
+                old_category = old_categories.get(record.id)
+                new_category = record.categ_id
+
+            # Pokud nová kategorie má `ptp_component_type`, validujeme povinná pole
+                if new_category and new_category.ptp_component_type:
+                    record._check_required_fields()
 
         return result
 
