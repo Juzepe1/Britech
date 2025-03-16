@@ -69,20 +69,30 @@ class ProductTemplate(models.Model):
         index=True
     )
 
-    @api.depends(
-        'categ_id.ptp_systee_component_type',
-        'ptp_systee_cap_value', 'ptp_systee_cap_unit',
-        'ptp_systee_res_value', 'ptp_systee_res_unit'
-    )
+    @api.depends('categ_id', 'categ_id.ptp_systee_component_type')
     def _compute_value_unit_combined(self):
         for rec in self:
-            ctype = rec.categ_id.ptp_systee_component_type
-            if ctype == 'capacitor' and rec.ptp_systee_cap_value and rec.ptp_systee_cap_unit:
-                rec.ptp_systee_value_unit_combined = f"{rec.ptp_systee_cap_value} {rec.ptp_systee_cap_unit.name or ''}"
-            elif ctype == 'resistor' and rec.ptp_systee_res_value and rec.ptp_systee_res_unit:
-                rec.ptp_systee_value_unit_combined = f"{rec.ptp_systee_res_value} {rec.ptp_systee_res_unit.name or ''}"
-            else:
+            if not rec.categ_id:
                 rec.ptp_systee_value_unit_combined = False
+                continue
+
+            # Zjistíme, jaká pole jsou pro kategorii relevantní
+            category_type = rec.categ_id.ptp_systee_component_type
+            ptp_fields = [field for field in rec._fields if field.startswith('ptp_systee_') and not field.endswith('_combined')]
+
+            # Seznam hodnot, které mají být spojeny
+            value_parts = []
+            for field_name in ptp_fields:
+                field_value = getattr(rec, field_name, False)
+                if field_value:
+                    # Pokud je pole Many2one (např. jednotky), vezmeme `.name`
+                    if isinstance(field_value, models.Model):
+                        value_parts.append(field_value.name)
+                    else:
+                        value_parts.append(str(field_value))
+
+            # Výsledek kombinujeme
+            rec.ptp_systee_value_unit_combined = " ".join(value_parts) if value_parts else False
 
     @api.onchange(
         'ptp_systee_cap_value', 'ptp_systee_cap_tolerance', 'ptp_systee_cap_voltage_rating',
