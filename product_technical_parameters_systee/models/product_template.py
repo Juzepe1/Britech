@@ -251,24 +251,33 @@ class ProductTemplate(models.Model):
                     raise ValidationError("U rezistoru je pole 'res_unit' povinné.")
                 # Další logika validace může následovat...
 
-    def _generate_product_name(self, vals):
-        category = self.categ_id
-        if not category or not category.ptp_component_type:
-            return vals.get('name', self.name or "")
+def _generate_product_name(self, vals):
+    """
+    Generuje název produktu ve formátu: "default_code ptp_part_number existing_name".
+    Pokud name již obsahuje základní formát, ponechá ho.
+    """
+    category = self.categ_id
+    if not category or not category.ptp_component_type:
+        return vals.get('name', self.name or "")
 
-        default_code = vals.get('default_code', self.default_code)
-        part_number = vals.get('ptp_part_number', self.ptp_part_number or "")
+    # Získání hodnot
+    default_code = vals.get('default_code', self.default_code or "").strip()
+    part_number = vals.get('ptp_part_number', self.ptp_part_number or "").strip()
+    existing_name = vals.get('name', self.name or "").strip()
 
-        # Existující name (pokud uživatel něco přidal)
-        existing_name = vals.get('name', self.name or "")
+    # Sestavení základního formátu
+    base_name = " ".join(filter(None, [default_code, part_number])).strip()
 
-        # Zkontrolujeme, zda už name nezačíná očekávanou kombinací
-        base_name = f"{default_code} {part_number}".strip()
-        if existing_name.startswith(base_name):
-            return existing_name  # Pokud už name začíná očekávaným formátem, ponecháme ho
+    # Pokud name již obsahuje základní formát, ponecháme ho
+    if base_name and existing_name.startswith(base_name):
+        return existing_name
 
-        # Pokud name neobsahuje očekávaný formát, přidáme ho na začátek
-        return f"{base_name} {existing_name}".strip()
+    # Pokud není žádný default_code ani part_number, vrátíme původní název
+    if not base_name:
+        return existing_name
+
+    # Sestavení konečného názvu
+    return f"{base_name} {existing_name}".strip()
 
     @api.model_create_multi
     def create(self, vals_list):
