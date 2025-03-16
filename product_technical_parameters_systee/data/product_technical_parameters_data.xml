@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <!-- Záznamy pro systee.footprint -->
+  <!-- Záznamy pro ptp.footprint -->
   <record id="ptp_footprint_0201" model="ptp.footprint">
     <field name="name">0201</field>
   </record>
@@ -32,7 +32,7 @@
     <field name="name">2220</field>
   </record>
 
-  <!-- Záznamy pro systee.cap.unit -->
+  <!-- Záznamy pro ptp.cap.unit -->
   <record id="ptp_cap_unit_pF" model="ptp.cap.unit">
     <field name="name">pF</field>
   </record>
@@ -43,7 +43,7 @@
     <field name="name">µF</field>
   </record>
 
-  <!-- Záznamy pro systee.cap.dielectric -->
+  <!-- Záznamy pro ptp.cap.dielectric -->
   <record id="ptp_cap_dielectric_c0g" model="ptp.cap.dielectric">
     <field name="name">COG (NP0)</field>
   </record>
@@ -63,7 +63,7 @@
     <field name="name">X7T</field>
   </record>
 
-  <!-- Záznamy pro systee.res.unit -->
+  <!-- Záznamy pro ptp.res.unit -->
   <record id="ptp_res_unit_mOhm" model="ptp.res.unit">
     <field name="name">mΩ</field>
   </record>

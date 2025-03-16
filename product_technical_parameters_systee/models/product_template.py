@@ -33,7 +33,7 @@ class ProductTemplate(models.Model):
     # Společná pole
     ptp_part_number = fields.Char(string='Part Number')
     ptp_footprint = fields.Many2one(
-        'systee.footprint',
+        'ptp.footprint',
         string='Footprint'
     )
     ptp_package = fields.Char(string="Pouzdro")
@@ -42,12 +42,12 @@ class ProductTemplate(models.Model):
     # Pole pro kondenzátory
     ptp_cap_value = fields.Char(string='Value (C)')
     ptp_cap_unit = fields.Many2one(
-        'systee.cap.unit',
+        'ptp.cap.unit',
         string='Unit (C)'
     )
     ptp_cap_voltage_rating = fields.Char(string='Voltage Rating [VDC]')
     ptp_cap_dielectric = fields.Many2one(
-        'systee.cap.dielectric',
+        'ptp.cap.dielectric',
         string='Dielectric'
     )
     ptp_cap_tolerance = fields.Char(string='Tolerance [%]')
@@ -55,7 +55,7 @@ class ProductTemplate(models.Model):
     # Pole pro rezistory
     ptp_res_value = fields.Char(string='Value (R)')
     ptp_res_unit = fields.Many2one(
-        'systee.res.unit',
+        'ptp.res.unit',
         string='Unit (R)'
     )
     ptp_res_power_rating = fields.Char(string='Power Rating')
@@ -65,39 +65,39 @@ class ProductTemplate(models.Model):
     # Pole pro Feritové perličky
     ptp_imp_value = fields.Char(string="Impedance")
     ptp_imp_unit = fields.Many2one(
-        'systee.imp.unit',
+        'ptp.imp.unit',
         string='Unit (Z)'
     )
     # Pole pro Induktory
     ptp_ind_value = fields.Char(string="Induktance")
     ptp_ind_unit = fields.Many2one(
-        'systee.ind.unit',
+        'ptp.ind.unit',
         string='Unit (X)'
     )
 
     # Pole pro Tranzistory
     ptp_tran_polarity = fields.Many2one(
-        'systee.tran.polarity',
+        'ptp.tran.polarity',
         string='Tranzistor polarity'
     )
     ptp_tran_type = fields.Many2one(
-        'systee.tran.type',
+        'ptp.tran.type',
         string='Tranzistor typ'
     )
 
     # Pole pro TVS diody
     ptp_tvs_polarity = fields.Many2one(
-        'systee.tvs.polarity',
+        'ptp.tvs.polarity',
         string='TVS dioda polarity'
     )
     ptp_tvs_chanel = fields.Many2one(
-        'systee.tvs.chanel',
+        'ptp.tvs.chanel',
         string='TVS dioda počet kanálů'
     )
 
     # Pole pro LED
     ptp_led_color = fields.Many2one(
-        'systee.led.color',
+        'ptp.led.color',
         string='LED barva'
     )
 
