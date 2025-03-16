@@ -308,9 +308,10 @@ class ProductTemplate(models.Model):
         """
         for vals in vals_list:
             self._ensure_default_code(vals, new_sequence=True)  # Nové číslo sekvence
-            if self.categ_id.ptp_component_type:
+            category = self.env['product.category'].browse(vals.get('categ_id')) if vals.get('categ_id') else None
+            if category and category.ptp_component_type:
                 self._ensure_product_name(vals)
-            self._validate_required_fields(vals)
+                self._validate_required_fields(vals)
 
         return super().create(vals_list)
 
