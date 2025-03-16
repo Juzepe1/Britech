@@ -254,7 +254,7 @@ class ProductTemplate(models.Model):
     def _generate_product_name(self, vals):
         category = self.categ_id
         if not category or not category.ptp_component_type:
-            return vals.get('name', self.name or "")
+            return vals.get('name', self.name or "").strip()
 
         default_code = vals.get('default_code', self.default_code or "").strip()
         part_number = vals.get('ptp_part_number', self.ptp_part_number or "").strip()
@@ -263,11 +263,9 @@ class ProductTemplate(models.Model):
         # Sestavení základního formátu
         base_name = " ".join(filter(None, [default_code, part_number])).strip()
 
-        if base_name and existing_name.startswith(base_name):
-            return existing_name  # Pokud už name začíná očekávaným formátem, ponecháme ho
-        # Pokud není žádný default_code ani part_number, vrátíme původní název
-        if not base_name:
-            return existing_name
+    # Ověření, zda `existing_name` už obsahuje `default_code`
+        if existing_name and (existing_name.startswith(base_name) or default_code in existing_name):
+            return existing_name  # Necháme původní název, pokud už obsahuje správný kód
 
         # Pokud name neobsahuje očekávaný formát, přidáme ho na začátek
         return f"{base_name} {existing_name}".strip()
