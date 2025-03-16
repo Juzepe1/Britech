@@ -222,7 +222,7 @@ class ProductTemplate(models.Model):
             if ctype == 'other':
                 # Zde definujte, co je povinné u Other
                 if not rec.ptp_part_number:
-                    raise ValidationError("U Jingo je pole 'ptp_part_number' povinné.")
+                    raise ValidationError("U jingo je pole 'ptp_part_number' povinné.")
                 continue
 
             if ctype == 'capacitor':
@@ -254,27 +254,27 @@ class ProductTemplate(models.Model):
             elif ctype == 'ferrite_bead':
                 # Zde definujte, co je povinné u rezistoru
                 if not rec.ptp_part_number:
-                    raise ValidationError("U rezistoru je pole 'ptp_part_number' povinné.")
+                    raise ValidationError("U feritu je pole 'ptp_part_number' povinné.")
 
             elif ctype == 'inductor':
                 # Zde definujte, co je povinné u rezistoru
                 if not rec.ptp_part_number:
-                    raise ValidationError("U rezistoru je pole 'ptp_part_number' povinné.")
+                    raise ValidationError("U induktoru je pole 'ptp_part_number' povinné.")
 
             elif ctype == 'transistor':
                 # Zde definujte, co je povinné u rezistoru
                 if not rec.ptp_part_number:
-                    raise ValidationError("U rezistoru je pole 'ptp_part_number' povinné.")
+                    raise ValidationError("U tranzistoru je pole 'ptp_part_number' povinné.")
 
             elif ctype == 'tvs_diode':
                 # Zde definujte, co je povinné u rezistoru
                 if not rec.ptp_part_number:
-                    raise ValidationError("U rezistoru je pole 'ptp_part_number' povinné.")
+                    raise ValidationError("U TVS diod je pole 'ptp_part_number' povinné.")
 
             elif ctype == 'led':
                 # Zde definujte, co je povinné u rezistoru
                 if not rec.ptp_part_number:
-                    raise ValidationError("U rezistoru je pole 'ptp_part_number' povinné.")
+                    raise ValidationError("U led je pole 'ptp_part_number' povinné.")
 
 
     def _ensure_default_code(self, vals, new_sequence=False):
