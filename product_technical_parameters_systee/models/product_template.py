@@ -112,7 +112,12 @@ class ProductTemplate(models.Model):
     @api.depends(
         'categ_id.ptp_systee_component_type',
         'ptp_systee_cap_value', 'ptp_systee_cap_unit', 'ptp_systee_cap_voltage_rating','ptp_systee_cap_dielectric', 'ptp_systee_cap_tolerance',
-        'ptp_systee_res_value', 'ptp_systee_res_unit'
+        'ptp_systee_res_value', 'ptp_systee_res_unit', 'ptp_systee_res_power_rating', 'ptp_systee_res_tolerance', 'ptp_systee_res_voltage_rating',
+        'ptp_systee_package', 'ptp_systee_imp_value', 'ptp_systee_imp_unit',
+        'ptp_systee_ind_value', 'ptp_systee_ind_unit',
+        'ptp_systee_tran_polarity', 'ptp_systee_tran_type',
+        'ptp_systee_tvs_polarity', 'ptp_systee_tvs_chanel',
+        'ptp_systee_led_color'
     )
     def _compute_value_unit_combined(self):
         for rec in self:
