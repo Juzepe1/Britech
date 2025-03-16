@@ -9,6 +9,8 @@ class ProductCategory(models.Model):
         ('other', 'Other'),
     ], string='Component Type', required=False)
 
+    ptp_code = fields.Char(string="Category Code", help="Short code for product category")
+
     def write(self, vals):
         """
         Když se v kategorii změní ptp_systee_component_type,

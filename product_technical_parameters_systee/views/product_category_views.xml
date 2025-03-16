@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <xpath expr="//sheet/group" position="inside">
                 <field name="ptp_systee_component_type"/>
+                <field name="ptp_code"/>
             </xpath>
         </field>
     </record>

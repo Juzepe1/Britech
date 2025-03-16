@@ -18,6 +18,9 @@ def is_float_or_dash(val):
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
+    ptp_sequence_number = fields.Integer(string="Product Sequence", readonly=True)
+
+
     ptp_systee_category_type_related = fields.Selection(
         related='categ_id.ptp_systee_component_type',
         string='Category Type (related)',
@@ -186,6 +189,29 @@ class ProductTemplate(models.Model):
                     raise ValidationError("U rezistoru je pole 'res_unit' povinné.")
                 # Další logika validace může následovat...
 
+    @api.model
+    def create(self, vals):
+        if 'default_code' not in vals or not vals.get('default_code'):
+            category = self.env['product.category'].browse(vals.get('categ_id'))
+            category_code = category.ptp_code if category and category.ptp_code else '000'
+
+            sequence = self.env['ir.sequence'].next_by_code('product.template.default_code')
+            vals['default_code'] = f'ITM-{category_code}-{sequence}'
+
+            _logger.info(f"Generated default_code: {vals['default_code']}")
+
+        return super(ProductTemplate, self).create(vals)
+
+    def write(self, vals):
+        if 'categ_id' in vals:
+            category = self.env['product.category'].browse(vals['categ_id'])
+            category_code = category.ptp_code if category and category.ptp_code else '000'
+            sequence = self.env['ir.sequence'].next_by_code('product.template.default_code')
+            vals['default_code'] = f'ITM-{category_code}-{sequence}'
+
+            _logger.info(f"Updated default_code: {vals['default_code']}")
+
+        return super(ProductTemplate, self).write(vals)
 
 # --- Definice referenčních modelů pro many2one pole ---
 
@@ -215,3 +241,5 @@ class SysteeResUnit(models.Model):
     _description = 'Resistor Unit'
 
     name = fields.Char(string="Unit", required=True)
+
+
