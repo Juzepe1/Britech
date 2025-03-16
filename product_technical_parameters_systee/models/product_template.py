@@ -311,9 +311,10 @@ class ProductTemplate(models.Model):
             category = self.env['product.category'].browse(vals.get('categ_id')) if vals.get('categ_id') else None
             if category and category.ptp_component_type:
                 self._ensure_product_name(vals)
-                self._check_required_fields(vals)
+        records = super().create(vals_list)  # Vytvoříme záznamy
+        records._check_required_fields()
 
-        return super().create(vals_list)
+        return records
 
     def write(self, vals):
         """Při úpravě produktu se vždy aktualizuje `default_code`, ale `name` se mění jen pokud `categ_id` má typ."""
@@ -323,7 +324,7 @@ class ProductTemplate(models.Model):
         if self.categ_id.ptp_component_type:
             self._ensure_product_name(vals)
 
-        self._check_required_fields(vals)
+        self._check_required_fields()
 
         return super().write(vals)
 
