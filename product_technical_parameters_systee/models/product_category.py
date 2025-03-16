@@ -16,26 +16,33 @@ class ProductCategory(models.Model):
 
     ptp_code = fields.Char(string="Category Code", help="Short code for product category")
 
+    @api.constrains('ptp_component_type', 'ptp_code')
+    def _check_ptp_code_required(self):
+        """
+        Ověří, že pokud je vyplněno `ptp_component_type`, musí být také vyplněno `ptp_code`.
+        """
+        for record in self:
+            if record.ptp_component_type and not record.ptp_code:
+                raise ValidationError("Pokud je vyplněno 'Component Type', musí být také vyplněno 'Category Code'.")
+
+    @api.constrains('ptp_component_type')
+    def _check_products_before_change(self):
+        """
+        Zabrání změně `ptp_component_type`, pokud kategorie obsahuje produkty.
+        """
+        for record in self:
+            if record.ptp_component_type:
+                existing_products = self.env['product.template'].search_count([('categ_id', '=', record.id)])
+                if existing_products > 0:
+                    raise ValidationError("Nelze změnit 'Component Type', protože kategorie obsahuje produkty.")
+
     def write(self, vals):
         """
-        Když se v kategorii změní ptp_component_type,
-        vyhledáme všechny produkty této kategorie a smažeme jim
-        pole nepatřící k novému typu (capacitor/resistor).
+        Přepisuje `write`, aby ověřil změny `ptp_component_type` a předešel chybám.
         """
-        # Uložíme si staré hodnoty typu před zápisem
-        old_types = {cat.id: cat.ptp_component_type for cat in self}
-
-        # Zavoláme původní write, čímž dojde ke změně typu
-        res = super(ProductCategory, self).write(vals)
-
-        # Pokud se mění typ, musíme upravit produkty
         if 'ptp_component_type' in vals:
-            for cat in self:
-                new_type = cat.ptp_component_type
-                old_type = old_types[cat.id]
-                # Pokud je nový typ jiný než starý, vymažeme nepotřebná data
-                if new_type != old_type:
-                    products = self.env['product.template'].search([('categ_id', '=', cat.id)])
-                    products._clear_fields_for_type(new_type)
-
-        return res
+            for record in self:
+                if record.ptp_component_type and record.env['product.template'].search_count([('categ_id', '=', record.id)]) > 0:
+                    raise ValidationError("Nelze změnit 'Component Type', protože kategorie obsahuje produkty.")
+        
+        return super().write(vals)
