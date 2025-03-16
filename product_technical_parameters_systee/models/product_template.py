@@ -321,7 +321,8 @@ class ProductTemplate(models.Model):
         if 'categ_id' in vals:
             self._ensure_default_code(vals, new_sequence=False)
 
-        if self.categ_id.ptp_component_type:
+        new_category = self.env['product.category'].browse(vals['categ_id'])
+        if new_category.ptp_component_type:
             self._ensure_product_name(vals)
 
         self._check_required_fields()
