@@ -252,63 +252,60 @@ class ProductTemplate(models.Model):
                 # Další logika validace může následovat...
 
     def _generate_product_name(self, vals):
-        category = self.categ_id
-        if not category or not category.ptp_component_type:
-            return vals.get('name', self.name or "").strip()
-
+        """
+        Generuje nový `name` tak, aby:
+        - Vždy obsahoval `default_code`.
+        - Pokud už `default_code` v `name` existuje, nahradí ho.
+        - Nevytvářel duplicity.
+        """
         default_code = vals.get('default_code', self.default_code or "").strip()
         part_number = vals.get('ptp_part_number', self.ptp_part_number or "").strip()
         existing_name = vals.get('name', self.name or "").strip()
 
-        # Sestavení základního formátu
+        # **Sestavení základního formátu**
         base_name = " ".join(filter(None, [default_code, part_number])).strip()
 
+        # **Odstranění starého `default_code` z `name`**
         name_parts = existing_name.split()
-        name_parts = [part for part in name_parts if not part.startswith("ITM-")]  # Odebereme starý default_code
-        new_name = " ".join([base_name] + name_parts).strip()  # Přidáme nový base_name na začátek
+        name_parts = [part for part in name_parts if not part.startswith("ITM-")]
+        new_name = " ".join([base_name] + name_parts).strip()
 
         return new_name
 
+    def _ensure_default_code(self, vals):
+        """
+        Vždy vygeneruje nový `default_code`, pokud není explicitně uveden v `vals`.
+        """
+        category_id = vals.get('categ_id', self.categ_id.id)
+        category = self.env['product.category'].browse(category_id) if category_id else None
+        category_code = category.ptp_code if category and category.ptp_code else '000'
+
+        # Vždy generujeme nový unikátní `default_code`
+        sequence = self.env['ir.sequence'].next_by_code('product.template.default_code')
+        vals['default_code'] = f'ITM-{category_code}-{sequence}'
+        _logger.info(f"Generated default_code: {vals['default_code']}")
+
     @api.model_create_multi
     def create(self, vals_list):
+        """
+        Při vytváření produktu se vždy nastaví `default_code` a `name`.
+        """
         for vals in vals_list:
-            category_id = vals.get('categ_id')
-            category = self.env['product.category'].browse(category_id) if category_id else None
-
-            category_code = category.ptp_code if category and category.ptp_code else '000'
-            sequence = self.env['ir.sequence'].next_by_code('product.template.default_code')
-            vals['default_code'] = f'ITM-{category.ptp_code}-{sequence}'
-            _logger.info(f"Generated default_code: {vals['default_code']}")
-
+            self._ensure_default_code(vals)
             vals['name'] = self._generate_product_name(vals)
 
         return super().create(vals_list)
 
     def write(self, vals):
-        if 'categ_id' in vals:
-            category = self.env['product.category'].browse(vals['categ_id'])
-            category_code = category.ptp_code if category and category.ptp_code else '000'
-
-            for record in self:
-                if record.default_code:
-                    # Aktualizace pouze části s kódem kategorie, zachování sekvenčního čísla
-                    parts = record.default_code.split('-')
-                    if len(parts) == 3:
-                        vals['default_code'] = f'ITM-{category_code}-{parts[2]}'
-                    else:
-                        vals['default_code'] = f'ITM-{category_code}-{record.default_code}'
-
-                    _logger.info(f"Updated default_code: {vals['default_code']}")
-                else:
-                    # Pokud `default_code` ještě neexistuje, vytvoří se nový celý
-                    sequence = self.env['ir.sequence'].next_by_code('product.template.default_code')
-                    vals['default_code'] = f'ITM-{category_code}-{sequence}'
-                    _logger.info(f"Generated new default_code: {vals['default_code']}")
-
-        if 'default_code' in vals or 'ptp_part_number' in vals or 'name' in vals:
-            vals['name'] = self._generate_product_name(vals)
+        """
+        Při změně kategorie (`categ_id`) nebo jiných relevantních polí
+        se **vždy** aktualizuje `default_code` a `name`.
+        """
+        self._ensure_default_code(vals)
+        vals['name'] = self._generate_product_name(vals)
 
         return super().write(vals)
+
 
 # --- Definice referenčních modelů pro many2one pole ---
 
