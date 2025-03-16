@@ -311,9 +311,6 @@ class ProductTemplate(models.Model):
 
         return super().write(vals)
 
-    def _generate_product_name(self, vals):
-        return f"{vals.get('default_code', '')} {vals.get('ptp_part_number', '')}".strip()
-
 # --- Definice referenčních modelů pro many2one pole ---
 
 class PtpFootprint(models.Model):
