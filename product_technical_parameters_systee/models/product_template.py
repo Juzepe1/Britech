@@ -252,6 +252,10 @@ class ProductTemplate(models.Model):
                 # Další logika validace může následovat...
 
     def _generate_product_name(self, vals):
+        category = self.categ_id
+        if not category or not category.ptp_component_type:
+            return vals.get('name', self.name or "")
+
         default_code = vals.get('default_code', self.default_code)
         part_number = vals.get('ptp_part_number', self.ptp_part_number or "")
 
@@ -266,19 +270,20 @@ class ProductTemplate(models.Model):
         # Pokud name neobsahuje očekávaný formát, přidáme ho na začátek
         return f"{base_name} {existing_name}".strip()
 
-    @api.model
-    def create(self, vals):
-        if 'default_code' not in vals or not vals.get('default_code'):
-            category = self.env['product.category'].browse(vals.get('categ_id'))
-            category_code = category.ptp_code if category and category.ptp_code else '000'
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            category_id = vals.get('categ_id')
+            category = self.env['product.category'].browse(category_id) if category_id else None
 
-            sequence = self.env['ir.sequence'].next_by_code('product.template.default_code')
-            vals['default_code'] = f'ITM-{category_code}-{sequence}'
+            if category and category.ptp_code:
+                sequence = self.env['ir.sequence'].next_by_code('product.template.default_code')
+                vals['default_code'] = f'ITM-{category.ptp_code}-{sequence}'
 
-            _logger.info(f"Generated default_code: {vals['default_code']}")
-            vals['name'] = self._generate_product_name(vals)
+                _logger.info(f"Generated default_code: {vals['default_code']}")
+                vals['name'] = self._generate_product_name(vals)
 
-        return super(ProductTemplate, self).create(vals)
+        return super(ProductTemplate, self).create(vals_list)
 
     def write(self, vals):
         if 'categ_id' in vals:
