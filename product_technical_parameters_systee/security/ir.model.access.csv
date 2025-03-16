@@ -1,12 +1,13 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_footprint_user,systee.footprint user,model_footprint,base.group_user,1,1,1,1
-access_cap_unit_user,systee.cap.unit user,model_cap_unit,base.group_user,1,1,1,1
-access_cap_dielectric_user,systee.cap.dielectric user,model_cap_dielectric,base.group_user,1,1,1,1
-access_res_unit_user,systee.res.unit user,model_res_unit,base.group_user,1,1,1,1
-access_imp_unit,systee.imp.unit,model_imp_unit,,1,1,1,1
-access_ind_unit,systee.ind.unit,model_ind_unit,,1,1,1,1
-access_tran_polarity,systee.tran.polarity,model_tran_polarity,,1,1,1,1
-access_tran_type,systee.tran.type,model_tran_type,,1,1,1,1
-access_tvs_polarity,systee.tvs.polarity,model_tvs_polarity,,1,1,1,1
-access_tvs_chanel,systee.tvs.chanel,model_tvs_chanel,,1,1,1,1
-access_led_color,systee.led.color,model_led_color,,1,1,1,1
+access_footprint_user,ptp.footprint user,model_footprint,base.group_user,1,1,1,1
+access_cap_unit_user,ptp.cap.unit user,model_cap_unit,base.group_user,1,1,1,1
+access_cap_dielectric_user,ptp.cap.dielectric user,model_cap_dielectric,base.group_user,1,1,1,1
+access_res_unit_user,ptp.res.unit user,model_res_unit,base.group_user,1,1,1,1
+access_imp_unit,ptp.imp.unit,model_imp_unit,,1,1,1,1
+access_ind_unit,ptp.ind.unit,model_ind_unit,,1,1,1,1
+access_tran_polarity,ptp.tran.polarity,model_tran_polarity,,1,1,1,1
+access_tran_type,ptp.tran.type,model_tran_type,,1,1,1,1
+access_tvs_polarity,ptp.tvs.polarity,model_tvs_polarity,,1,1,1,1
+access_tvs_chanel,ptp.tvs.chanel,model_tvs_chanel,,1,1,1,1
+access_led_color,ptp.led.color,model_led_color,,1,1,1,1
+
