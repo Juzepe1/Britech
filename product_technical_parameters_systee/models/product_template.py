@@ -79,6 +79,7 @@ class ProductTemplate(models.Model):
     ptp_systee_tran_polarity = fields.Many2one(
         'systee.tran.polarity',
         string='Tranzistor polarity'
+    )
     ptp_systee_tran_type = fields.Many2one(
         'systee.tran.type',
         string='Tranzistor typ'
@@ -88,6 +89,7 @@ class ProductTemplate(models.Model):
     ptp_systee_tvs_polarity = fields.Many2one(
         'systee.tvs.polarity',
         string='TVS dioda polarity'
+    )
     ptp_systee_tvs_chanel = fields.Many2one(
         'systee.tvs.chanel',
         string='TVS dioda počet kanálů'
