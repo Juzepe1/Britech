@@ -311,7 +311,7 @@ class ProductTemplate(models.Model):
             category = self.env['product.category'].browse(vals.get('categ_id')) if vals.get('categ_id') else None
             if category and category.ptp_component_type:
                 self._ensure_product_name(vals)
-                self._validate_required_fields(vals)
+                self._check_required_fields(vals)
 
         return super().create(vals_list)
 
@@ -323,7 +323,7 @@ class ProductTemplate(models.Model):
         if self.categ_id.ptp_component_type:
             self._ensure_product_name(vals)
 
-        self._validate_required_fields(vals)
+        self._check_required_fields(vals)
 
         return super().write(vals)
 
