@@ -276,29 +276,43 @@ class ProductTemplate(models.Model):
             category_id = vals.get('categ_id')
             category = self.env['product.category'].browse(category_id) if category_id else None
 
-            if category and category.ptp_code:
+            if category and category.ptp_code and not vals.get('default_code'):
                 sequence = self.env['ir.sequence'].next_by_code('product.template.default_code')
                 vals['default_code'] = f'ITM-{category.ptp_code}-{sequence}'
-
                 _logger.info(f"Generated default_code: {vals['default_code']}")
-                vals['name'] = self._generate_product_name(vals)
 
-        return super(ProductTemplate, self).create(vals_list)
+            vals['name'] = self._generate_product_name(vals)
+
+        return super().create(vals_list)
 
     def write(self, vals):
         if 'categ_id' in vals:
             category = self.env['product.category'].browse(vals['categ_id'])
             category_code = category.ptp_code if category and category.ptp_code else '000'
-            sequence = self.env['ir.sequence'].next_by_code('product.template.default_code')
-            vals['default_code'] = f'ITM-{category_code}-{sequence}'
 
-            _logger.info(f"Updated default_code: {vals['default_code']}")
+            for record in self:
+                if record.default_code:
+                    # Aktualizace pouze části s kódem kategorie, zachování sekvenčního čísla
+                    parts = record.default_code.split('-')
+                    if len(parts) == 3:
+                        vals['default_code'] = f'ITM-{category_code}-{parts[2]}'
+                    else:
+                        vals['default_code'] = f'ITM-{category_code}-{record.default_code}'
 
-        # Pokud se změnilo default_code nebo ptp_part_number, aktualizujeme name
+                    _logger.info(f"Updated default_code: {vals['default_code']}")
+                else:
+                    # Pokud `default_code` ještě neexistuje, vytvoří se nový celý
+                    sequence = self.env['ir.sequence'].next_by_code('product.template.default_code')
+                    vals['default_code'] = f'ITM-{category_code}-{sequence}'
+                    _logger.info(f"Generated new default_code: {vals['default_code']}")
+
         if 'default_code' in vals or 'ptp_part_number' in vals or 'name' in vals:
             vals['name'] = self._generate_product_name(vals)
 
-        return super(ProductTemplate, self).write(vals)
+        return super().write(vals)
+
+    def _generate_product_name(self, vals):
+        return f"{vals.get('default_code', '')} {vals.get('ptp_part_number', '')}".strip()
 
 # --- Definice referenčních modelů pro many2one pole ---
 
