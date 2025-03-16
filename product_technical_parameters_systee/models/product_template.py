@@ -69,7 +69,11 @@ class ProductTemplate(models.Model):
         index=True
     )
 
-    @api.depends('categ_id', 'categ_id.ptp_systee_component_type')
+    @api.depends(
+        'categ_id.ptp_systee_component_type',
+        'ptp_systee_cap_value', 'ptp_systee_cap_unit',
+        'ptp_systee_res_value', 'ptp_systee_res_unit'
+    )
     def _compute_value_unit_combined(self):
         for rec in self:
             if not rec.categ_id:
