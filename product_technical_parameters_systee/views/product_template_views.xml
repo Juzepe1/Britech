@@ -46,7 +46,6 @@
                     <!-- Skupina pro Feritové perličky -->
                     <group string="Fereite Fields"
                            invisible="ptp_category_type_related != 'ferrite_bead'">
-                        <field name="ptp_package"/>
                         <field name="ptp_imp_value"/>
                         <field name="ptp_imp_unit"/>
                     </group>
@@ -54,7 +53,6 @@
                     <!-- Skupina pro Indukctory -->
                     <group string="Inductor Fields"
                            invisible="ptp_category_type_related != 'inductor'">
-                        <field name="ptp_package"/>
                         <field name="ptp_ind_value"/>
                         <field name="ptp_ind_unit"/>
                     </group>
@@ -62,7 +60,6 @@
                     <!-- Skupina pro Tranzistory -->
                     <group string="Transistor Fields"
                            invisible="ptp_category_type_related != 'transistor'">
-                        <field name="ptp_package"/>
                         <field name="ptp_tran_polarity"/>
                         <field name="ptp_tran_type"/>
                     </group>
@@ -70,7 +67,6 @@
                     <!-- Skupina pro TVS diody -->
                     <group string="TVS diode Fields"
                            invisible="ptp_category_type_related != 'tvs_diode'">
-                        <field name="ptp_package"/>
                         <field name="ptp_tvs_polarity"/>
                         <field name="ptp_tvs_chanel"/>
                     </group>
@@ -78,7 +74,6 @@
                     <!-- Skupina pro LED -->
                     <group string="LED Fields"
                            invisible="ptp_category_type_related != 'led'">
-                        <field name="ptp_package"/>
                         <field name="ptp_led_color"/>
                     </group>
                 </page>

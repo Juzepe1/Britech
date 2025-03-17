@@ -36,7 +36,6 @@ class ProductTemplate(models.Model):
         'ptp.footprint',
         string='Footprint'
     )
-    ptp_package = fields.Char(string="Pouzdro")
     ptp_note = fields.Text(string='Note')
 
     # Pole pro kondenzátory
@@ -103,7 +102,7 @@ class ProductTemplate(models.Model):
 
     # Počítané pole: sloučená hodnota + jednotka
     ptp_value_unit_combined = fields.Char(
-        string='Full Value and Unit',
+        string='Description',
         compute='_compute_value_unit_combined',
         store=True,
         index=True
@@ -113,7 +112,7 @@ class ProductTemplate(models.Model):
         'categ_id.ptp_component_type',
         'ptp_cap_value', 'ptp_cap_unit', 'ptp_cap_voltage_rating','ptp_cap_dielectric', 'ptp_cap_tolerance',
         'ptp_res_value', 'ptp_res_unit', 'ptp_res_power_rating', 'ptp_res_tolerance', 'ptp_res_voltage_rating',
-        'ptp_package', 'ptp_imp_value', 'ptp_imp_unit',
+        'ptp_imp_value', 'ptp_imp_unit',
         'ptp_ind_value', 'ptp_ind_unit',
         'ptp_tran_polarity', 'ptp_tran_type',
         'ptp_tvs_polarity', 'ptp_tvs_chanel',
@@ -127,21 +126,59 @@ class ProductTemplate(models.Model):
 
             # Zjistíme, jaká pole jsou pro kategorii relevantní
             category_type = rec.categ_id.ptp_component_type
-            ptp_fields = [field for field in rec._fields if field.startswith('ptp_') and not field.endswith('_combined') and not field.endswith('_related') and not field.endswith('_note')]
+            value_unit_map = {
+            'capacitor': [
+                ('ptp_part_number', None),
+                ('ptp_cap_value', 'ptp_cap_unit'),
+                ('ptp_cap_voltage_rating', 'V'),
+                ('ptp_cap_dielectric', None),
+                ('ptp_cap_tolerance', '%'),
+            ],
+            'resistor': [
+                ('ptp_part_number', None),
+                ('ptp_res_value', 'ptp_res_unit'),
+                ('ptp_res_power_rating', 'W'),
+                ('ptp_res_voltage_rating', 'V'),
+                ('ptp_res_tolerance', 'V'),
+            ],
+            'ferrite_bead': [
+                ('ptp_part_number', None),
+                ('ptp_imp_value', 'ptp_imp_unit'),
+            ],
+            'inductor': [
+                ('ptp_part_number', None),
+                ('ptp_ind_value', 'ptp_ind_unit'),
+            ],
+            'transistor': [
+                ('ptp_part_number', None),
+                ('ptp_tran_polarity', None),
+                ('ptp_tran_type', None),
+            ],
+            'tvs_diode': [
+                ('ptp_part_number', None),
+                ('ptp_tvs_polarity', None),
+                ('ptp_tvs_chanel', None),
+            ],
+            'led': [
+                ('ptp_part_number', None),
+                ('ptp_led_color', None),
+            ],
+            }
 
-            # Seznam hodnot, které mají být spojeny
-            value_parts = []
-            for field_name in ptp_fields:
-                field_value = getattr(rec, field_name, False)
-                if field_value:
-                    # Pokud je pole Many2one (např. jednotky), vezmeme `.name`
-                    if isinstance(field_value, models.Model):
-                        value_parts.append(field_value.name)
-                    else:
-                        value_parts.append(str(field_value))
+            combined_values = []
+            # **Získáme všechna relevantní pole podle typu komponenty**
+            if category_type in value_unit_map:
+                for value_field, unit_field in value_unit_map[category_type]:
+                    value = getattr(rec, value_field, "") or ""
+                    unit = getattr(rec, unit_field, False)
+                    unit_name = unit.name if isinstance(unit, models.Model) else ""
 
-            # Výsledek kombinujeme
-            rec.ptp_value_unit_combined = " ".join(value_parts) if value_parts else False
+                    # Spojení hodnoty a jednotky BEZ MEZERY (např. "10uF")
+                    if value:
+                        combined_values.append(f"{value}{unit_name}")
+
+            # **Kombinujeme všechny hodnoty do jednoho řetězce**
+            rec.ptp_value_unit_combined = " ".join(combined_values) if combined_values else False
 
     @api.onchange(
         'ptp_cap_value', 'ptp_cap_tolerance', 'ptp_cap_voltage_rating',
@@ -191,6 +228,30 @@ class ProductTemplate(models.Model):
                 rec.ptp_res_power_rating = False
                 rec.ptp_res_tolerance = False
                 rec.ptp_res_voltage_rating = False
+
+            # Není ferrite_bead => vymažeme ferrite_bead pole
+            if new_type != 'ferrite_bead':
+                rec.ptp_imp_value = False
+                rec.ptp_imp_unit = False
+
+            # Není inductor => vymažeme inductor pole
+            if new_type != 'inductor':
+                rec.ptp_ind_value = False
+                rec.ptp_ind_unit = False
+
+            # Není transistor => vymažeme transistor pole
+            if new_type != 'transistor':
+                rec.ptp_tran_polarity = False
+                rec.ptp_tran_type = False
+
+            # Není tvs_diode => vymažeme tvs_diode pole
+            if new_type != 'tvs_diode':
+                rec.ptp_tvs_polarity = False
+                rec.ptp_tvs_chanel = False
+
+            # Není led => vymažeme led pole
+            if new_type != 'led':
+                rec.ptp_led_color = False
 
     # --------------------------------------------------------------------------------
     # Onchange: při změně kategorie v detailu produktu 
@@ -305,25 +366,26 @@ class ProductTemplate(models.Model):
 
     def _generate_product_name(self, vals):
         """
-        Generuje správný název produktu a zabraňuje chybě `AttributeError: 'bool' object has no attribute 'strip'`.
+        Generuje správný název produktu pouze s `ptp_part_number` a dalšími částmi názvu,
+        ale bez `default_code`. Zabrání duplicitnímu výskytu `ptp_part_number`.
         """
-        default_code = vals.get('default_code', self.default_code or "").strip()
-        part_number = vals.get('ptp_part_number', self.ptp_part_number or "")
+        part_number = vals.get('ptp_part_number', self.ptp_part_number or "").strip()
+        existing_name = vals.get('name', self.name or "").strip()
 
-        # **Oprava: Zajistíme, že `part_number` je vždy string**
+        # Zajistíme, že `part_number` je string
         if not isinstance(part_number, str):
             part_number = ""
 
         part_number = part_number.strip()
-        existing_name = vals.get('name', self.name or "").strip()
-
-        # **Sestavení základního formátu**
-        base_name = " ".join(filter(None, [default_code, part_number])).strip()
-
-        # **Odstranění starého `default_code` z `name`**
+    
+        # Rozdělíme existující název na části
         name_parts = existing_name.split()
-        name_parts = [part for part in name_parts if not part.startswith("ITM-")]
-        new_name = " ".join([base_name] + name_parts).strip()
+
+        # Pokud `part_number` už v názvu existuje, nebudeme ho přidávat znovu
+        if part_number in name_parts:
+            new_name = " ".join(name_parts).strip()
+        else:
+            new_name = " ".join([part_number] + name_parts).strip()
 
         return new_name
 

@@ -47,3 +47,17 @@ class ProductCategory(models.Model):
                     raise ValidationError("Nelze změnit 'Component Type', protože kategorie obsahuje produkty.")
         
         return super().write(vals)
+
+    @api.constrains('ptp_code')
+    def _check_unique_ptp_code(self):
+        """
+        Ověří, že ptp_code je unikátní.
+        """
+        for record in self:
+            if record.ptp_code:
+                existing = self.env['product.category'].search([
+                    ('ptp_code', '=', record.ptp_code),
+                    ('id', '!=', record.id)  # Ignoruje sám sebe při aktualizaci
+                ])
+                if existing:
+                    raise ValidationError("Category Code must be unique!")
