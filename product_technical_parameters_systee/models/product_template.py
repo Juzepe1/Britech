@@ -385,14 +385,11 @@ class ProductTemplate(models.Model):
         Generuje správný název produktu pouze s `ptp_part_number` a dalšími částmi názvu,
         ale bez `default_code`. Zabrání duplicitnímu výskytu `ptp_part_number`.
         """
-        part_number = vals.get('ptp_part_number', self.ptp_part_number or "").strip()
-        existing_name = vals.get('name', self.name or "").strip()
-
-        # Zajistíme, že `part_number` je string
-        if not isinstance(part_number, str):
-            part_number = ""
-
+        part_number = vals.get('ptp_part_number', self.ptp_part_number)
+        if not isinstance(part_number, str):  
+            part_number = ""  # Pokud je False nebo None, nastavíme prázdný řetězec
         part_number = part_number.strip()
+        existing_name = vals.get('name', self.name or "").strip()
     
         # Rozdělíme existující název na části
         name_parts = existing_name.split()
