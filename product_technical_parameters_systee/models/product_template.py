@@ -170,12 +170,16 @@ class ProductTemplate(models.Model):
             if category_type in value_unit_map:
                 for value_field, unit_field in value_unit_map[category_type]:
                     value = getattr(rec, value_field, False)
-                    unit = getattr(rec, unit_field, False) if unit_field else ""
-                    #  Konverze Many2one pole na `.name`
+                    unit_name = ""  # Vždy inicializujeme proměnnou unit_name
+
+                    if unit_field:
+                        unit = getattr(rec, unit_field, False)
+                        if isinstance(unit, models.Model):
+                            unit_name = unit.name
+
+                    # Konverze Many2one pole na `.name`
                     if isinstance(value, models.Model):
                         value = value.name
-                    if isinstance(unit, models.Model):
-                        unit = unit.name
 
                     # Převod na string, odstranění None hodnot
                     value = str(value) if value else ""
