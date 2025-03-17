@@ -185,12 +185,14 @@ class ProductTemplate(models.Model):
                         value = value.name
 
                     # Převod na string, odstranění None hodnot
-                    value = str(value) if value else ""
-                    unit = str(unit) if unit else ""
+                    value = str(value).strip()
+                    unit_name = str(unit_name).strip()
 
                     # Spojení hodnoty a jednotky BEZ MEZERY (např. "10uF")
-                    if value:
+                     if value and unit_name:
                         combined_values.append(f"{value}{unit_name}")
+                     elif value:
+                        combined_values.append(value)
 
             # **Kombinujeme všechny hodnoty do jednoho řetězce**
             rec.ptp_value_unit_combined = " ".join(combined_values) if combined_values else False
