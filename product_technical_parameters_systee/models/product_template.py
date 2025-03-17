@@ -171,6 +171,7 @@ class ProductTemplate(models.Model):
                 for value_field, unit_field in value_unit_map[category_type]:
                     value = getattr(rec, value_field, False)
                     unit_name = ""  # Vždy inicializujeme proměnnou unit_name
+                    unit = ""  #  Vždy inicializujeme unit na prázdný řetězec
 
                     if unit_field:
                         if isinstance(unit_field, str):  
