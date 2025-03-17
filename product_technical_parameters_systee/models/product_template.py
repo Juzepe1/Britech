@@ -169,9 +169,17 @@ class ProductTemplate(models.Model):
             # **Získáme všechna relevantní pole podle typu komponenty**
             if category_type in value_unit_map:
                 for value_field, unit_field in value_unit_map[category_type]:
-                    value = getattr(rec, value_field, "") or ""
+                    value = getattr(rec, value_field, False)
                     unit = getattr(rec, unit_field, False) if unit_field else ""
-                    unit_name = unit.name if isinstance(unit, models.Model) else ""
+                    #  Konverze Many2one pole na `.name`
+                    if isinstance(value, models.Model):
+                        value = value.name
+                    if isinstance(unit, models.Model):
+                        unit = unit.name
+
+                    # Převod na string, odstranění None hodnot
+                    value = str(value) if value else ""
+                    unit = str(unit) if unit else ""
 
                     # Spojení hodnoty a jednotky BEZ MEZERY (např. "10uF")
                     if value:
