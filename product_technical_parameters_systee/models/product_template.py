@@ -170,7 +170,7 @@ class ProductTemplate(models.Model):
             if category_type in value_unit_map:
                 for value_field, unit_field in value_unit_map[category_type]:
                     value = getattr(rec, value_field, "") or ""
-                    unit = getattr(rec, unit_field, False)
+                    unit = getattr(rec, unit_field, False) if unit_field else ""
                     unit_name = unit.name if isinstance(unit, models.Model) else ""
 
                     # Spojení hodnoty a jednotky BEZ MEZERY (např. "10uF")
