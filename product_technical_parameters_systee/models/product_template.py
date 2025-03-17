@@ -189,9 +189,9 @@ class ProductTemplate(models.Model):
                     unit_name = str(unit_name).strip()
 
                     # Spojení hodnoty a jednotky BEZ MEZERY (např. "10uF")
-                     if value and unit_name:
+                    if value and unit_name:
                         combined_values.append(f"{value}{unit_name}")
-                     elif value:
+                    elif value:
                         combined_values.append(value)
 
             # **Kombinujeme všechny hodnoty do jednoho řetězce**
