@@ -178,8 +178,7 @@ class ProductTemplate(models.Model):
                             unit_name = unit_field  # Použití pevně definovaného řetězce ('V', 'W', '%')
                         else:
                             unit = getattr(rec, unit_field, False)
-                            if isinstance(unit, models.Model):
-                                unit_name = unit.name
+                            unit_name = unit.name if isinstance(unit, models.Model) else ""
 
                     # Konverze Many2one pole na `.name`
                     if isinstance(value, models.Model):
