@@ -119,8 +119,9 @@ class ProductTemplate(models.Model):
         for rec in self:
             if rec.default_code and not rec.qr_code:
                 rec.qr_code = self._generate_qr_code(rec.default_code)
+
     def _generate_qr_code(self):
-        """ Generuje QR kód pro daný produkt """
+        """ Generuje QR kód pro tento konkrétní produkt """
         if not self.default_code:
             return False
 
@@ -137,11 +138,12 @@ class ProductTemplate(models.Model):
         temp = BytesIO()
         img.save(temp, format="PNG")
         return base64.b64encode(temp.getvalue())
+
     def generate_missing_qr_codes(self):
         """ Najde produkty bez QR kódu, které mají `default_code`, a vygeneruje pro ně QR """
         products = self.search([('default_code', '!=', False), ('qr_code', '=', False)])
         for product in products:
-            product.qr_code = self._generate_qr_code(product.default_code)
+            product.qr_code = product._generate_qr_code()  # Opravené volání na instanci
 
     def action_generate_qr_codes(self):
         """ Akce tlačítka - generování QR kódů pro všechny produkty bez QR """
