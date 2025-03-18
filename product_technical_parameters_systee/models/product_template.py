@@ -288,7 +288,6 @@ class ProductTemplate(models.Model):
         pokud se k novému typu nehodí.
         """
         for rec in self:
-            rec.ptp_part_number = False
             rec.ptp_footprint = False
             rec.ptp_note = False
             rec.ptp_value_unit_combined = False
