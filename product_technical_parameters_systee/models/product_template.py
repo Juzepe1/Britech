@@ -237,7 +237,7 @@ class ProductTemplate(models.Model):
                         combined_values.append(f"{value}{unit_name}")
                     elif value:
                         combined_values.append(value)
-
+            self._compute_description_sale()
             # Kombinujeme všechny hodnoty do jednoho řetězce
             rec.ptp_value_unit_combined = " ".join(combined_values) if combined_values else False
 
@@ -485,10 +485,6 @@ class ProductTemplate(models.Model):
             # Pokud nová kategorie má `ptp_component_type`, validujeme povinná pole
                 if new_category and new_category.ptp_component_type:
                     record._check_required_fields()
-
-            # Pokud se změnilo `ptp_value_unit_combined`, aktualizujeme description_sale
-        if 'ptp_value_unit_combined' in vals:
-            self._compute_description_sale()
         return result
 
 
