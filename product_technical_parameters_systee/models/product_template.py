@@ -135,11 +135,16 @@ class ProductTemplate(models.Model):
                 rec.qr_code = False
 
     @api.depends('ptp_value_unit_combined')
-    def _compute_description_sale(self):
+    def _compute_description_sale(self, use_cache=False):
         """ Automaticky aktualizuje `description_sale` při změně `ptp_value_unit_combined` """
         for rec in self:
             # Správné získání computed hodnoty
             ptp_value = rec.ptp_value_unit_combined or ""
+
+            if use_cache:
+                ptp_value = self.env.cache.get(rec, 'ptp_value_unit_combined') or ""
+            else:
+                ptp_value = rec.ptp_value_unit_combined or ""
 
             if ptp_value:
                 existing_description = rec.description_sale or ""
@@ -237,7 +242,7 @@ class ProductTemplate(models.Model):
                         combined_values.append(f"{value}{unit_name}")
                     elif value:
                         combined_values.append(value)
-            self._compute_description_sale()
+            self._compute_description_sale(use_cache=True)
             # Kombinujeme všechny hodnoty do jednoho řetězce
             rec.ptp_value_unit_combined = " ".join(combined_values) if combined_values else False
 
