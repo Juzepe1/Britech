@@ -136,18 +136,19 @@ class ProductTemplate(models.Model):
 
     @api.depends('ptp_value_unit_combined')
     def _compute_description_sale(self):
-        """ Automaticky aktualizuje description_sale při změně ptp_value_unit_combined """
+        """ Automaticky aktualizuje `description_sale` při změně `ptp_value_unit_combined` """
         for rec in self:
+            # Správné získání computed hodnoty
             ptp_value = rec.ptp_value_unit_combined or ""
 
             if ptp_value:
                 existing_description = rec.description_sale or ""
 
-                # Pokud description_sale už začíná ptp_value_unit_combined, neaktualizujeme
+                # Pokud `description_sale` už začíná `ptp_value_unit_combined`, neaktualizujeme
                 if existing_description.startswith(ptp_value):
                     continue
 
-                # Rozdělení popisu, aby zůstal zachován uživatelský text
+                # Rozdělení popisu na první řádek (kombinovaná hodnota) a zbytek (uživatelský text)
                 parts = existing_description.split("\n", 1)
                 user_text = parts[1] if len(parts) > 1 else ""
 
