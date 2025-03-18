@@ -134,6 +134,26 @@ class ProductTemplate(models.Model):
             else:
                 rec.qr_code = False
 
+    @api.depends('ptp_value_unit_combined')
+    def _compute_description_sale(self):
+        """ Automaticky aktualizuje description_sale při změně ptp_value_unit_combined """
+        for rec in self:
+            ptp_value = rec.ptp_value_unit_combined or ""
+
+            if ptp_value:
+                existing_description = rec.description_sale or ""
+
+                # Pokud description_sale už začíná ptp_value_unit_combined, neaktualizujeme
+                if existing_description.startswith(ptp_value):
+                    continue
+
+                # Rozdělení popisu, aby zůstal zachován uživatelský text
+                parts = existing_description.split("\n", 1)
+                user_text = parts[1] if len(parts) > 1 else ""
+
+                # Aktualizace popisu
+                rec.description_sale = f"{ptp_value}\n{user_text}".strip()
+
     @api.depends(
         'categ_id.ptp_component_type',
         'ptp_cap_value', 'ptp_cap_unit', 'ptp_cap_voltage_rating','ptp_cap_dielectric', 'ptp_cap_tolerance',
