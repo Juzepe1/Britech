@@ -482,7 +482,8 @@ class ProductTemplate(models.Model):
             # Pokud nová kategorie má `ptp_component_type`, validujeme povinná pole
                 if new_category and new_category.ptp_component_type:
                     record._check_required_fields()
-
+        if 'ptp_value_unit_combined' in vals:
+            self._update_description_sale()
         return result
 
 
