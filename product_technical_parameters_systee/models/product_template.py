@@ -187,10 +187,7 @@ class ProductTemplate(models.Model):
 
                     # Správné spojení hodnoty a jednotky
                     if value and unit_name:
-                        if unit_name in ["V", "W", "%", "pF", "nF", "uF", "mF"]:
-                            combined_values.append(f"{value}{unit_name}")
-                        else:
-                            combined_values.append(f"{value} {unit_name}")
+                        combined_values.append(f"{value}{unit_name}")
                     elif value:
                         combined_values.append(value)
 
