@@ -1,6 +1,9 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 import logging
+import base64
+import qrcode
+from io import BytesIO
 
 _logger = logging.getLogger(__name__)
 
@@ -20,6 +23,8 @@ def is_float_or_dash(val):
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
+
+    qr_code = fields.Binary("QR Code", compute="_generate_qr_code", store=True)
 
     ptp_sequence_number = fields.Integer(string="Product Sequence", readonly=True)
 
@@ -107,6 +112,27 @@ class ProductTemplate(models.Model):
         store=True,
         index=True
     )
+
+    @api.depends('default_code')
+    def _generate_qr_code(self):
+        for rec in self:
+            if rec.default_code:
+                qr = qrcode.QRCode(
+                    version=1,
+                    error_correction=qrcode.constants.ERROR_CORRECT_L,
+                    box_size=10,
+                    border=4,
+                )
+                qr.add_data(rec.default_code)
+                qr.make(fit=True)
+
+                img = qr.make_image(fill='black', back_color='white')
+                temp = BytesIO()
+                img.save(temp, format="PNG")
+                qr_image = base64.b64encode(temp.getvalue())
+                rec.qr_code = qr_image
+            else:
+                rec.qr_code = False
 
     @api.depends(
         'categ_id.ptp_component_type',
