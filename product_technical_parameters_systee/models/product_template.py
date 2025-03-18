@@ -118,7 +118,7 @@ class ProductTemplate(models.Model):
         """ Automaticky generuje QR kód při změně `default_code`. """
         for rec in self:
             if rec.default_code:
-                rec.qr_code = self._generate_qr_code(rec.default_code)
+                rec.qr_code = rec._generate_qr_code()
             else:
                 rec.qr_code = False  # Pokud není `default_code`, QR kód smažeme
 
