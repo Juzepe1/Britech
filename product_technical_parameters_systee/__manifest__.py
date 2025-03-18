@@ -36,7 +36,7 @@
 
 {
     'name': 'Product Technical Parameters - Systee',
-    'version': '18.0.0.0.1',
+    'version': '18.0.0.0.2',
     'summary': "Rozšíření product.category o volitelný typ součástky a úprava product.template.",
     'author': 'Systee s.r.o. (https://www.systee.cz)',
     'license': 'Other proprietary',
@@ -47,6 +47,7 @@
     'depends': [
         'product',
         'base',
+        'sale',
     ],
     'data': [
         'security/ir.model.access.csv',
