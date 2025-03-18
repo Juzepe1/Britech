@@ -288,6 +288,7 @@ class ProductTemplate(models.Model):
         pokud se k novému typu nehodí.
         """
         for rec in self:
+            rec.ptp_part_numbert = False
             rec.ptp_footprint = False
             rec.ptp_note = False
             rec.ptp_value_unit_combined = False
@@ -452,6 +453,9 @@ class ProductTemplate(models.Model):
             part_number = ""  # Pokud je False nebo None, nastavíme prázdný řetězec
         part_number = part_number.strip()
         existing_name = vals.get('name', self.name or "").strip()
+
+        if 'categ_id' in vals and not part_number and 'ptp_part_number' in vals:
+            part_number = vals['ptp_part_number']
     
         # Rozdělíme existující název na části
         name_parts = existing_name.split()
