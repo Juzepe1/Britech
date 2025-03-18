@@ -5,7 +5,6 @@
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='categ_id']" position="after">
-                    <field name="default_code" string="Reference" invisible="product_variant_count &gt; 1"/>
                     <field name="ptp_value_unit_combined" readonly="1"/>
                     <field name="qr_code" widget="image" class="oe_avatar"/>
                 <field name="valid_product_template_attribute_line_ids" invisible="1"/>

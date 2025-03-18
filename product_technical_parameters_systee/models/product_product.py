@@ -4,24 +4,23 @@ class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     @api.depends('product_tmpl_id.ptp_value_unit_combined')
-    def _update_description_sale(self):
-        """ Zajišťuje, že description_sale vždy začíná hodnotou ptp_value_unit_combined, ale uživatelský text zůstane zachován """
+    def _compute_description_sale(self):
+        """ Automaticky aktualizuje description_sale při změně ptp_value_unit_combined """
         for rec in self:
-            # Správně získáme hodnotu z product.template
             ptp_value = rec.product_tmpl_id.ptp_value_unit_combined or ""
 
             if ptp_value:
                 existing_description = rec.description_sale or ""
 
-                # Pokud `description_sale` už začíná `ptp_value_unit_combined`, nic se nemění
+                # Pokud `description_sale` už začíná `ptp_value_unit_combined`, neaktualizujeme
                 if existing_description.startswith(ptp_value):
                     continue
 
-                # Odstranění předchozího `ptp_value_unit_combined`, pokud tam bylo
-                parts = existing_description.split("\n", 1)  # Rozdělení textu na první řádek a zbytek
+                # Rozdělení popisu, abychom zachovali uživatelský text
+                parts = existing_description.split("\n", 1)
                 user_text = parts[1] if len(parts) > 1 else ""
 
-                # Nové description_sale s aktuálním ptp_value_unit_combined
+                # Aktualizace popisu
                 rec.description_sale = f"{ptp_value}\n{user_text}".strip()
 
     def write(self, vals):
