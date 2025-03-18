@@ -448,19 +448,30 @@ class ProductTemplate(models.Model):
         Generuje správný název produktu pouze s `ptp_part_number` a dalšími částmi názvu,
         ale bez `default_code`. Zabrání duplicitnímu výskytu `ptp_part_number`.
         """
-        part_number = vals.get('ptp_part_number', self.ptp_part_number)
-        if not isinstance(part_number, str):  
-            part_number = ""  # Pokud je False nebo None, nastavíme prázdný řetězec
+        # Získání nového nebo existujícího part_number
+        part_number = vals.get('ptp_part_number', self.ptp_part_number or "")
+
+        # Oprava: zajistíme, že `part_number` je vždy řetězec
+        if not isinstance(part_number, str):
+            part_number = ""
+
         part_number = part_number.strip()
         existing_name = vals.get('name', self.name or "").strip()
 
+        # Pokud máme novou kategorii a `ptp_part_number` je odstraněn, použijeme jeho hodnotu z `vals`
         if 'categ_id' in vals and not part_number and 'ptp_part_number' in vals:
             part_number = vals['ptp_part_number']
-    
-        # Rozdělíme existující název na části
+
+        # Pokud `ptp_part_number` není vyplněný, necháme původní název beze změny
+        if not part_number:
+            return existing_name
+
+        # Rozdělíme existující název na části a odstraníme starý `ptp_part_number`
         name_parts = existing_name.split()
-        if self.ptp_part_number:
-            name_parts = [part for part in name_parts if part != self.ptp_part_number]
+        old_part_number = self.ptp_part_number or ""
+        name_parts = [part for part in name_parts if part != old_part_number]
+
+        # Přidáme nový `ptp_part_number` na začátek názvu
         new_name = " ".join([part_number] + name_parts).strip()
 
         return new_name
