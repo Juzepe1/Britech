@@ -3,18 +3,18 @@ from odoo import models, fields, api
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
-    description_sale = fields.Text("Sales Description")
-    ptp_value_unit_combined = fields.Char("Value Unit Combined", compute="_compute_value_unit_combined", store=True)
-
-    @api.depends('ptp_value_unit_combined')
+    @api.depends('product_tmpl_id.ptp_value_unit_combined')
     def _update_description_sale(self):
         """ Zajišťuje, že description_sale vždy začíná hodnotou ptp_value_unit_combined, ale uživatelský text zůstane zachován """
         for rec in self:
-            if rec.ptp_value_unit_combined:
+            # Správně získáme hodnotu z product.template
+            ptp_value = rec.product_tmpl_id.ptp_value_unit_combined or ""
+
+            if ptp_value:
                 existing_description = rec.description_sale or ""
-                
-                # Pokud `description_sale` už začíná `ptp_value_unit_combined`, nic nedělej
-                if existing_description.startswith(rec.ptp_value_unit_combined):
+
+                # Pokud `description_sale` už začíná `ptp_value_unit_combined`, nic se nemění
+                if existing_description.startswith(ptp_value):
                     continue
 
                 # Odstranění předchozího `ptp_value_unit_combined`, pokud tam bylo
@@ -22,4 +22,10 @@ class ProductProduct(models.Model):
                 user_text = parts[1] if len(parts) > 1 else ""
 
                 # Nové description_sale s aktuálním ptp_value_unit_combined
-                rec.description_sale = f"{rec.ptp_value_unit_combined}\n{user_text}".strip()
+                rec.description_sale = f"{ptp_value}\n{user_text}".strip()
+
+    def write(self, vals):
+        res = super(ProductProduct, self).write(vals)
+        if 'product_tmpl_id' in vals or 'product_tmpl_id.ptp_value_unit_combined' in vals:
+            self._update_description_sale()
+        return res
