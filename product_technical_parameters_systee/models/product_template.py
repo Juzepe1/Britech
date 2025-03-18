@@ -115,10 +115,12 @@ class ProductTemplate(models.Model):
 
     @api.depends('default_code')
     def _compute_qr_code(self):
-        """ Automaticky generuje QR kód, pokud existuje default_code """
+        """ Automaticky generuje QR kód při změně `default_code`. """
         for rec in self:
-            if rec.default_code and not rec.qr_code:
+            if rec.default_code:
                 rec.qr_code = self._generate_qr_code(rec.default_code)
+            else:
+                rec.qr_code = False  # Pokud není `default_code`, QR kód smažeme
 
     def _generate_qr_code(self):
         """ Generuje QR kód pro tento konkrétní produkt """
@@ -461,6 +463,7 @@ class ProductTemplate(models.Model):
     
         # Rozdělíme existující název na části
         name_parts = existing_name.split()
+        name_parts = [part for part in name_parts if part != self.ptp_part_number]
 
         # Pokud `part_number` už v názvu existuje, nebudeme ho přidávat znovu
         if part_number in name_parts:
@@ -500,6 +503,9 @@ class ProductTemplate(models.Model):
             self._ensure_default_code(vals, new_sequence=False)
 
         result = super().write(vals)
+        if 'default_code' in vals:
+            self._compute_qr_code()  # Regenerace QR kódu
+
         if category_changed:
             for record in self:
                 old_category = old_categories.get(record.id)

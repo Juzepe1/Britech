@@ -47,7 +47,7 @@
     'depends': [
         'product',
         'base',
-        'sale',
+        'sale_management',
     ],
     'data': [
         'security/ir.model.access.csv',

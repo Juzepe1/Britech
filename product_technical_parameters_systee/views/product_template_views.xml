@@ -10,16 +10,11 @@
                         string="Generovat QR kódy"
                         class="btn-primary"
                         icon="fa-qrcode"
-                        attrs="{'invisible': [('qr_code', '!=', False)]}"/>
+                        invisible="qr_code!=false"/>
             </xpath>
             <xpath expr="//field[@name='categ_id']" position="after">
                     <field name="ptp_value_unit_combined" readonly="1"/>
                     <field name="qr_code" widget="image" class="oe_avatar"/>
-                <field name="valid_product_template_attribute_line_ids" invisible="1"/>
-                <field name="barcode" invisible="product_variant_count &gt; 1                         
-        or (product_variant_count == 0                         
-        and valid_product_template_attribute_line_ids)                         
-        or type in ['service', 'combo']"/>
             </xpath>
             <xpath expr="//sheet/notebook" position="inside">
 
