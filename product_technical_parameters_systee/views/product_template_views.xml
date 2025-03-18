@@ -10,7 +10,7 @@
                         string="Generovat QR kódy"
                         class="btn-primary"
                         icon="fa-qrcode"
-                        invisible="qr_code!=false"/>
+                        invisible="not qr_code"/>
             </xpath>
             <xpath expr="//field[@name='categ_id']" position="after">
                     <field name="ptp_value_unit_combined" readonly="1"/>
