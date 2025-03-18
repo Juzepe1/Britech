@@ -124,77 +124,77 @@ class ProductTemplate(models.Model):
                 rec.ptp_value_unit_combined = False
                 continue
 
-            # Zjistíme, jaká pole jsou pro kategorii relevantní
-            category_type = rec.categ_id.ptp_component_type
+            category_type = getattr(rec.categ_id, "ptp_component_type", "")
             value_unit_map = {
-            'capacitor': [
-                ('ptp_part_number', None),
-                ('ptp_cap_value', 'ptp_cap_unit'),
-                ('ptp_cap_voltage_rating', 'V'),
-                ('ptp_cap_dielectric', None),
-                ('ptp_cap_tolerance', '%'),
-            ],
-            'resistor': [
-                ('ptp_part_number', None),
-                ('ptp_res_value', 'ptp_res_unit'),
-                ('ptp_res_power_rating', 'W'),
-                ('ptp_res_voltage_rating', 'V'),
-                ('ptp_res_tolerance', 'V'),
-            ],
-            'ferrite_bead': [
-                ('ptp_part_number', None),
-                ('ptp_imp_value', 'ptp_imp_unit'),
-            ],
-            'inductor': [
-                ('ptp_part_number', None),
-                ('ptp_ind_value', 'ptp_ind_unit'),
-            ],
-            'transistor': [
-                ('ptp_part_number', None),
-                ('ptp_tran_polarity', None),
-                ('ptp_tran_type', None),
-            ],
-            'tvs_diode': [
-                ('ptp_part_number', None),
-                ('ptp_tvs_polarity', None),
-                ('ptp_tvs_chanel', None),
-            ],
-            'led': [
-                ('ptp_part_number', None),
-                ('ptp_led_color', None),
-            ],
+                'capacitor': [
+                    ('ptp_part_number', None),
+                    ('ptp_cap_value', 'ptp_cap_unit'),
+                    ('ptp_cap_voltage_rating', 'V'),
+                    ('ptp_cap_dielectric', None),
+                    ('ptp_cap_tolerance', '%'),
+                ],
+                'resistor': [
+                    ('ptp_part_number', None),
+                    ('ptp_res_value', 'ptp_res_unit'),
+                    ('ptp_res_power_rating', 'W'),
+                    ('ptp_res_voltage_rating', 'V'),
+                    ('ptp_res_tolerance', '%'),
+                ],
+                'ferrite_bead': [
+                    ('ptp_part_number', None),
+                    ('ptp_imp_value', 'ptp_imp_unit'),
+                ],
+                'inductor': [
+                    ('ptp_part_number', None),
+                    ('ptp_ind_value', 'ptp_ind_unit'),
+                ],
+                'transistor': [
+                    ('ptp_part_number', None),
+                    ('ptp_tran_polarity', None),
+                    ('ptp_tran_type', None),
+                ],
+                'tvs_diode': [
+                    ('ptp_part_number', None),
+                    ('ptp_tvs_polarity', None),
+                    ('ptp_tvs_chanel', None),
+                ],
+                'led': [
+                    ('ptp_part_number', None),
+                    ('ptp_led_color', None),
+                ],
             }
 
             combined_values = []
-            # **Získáme všechna relevantní pole podle typu komponenty**
             if category_type in value_unit_map:
                 for value_field, unit_field in value_unit_map[category_type]:
-                    value = getattr(rec, value_field, False)
-                    unit_name = ""  # Vždy inicializujeme proměnnou unit_name
-                    unit = ""  #  Vždy inicializujeme unit na prázdný řetězec
+                    value = getattr(rec, value_field, "") or ""
+                    unit_name = ""
 
+                    # Získání správné jednotky
                     if unit_field:
-                        if isinstance(unit_field, str):  
-                            unit_name = unit_field  # Použití pevně definovaného řetězce ('V', 'W', '%')
-                        else:
-                            unit = getattr(rec, unit_field, False)
-                            unit_name = unit.name if isinstance(unit, models.Model) else ""
+                        unit = getattr(rec, unit_field, False)
+                        if unit and hasattr(unit, "name"):  # Kontrola, zda má `.name`
+                            unit_name = unit.name or ""
+                        elif isinstance(unit_field, str):  # Pevně definované jednotky ('V', 'W', '%')
+                            unit_name = unit_field
 
-                    # Konverze Many2one pole na `.name`
+                    # Pokud je hodnota Many2one, převedeme na `.name`
                     if isinstance(value, models.Model):
-                        value = value.name
+                        value = value.name or ""
 
-                    # Převod na string, odstranění None hodnot
                     value = str(value).strip()
                     unit_name = str(unit_name).strip()
 
-                    # Spojení hodnoty a jednotky BEZ MEZERY (např. "10uF")
+                    # Správné spojení hodnoty a jednotky
                     if value and unit_name:
-                        combined_values.append(f"{value}{unit_name}")
+                        if unit_name in ["V", "W", "%", "pF", "nF", "uF", "mF"]:
+                            combined_values.append(f"{value}{unit_name}")
+                        else:
+                            combined_values.append(f"{value} {unit_name}")
                     elif value:
                         combined_values.append(value)
 
-            # **Kombinujeme všechny hodnoty do jednoho řetězce**
+            # Kombinujeme všechny hodnoty do jednoho řetězce
             rec.ptp_value_unit_combined = " ".join(combined_values) if combined_values else False
 
     @api.onchange(
