@@ -239,7 +239,7 @@ class ProductTemplate(models.Model):
                         combined_values.append(value)
             # Kombinujeme všechny hodnoty do jednoho řetězce
             rec.ptp_value_unit_combined = " ".join(combined_values) if combined_values else False
-        self.flush()
+        self.env.cr.flush()
         self._compute_description_sale()
 
     @api.onchange(
