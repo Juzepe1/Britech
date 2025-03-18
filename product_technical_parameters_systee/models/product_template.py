@@ -237,9 +237,10 @@ class ProductTemplate(models.Model):
                         combined_values.append(f"{value}{unit_name}")
                     elif value:
                         combined_values.append(value)
-            self._compute_description_sale()
             # Kombinujeme všechny hodnoty do jednoho řetězce
             rec.ptp_value_unit_combined = " ".join(combined_values) if combined_values else False
+            self.flush()
+            self._compute_description_sale()
 
     @api.onchange(
         'ptp_cap_value', 'ptp_cap_tolerance', 'ptp_cap_voltage_rating',
