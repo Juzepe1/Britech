@@ -4,10 +4,13 @@
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='default_code']" position="after">
+            <xpath expr="//page[@name='general_information']" position="after">
                 <group>
-                    <field name="ptp_value_unit_combined" readonly="1"/>
-                    <field name="qr_code" widget="image" class="oe_avatar" />
+                    <group>
+                        <field name="default_code"/>
+                        <field name="ptp_value_unit_combined" readonly="1"/>
+                        <field name="qr_code" widget="image" class="oe_avatar"/>
+                    </group>
                 </group>
             </xpath>
             <xpath expr="//sheet/notebook" position="inside">
