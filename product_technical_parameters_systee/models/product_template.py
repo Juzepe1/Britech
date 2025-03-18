@@ -134,24 +134,6 @@ class ProductTemplate(models.Model):
             else:
                 rec.qr_code = False
 
-    @api.depends('ptp_value_unit_combined')
-    def _update_description_sale(self):
-        """ Zajišťuje, že description_sale vždy začíná hodnotou ptp_value_unit_combined, ale uživatelský text zůstane zachován """
-        for rec in self:
-            if rec.ptp_value_unit_combined:
-                existing_description = rec.description_sale or ""
-                
-                # Pokud `description_sale` už začíná `ptp_value_unit_combined`, nic nedělej
-                if existing_description.startswith(rec.ptp_value_unit_combined):
-                    continue
-
-                # Odstranění předchozího `ptp_value_unit_combined`, pokud tam bylo
-                parts = existing_description.split("\n", 1)  # Rozdělení textu na první řádek a zbytek
-                user_text = parts[1] if len(parts) > 1 else ""
-
-                # Nové description_sale s aktuálním ptp_value_unit_combined
-                rec.description_sale = f"{rec.ptp_value_unit_combined}\n{user_text}".strip()
-
     @api.depends(
         'categ_id.ptp_component_type',
         'ptp_cap_value', 'ptp_cap_unit', 'ptp_cap_voltage_rating','ptp_cap_dielectric', 'ptp_cap_tolerance',
@@ -482,8 +464,6 @@ class ProductTemplate(models.Model):
             # Pokud nová kategorie má `ptp_component_type`, validujeme povinná pole
                 if new_category and new_category.ptp_component_type:
                     record._check_required_fields()
-        if 'ptp_value_unit_combined' in vals:
-            self._update_description_sale()
         return result
 
 
