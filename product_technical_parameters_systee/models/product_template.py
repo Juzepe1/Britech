@@ -198,39 +198,32 @@ class ProductTemplate(models.Model):
             category_type = getattr(rec.categ_id, "ptp_component_type", "")
             value_unit_map = {
                 'capacitor': [
-                    ('ptp_part_number', None),
                     ('ptp_cap_value', 'ptp_cap_unit'),
                     ('ptp_cap_voltage_rating', 'V'),
                     ('ptp_cap_dielectric', None),
                     ('ptp_cap_tolerance', '%'),
                 ],
                 'resistor': [
-                    ('ptp_part_number', None),
                     ('ptp_res_value', 'ptp_res_unit'),
                     ('ptp_res_power_rating', 'W'),
                     ('ptp_res_voltage_rating', 'V'),
                     ('ptp_res_tolerance', '%'),
                 ],
                 'ferrite_bead': [
-                    ('ptp_part_number', None),
                     ('ptp_imp_value', 'ptp_imp_unit'),
                 ],
                 'inductor': [
-                    ('ptp_part_number', None),
                     ('ptp_ind_value', 'ptp_ind_unit'),
                 ],
                 'transistor': [
-                    ('ptp_part_number', None),
                     ('ptp_tran_polarity', None),
                     ('ptp_tran_type', None),
                 ],
                 'tvs_diode': [
-                    ('ptp_part_number', None),
                     ('ptp_tvs_polarity', None),
                     ('ptp_tvs_chanel', None),
                 ],
                 'led': [
-                    ('ptp_part_number', None),
                     ('ptp_led_color', None),
                 ],
             }
@@ -463,13 +456,9 @@ class ProductTemplate(models.Model):
     
         # Rozdělíme existující název na části
         name_parts = existing_name.split()
-        name_parts = [part for part in name_parts if part != self.ptp_part_number]
-
-        # Pokud `part_number` už v názvu existuje, nebudeme ho přidávat znovu
-        if part_number in name_parts:
-            new_name = " ".join(name_parts).strip()
-        else:
-            new_name = " ".join([part_number] + name_parts).strip()
+        if self.ptp_part_number:
+            name_parts = [part for part in name_parts if part != self.ptp_part_number]
+        new_name = " ".join([part_number] + name_parts).strip()
 
         return new_name
 
