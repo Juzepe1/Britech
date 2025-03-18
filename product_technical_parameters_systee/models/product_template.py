@@ -114,6 +114,11 @@ class ProductTemplate(models.Model):
     )
 
     @api.depends('default_code')
+    def _compute_qr_code(self):
+        """ Automaticky generuje QR kód, pokud existuje default_code """
+        for rec in self:
+            if rec.default_code and not rec.qr_code:
+                rec.qr_code = self._generate_qr_code(rec.default_code)
     def _generate_qr_code(self):
         for rec in self:
             if rec.default_code:
@@ -133,6 +138,22 @@ class ProductTemplate(models.Model):
                 rec.qr_code = qr_image
             else:
                 rec.qr_code = False
+    def generate_missing_qr_codes(self):
+        """ Najde produkty bez QR kódu, které mají `default_code`, a vygeneruje pro ně QR """
+        products = self.search([('default_code', '!=', False), ('qr_code', '=', False)])
+        for product in products:
+            product.qr_code = self._generate_qr_code(product.default_code)
+
+    def action_generate_qr_codes(self):
+        """ Akce tlačítka - generování QR kódů pro všechny produkty bez QR """
+        self.generate_missing_qr_codes()
+        return {
+            'effect': {
+                'fadeout': 'slow',
+                'message': 'QR kódy byly úspěšně vygenerovány!',
+                'type': 'rainbow_man',
+            }
+        }
 
     @api.depends('ptp_value_unit_combined')
     def _compute_description_sale(self):
