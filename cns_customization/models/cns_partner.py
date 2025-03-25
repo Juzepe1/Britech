@@ -1,8 +1,10 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+import re
 
 
 class CNSPartner(models.Model):
+    _inherit = 'res.partner'
     cns_name_striped = fields.Char(string='Name without titles', readonly=True)
 
     @staticmethod
@@ -34,7 +36,6 @@ class CNSPartner(models.Model):
             vals['cns_name_striped'] = self._remove_titles(vals['name'])
         return super().write(vals)
 
-    _inherit = 'res.partner'
 
     # Datum narození
     cns_datum_narozeni = fields.Date(string='Datum narození')
