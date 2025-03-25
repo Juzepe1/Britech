@@ -1,0 +1,11 @@
+
+<odoo>
+    <record id="action_res_partner_export_txt" model="ir.actions.server">
+        <field name="name">Export TXT</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">action = env['res.partner.export.txt'].export_selected_partners()</field>
+        <field name="binding_view_types">list</field>
+    </record>
+</odoo>
