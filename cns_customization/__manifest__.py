@@ -26,7 +26,7 @@
 ###################################################################################
 
 {
-    'post_init_hook': 'post_init_hook',
+    'post_init_hook': 'cns_post_init_hook',
     'name': 'CNS Customizations',
     'version': '18.0.1.0',
     'summary': "Customizations for CNS",

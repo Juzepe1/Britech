@@ -1,6 +1,6 @@
 from odoo import api, SUPERUSER_ID
 
-def post_init_hook(cr, registry):
+def cns_post_init_hook(cr, registry):
     from odoo.api import Environment
     env = api.Environment(cr, SUPERUSER_ID, {})
     partners = env['res.partner'].search([])
