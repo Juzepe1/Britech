@@ -42,6 +42,7 @@
     ],
     'data': [
         'data/sequence.xml',
+        'data/res_partner_server_action.xml',
         'views/res_partner_form_view.xml',
         'views/res_partner_export_action.xml'
     ],
