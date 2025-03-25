@@ -1,5 +1,13 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_systee_footprint_user,systee.footprint user,model_systee_footprint,base.group_user,1,1,1,1
-access_systee_cap_unit_user,systee.cap.unit user,model_systee_cap_unit,base.group_user,1,1,1,1
-access_systee_cap_dielectric_user,systee.cap.dielectric user,model_systee_cap_dielectric,base.group_user,1,1,1,1
-access_systee_res_unit_user,systee.res.unit user,model_systee_res_unit,base.group_user,1,1,1,1
+access_ptp_footprint_user,ptp.footprint user,model_ptp_footprint,base.group_user,1,1,1,1
+access_ptp_cap_unit_user,ptp.cap.unit user,model_ptp_cap_unit,base.group_user,1,1,1,1
+access_ptp_cap_dielectric_user,ptp.cap.dielectric user,model_ptp_cap_dielectric,base.group_user,1,1,1,1
+access_ptp_res_unit_user,ptp.res.unit user,model_ptp_res_unit,base.group_user,1,1,1,1
+access_ptp_imp_unit_user,ptp.imp.unit user,model_ptp_imp_unit,base.group_user,1,1,1,1
+access_ptp_ind_unit_user,ptp.ind.unit user,model_ptp_ind_unit,base.group_user,1,1,1,1
+access_ptp_tran_polarity_user,ptp.tran.polarity user,model_ptp_tran_polarity,base.group_user,1,1,1,1
+access_ptp_tran_type_user,ptp.tran.type user,model_ptp_tran_type,base.group_user,1,1,1,1
+access_ptp_tvs_polarity_user,ptp.tvs.polarity user,model_ptp_tvs_polarity,base.group_user,1,1,1,1
+access_ptp_tvs_channel_user,ptp.tvs.chanel user,model_ptp_tvs_chanel,base.group_user,1,1,1,1
+access_ptp_led_color_user,ptp.led.color user,model_ptp_led_color,base.group_user,1,1,1,1
+
