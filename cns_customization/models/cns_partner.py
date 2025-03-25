@@ -11,10 +11,7 @@ class CNSPartner(models.Model):
     def _remove_titles(name):
         if not name:
             return name
-        titles = [
-            "Ing\.", "Mgr\.", "Bc\.", "PhDr\.", "JUDr\.", "MUDr\.", "RNDr\.", "prof\.", "doc\.",
-            "Ph\.D\.", "CSc\.", "Dr\.", "MBA", "DiS\.", "ThDr\.", "ThLic\.", "PaedDr\."
-        ]
+        titles = [r"Ing\.", r"Mgr\.", r"Bc\.", r"PhDr\.", r"JUDr\.", r"MUDr\.", r"RNDr\.", r"prof\.", r"doc\.", r"Ph\.D\.", r"CSc\.", r"Dr\.", r"MBA", r"DiS\.", r"ThDr\.", r"ThLic\.", r"PaedDr\."]
         import re
         title_pattern = r"(?i)^(?:" + "|".join(titles) + r")\s+|" + r"\s+(?:" + "|".join(titles) + r")$"
         cleaned = re.sub(title_pattern, '', name).strip()
