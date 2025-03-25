@@ -1,2 +1,2 @@
 from . import models
-from . import hooks
+from . hooks import cns_post_init_hook
