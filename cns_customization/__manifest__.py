@@ -28,7 +28,7 @@
 {
     'post_init_hook': 'post_init_hook',
     'name': 'CNS Customizations',
-    'version': '17.0.0.0.4',
+    'version': '18.0.1.0',
     'summary': "Customizations for CNS",
     'author': 'Josef Dostál',
     'maintainer': 'Systee s.r.o. (https://www.systee.cz)',
