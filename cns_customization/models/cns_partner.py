@@ -122,16 +122,16 @@ class CNSPartner(models.Model):
         return super().create(vals_list)
 
     def write(self, vals):
-        if 'name' in vals:
-            vals['cns_name_striped'] = self._remove_titles(vals['name'])
+        for partner in self:
+            if 'name' in vals:
+                vals['cns_name_striped'] = partner._remove_titles(vals['name'])
 
-        if not vals.get('cns_cislo_clena_text') and vals.get('cns_clenem_od_roku'):
-            vals['cns_cislo_clena_text'] = self.env['ir.sequence'].next_by_code('res.partner.cislo.clena')
+            if not vals.get('cns_cislo_clena_text') and vals.get('cns_clenem_od_roku'):
+                vals['cns_cislo_clena_text'] = partner.env['ir.sequence'].next_by_code('res.partner.cislo.clena')
 
-        if vals.get('cns_cislo_clena_text'):
-            for rec in self:
-                duplicate = self.env['res.partner'].search([
-                    ('id', '!=', rec.id),
+            if vals.get('cns_cislo_clena_text'):
+                duplicate = partner.env['res.partner'].search([
+                    ('id', '!=', partner.id),
                     ('cns_cislo_clena_text', '=', vals['cns_cislo_clena_text'])
                 ], limit=1)
                 if duplicate:
