@@ -5,34 +5,13 @@ import re
 
 class CNSPartner(models.Model):
     _inherit = 'res.partner'
-    cns_name_striped = fields.Char(string='Name without titles', readonly=True)
 
-    @staticmethod
-    def _remove_titles(name):
-        if not name:
-            return name
-        titles = [r"Ing\.", r"Mgr\.", r"Bc\.", r"PhDr\.", r"JUDr\.", r"MUDr\.", r"RNDr\.", r"prof\.", r"doc\.", r"Ph\.D\.", r"CSc\.", r"Dr\.", r"MBA", r"DiS\.", r"ThDr\.", r"ThLic\.", r"PaedDr\."]
-        import re
-        title_pattern = r"(?i)^(?:" + "|".join(titles) + r")\s+|" + r"\s+(?:" + "|".join(titles) + r")$"
-        cleaned = re.sub(title_pattern, '', name).strip()
-        while re.search(title_pattern, cleaned):
-            cleaned = re.sub(title_pattern, '', cleaned).strip()
-        return cleaned
-
-    
-    @api.model_create_multi
-    def create(self, vals_list):
-        for vals in vals_list:
-            if 'name' in vals:
-                vals['cns_name_striped'] = self._remove_titles(vals['name'])
-        return super().create(vals_list)
-
-
-    def write(self, vals):
-        if 'name' in vals:
-            vals['cns_name_striped'] = self._remove_titles(vals['name'])
-        return super().write(vals)
-
+    # Name without titles
+    cns_name_striped = fields.Char(
+        string='Name without titles',
+        store=True,
+        readonly=True,
+    )
 
     # Datum narození
     cns_datum_narozeni = fields.Date(string='Datum narození')
@@ -82,19 +61,12 @@ class CNSPartner(models.Model):
         string='Pobočka'
     )
 
-    # Členem od roku
     cns_clenem_od_roku = fields.Integer(string='Členem od roku')
-
-    # Zasílat NČ nečlenovi
     cns_zaslat_nc_neclenovi = fields.Boolean(string='Zasílat NČ nečlenovi')
-
-    # Čestný člen
     cns_cestny_clen = fields.Boolean(string='Čestný člen')
-
-    # Ukončené členství
     cns_je_ukonceno_clenstvi = fields.Boolean(string='Ukončené členství')
 
-    # Generování pole pro každý rok od 2022 do 2032
+    # Členství v letech
     clenem_v_2019 = fields.Boolean(string='Členem v 2019')
     clenem_v_2020 = fields.Boolean(string='Členem v 2020')
     clenem_v_2021 = fields.Boolean(string='Členem v 2021')
@@ -110,59 +82,72 @@ class CNSPartner(models.Model):
     clenem_v_2031 = fields.Boolean(string='Členem v 2031')
     clenem_v_2032 = fields.Boolean(string='Členem v 2032')
 
+    # Dodací adresa
     delivery_street = fields.Char(string='Ulice dod.', compute='_compute_delivery_address', store=True)
     delivery_street2 = fields.Char(string='Ulice2 dod.', compute='_compute_delivery_address', store=True)
     delivery_city = fields.Char(string='Město dod.', compute='_compute_delivery_address', store=True)
-    delivery_zip = fields.Char(change_default=True, string='PSČ dod.', size=24, compute='_compute_delivery_address', store=True)
-    delivery_state_id = fields.Many2one(string='Stát dod.', comodel_name='res.country.state', compute='_compute_delivery_address', store=True)
-    delivery_country_id = fields.Many2one(string='Země dod.', comodel_name='res.country', compute='_compute_delivery_address', store=True)
+    delivery_zip = fields.Char(string='PSČ dod.', size=24, compute='_compute_delivery_address', store=True)
+    delivery_state_id = fields.Many2one('res.country.state', string='Stát dod.', compute='_compute_delivery_address', store=True)
+    delivery_country_id = fields.Many2one('res.country', string='Země dod.', compute='_compute_delivery_address', store=True)
 
-    # Číslo člena (text) s automatickou sekvencí
+    # Číslo člena
     cns_cislo_clena_text = fields.Char(string='Číslo člena', copy=False)
 
-    @api.onchange('street', 'street2', 'city', 'zip', 'state_id', 'country_id')
-    @api.depends('child_ids', 'child_ids.type', 'child_ids.street', 'child_ids.street2', 'child_ids.city', 'child_ids.zip', 'child_ids.state_id', 'child_ids.country_id')
-    def _compute_delivery_address(self):
-        for partner in self:
-            if partner.type == 'delivery' and partner.parent_id:
-                partner.parent_id._compute_delivery_address()
-
-            if partner.child_ids.filtered(lambda r: r.type == 'delivery'):
-                delivery_partner = partner.child_ids.filtered(lambda r: r.type == 'delivery')[0]
-                partner.delivery_street = delivery_partner.street
-                partner.delivery_street2 = delivery_partner.street2
-                partner.delivery_city = delivery_partner.city
-                partner.delivery_zip = delivery_partner.zip
-                partner.delivery_state_id = delivery_partner.state_id
-                partner.delivery_country_id = delivery_partner.country_id
-            else:
-                partner.delivery_street = partner.street
-                partner.delivery_street2 = partner.street2
-                partner.delivery_city = partner.city
-                partner.delivery_zip = partner.zip
-                partner.delivery_state_id = partner.state_id
-                partner.delivery_country_id = partner.country_id
+    @staticmethod
+    def _remove_titles(name):
+        if not name:
+            return name
+        titles = [
+            r"Ing\.", r"Mgr\.", r"Bc\.", r"PhDr\.", r"JUDr\.", r"MUDr\.", r"RNDr\.",
+            r"prof\.", r"doc\.", r"Ph\.D\.", r"CSc\.", r"Dr\.", r"MBA", r"DiS\.",
+            r"ThDr\.", r"ThLic\.", r"PaedDr\."
+        ]
+        pattern = r"(?i)^(?:" + "|".join(titles) + r")\s+|" + r"\s+(?:" + "|".join(titles) + r")$"
+        cleaned = re.sub(pattern, '', name).strip()
+        while re.search(pattern, cleaned):
+            cleaned = re.sub(pattern, '', cleaned).strip()
+        return cleaned
 
     def _set_cislo(self, vals):
-        if not vals.get('cns_cislo_clena_text') and vals.get('cns_clenem_od_roku', 0) != 0:
+        if not vals.get('cns_cislo_clena_text') and vals.get('cns_clenem_od_roku'):
             vals['cns_cislo_clena_text'] = self.env['ir.sequence'].next_by_code('res.partner.cislo.clena')
         return vals
 
     @api.model_create_multi
     def create(self, vals_list):
-        vals_list = [self._set_cislo(item) for item in vals_list]
-        return super(CNSPartner, self).create(vals_list)
+        for vals in vals_list:
+            vals = self._set_cislo(vals)
+            if vals.get('name'):
+                vals['cns_name_striped'] = self._remove_titles(vals['name'])
+        return super().create(vals_list)
 
-    @api.model
     def write(self, vals):
-        if not vals.get('cns_cislo_clena_text') and vals.get('cns_clenem_od_roku', 0) != 0:
+        if 'name' in vals:
+            vals['cns_name_striped'] = self._remove_titles(vals['name'])
+
+        if not vals.get('cns_cislo_clena_text') and vals.get('cns_clenem_od_roku'):
             vals['cns_cislo_clena_text'] = self.env['ir.sequence'].next_by_code('res.partner.cislo.clena')
 
         if vals.get('cns_cislo_clena_text'):
-            if self.env['res.partner'].search([
-                ('id', '!=', self.id),
-                ('cns_cislo_clena_text', '=', vals.get('cns_cislo_clena_text'))
-            ]):
-                raise UserError('Číslo člena musí být unikátní.')
+            for rec in self:
+                duplicate = self.env['res.partner'].search([
+                    ('id', '!=', rec.id),
+                    ('cns_cislo_clena_text', '=', vals['cns_cislo_clena_text'])
+                ], limit=1)
+                if duplicate:
+                    raise UserError('Číslo člena musí být unikátní.')
 
-        return super(CNSPartner, self).write(vals)
+        return super().write(vals)
+
+    @api.depends('child_ids', 'child_ids.type', 'child_ids.street', 'child_ids.street2', 'child_ids.city',
+                 'child_ids.zip', 'child_ids.state_id', 'child_ids.country_id')
+    def _compute_delivery_address(self):
+        for partner in self:
+            delivery = partner.child_ids.filtered(lambda r: r.type == 'delivery')
+            delivery_partner = delivery[0] if delivery else partner
+            partner.delivery_street = delivery_partner.street
+            partner.delivery_street2 = delivery_partner.street2
+            partner.delivery_city = delivery_partner.city
+            partner.delivery_zip = delivery_partner.zip
+            partner.delivery_state_id = delivery_partner.state_id
+            partner.delivery_country_id = delivery_partner.country_id
