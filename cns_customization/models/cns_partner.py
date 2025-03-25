@@ -20,11 +20,12 @@ class CNSPartner(models.Model):
             cleaned = re.sub(title_pattern, '', cleaned).strip()
         return cleaned
 
-    @api.model
-    def create(self, vals):
-        if 'name' in vals:
-            vals['cns_name_striped'] = self._remove_titles(vals['name'])
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if 'name' in vals:
+                vals['cns_name_striped'] = self._remove_titles(vals['name'])
+        return super().create(vals_list)
 
     def write(self, vals):
         if 'name' in vals:
