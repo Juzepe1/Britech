@@ -570,26 +570,39 @@ class ProductTemplate(models.Model):
             rec.ptp_zen_vz_full_value = f"{value}{unit}".strip()
             
             for rec in self:
-                description_parts = []
+            combined = []
 
-            # Přidej všechny *_full_value pole (např. ptp_led_napeti_full_value)
-                for field_name in rec._fields:
-                    if field_name.endswith('_full_value'):
-                        val = getattr(rec, field_name, False)
-                        if val:
-                            description_parts.append(str(val))
+            for field_name, field in rec._fields.items():
+                # Zajímá nás jen "ptp_" prefix, ale vynecháme pár výjimek
+                if not field_name.startswith('ptp_'):
+                    continue
+                if field_name in ('ptp_value_unit_combined', 'ptp_part_number', 'ptp_note', 'ptp_footprint', 'ptp_sequence_number'):
+                    continue
+                if field_name.endswith('_full_value'):
+                    continue
 
-                # Přidej další zajímavá pole: Many2one, Char (vyjma těch, co jsou full_value)
-                for field_name, field in rec._fields.items():
-                    if field_name.startswith('ptp_') and not field_name.endswith('_value') \
-                            and not field_name.endswith('_unit') and not field_name.endswith('_full_value') \
-                            and field_name not in ('ptp_value_unit_combined', 'ptp_part_number', 'ptp_note'):
-                        val = getattr(rec, field_name, False)
-                        if isinstance(val, models.BaseModel):  # Many2one
-                            val = val.name
-                        if val:
-                            description_parts.append(str(val))
-                rec.ptp_value_unit_combined = " / ".join(description_parts)
+                val = getattr(rec, field_name, False)
+                if val in (None, False, '', 0):
+                    continue
+
+                display_value = ''
+                try:
+                    if isinstance(field, fields.Many2one):
+                        # Bezpečný přístup na .name
+                        if isinstance(val, models.BaseModel):
+                            display_value = val.name or ''
+                    elif isinstance(field, (fields.Char, fields.Text)):
+                        display_value = str(val).strip()
+                    elif isinstance(field, (fields.Integer, fields.Float)):
+                        display_value = str(val)
+                except Exception:
+                    # Bezpečnostní fallback
+                    continue
+
+                if display_value:
+                    combined.append(display_value)
+
+            rec.ptp_value_unit_combined = ' '.join(combined) if combined else False
     # --------------------------------------------------------------------------------
     # Metoda pro opravu . za , u typu char
     # --------------------------------------------------------------------------------
