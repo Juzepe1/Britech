@@ -14,7 +14,13 @@
             </xpath>
       <xpath expr="//sheet/notebook" position="inside">
         <page string="Technical Parameters" invisible="not ptp_category_type_related">>
-          <group string="Antény" invisible="ptp_category_type_related != 'ant'"/>
+          <group>
+                        <field name="ptp_part_number"/>
+                        <field name="ptp_footprint"/>
+                        <field name="ptp_note"/>
+          </group>
+          <group string="Antény" invisible="ptp_category_type_related != 'ant'">
+          </group>          
           <group string="Baterie a články" invisible="ptp_category_type_related != 'bat'">
             <field name="ptp_bat_typ"/>
             <field name="ptp_bat_napeti_value"/>
