@@ -438,9 +438,9 @@ class ProductTemplate(models.Model):
                     val = getattr(rec, field_name, False)
 
                     if isinstance(val, models.BaseModel):
-                        val = val.name if val and hasattr(val, 'name') else ''
-                    elif not val:
-                        continue
+                        val = getattr(val, 'name', '')
+                    elif not val or val in [False, None, 'False']:
+                        continue  # přeskoč prázdné/False hodnoty
 
                     val = str(val).strip()
                     if val:
