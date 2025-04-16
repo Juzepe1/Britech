@@ -1,138 +1,226 @@
+<?xml version='1.0' encoding='UTF-8'?>
 <odoo>
-    <record id="view_product_template_form_inherit" model="ir.ui.view">
+	<record id="view_product_template_form_inherit" model="ir.ui.view">
         <field name="name">product.template.form.inherit.ptp</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//form/header" position="inside">
-                <button name="action_generate_qr_codes"
-                        type="object"
-                        string="Generovat QR kódy"
-                        class="btn-primary"
-                        icon="fa-qrcode"
-                        invisible="qr_code"/>
+                <button name="action_generate_qr_codes" type="object" string="Generovat QR kódy" class="btn-primary" icon="fa-qrcode" invisible="qr_code"/>
             </xpath>
             <xpath expr="//field[@name='categ_id']" position="after">
                 <field name="ptp_value_unit_combined" readonly="1"/>
                 <field name="qr_code" widget="image" class="oe_avatar"/>
             </xpath>
-            <xpath expr="//sheet/notebook" position="inside">
-                <page string="Technical Parameters" invisible="not ptp_category_type_related">
-                    <group>
-                        <field name="ptp_category_type_related" readonly="1"/>
-                        <field name="ptp_part_number"/>
-                        <field name="ptp_footprint"/>
-                        <field name="ptp_note"/>
-                        <field name="ptp_value_unit_combined" readonly="1"/>
-                        <field name="qr_code" widget="image" class="oe_avatar"/>
-                    </group>
-
-                    <!-- Group blocks for all known types -->
-                    <group string="BLU Fields" invisible="ptp_category_type_related != 'blu'">
-                        <field name="ptp_blu_typ"/>
-                    </group>
-                    <group string="DIS Fields" invisible="ptp_category_type_related != 'dis'">
-                        <field name="ptp_dis_typ"/>
-                    </group>
-                    <group string="PLC Fields" invisible="ptp_category_type_related != 'plc'">
-                        <field name="ptp_plc_typ"/>
-                    </group>
-                    <group string="HDD Fields" invisible="ptp_category_type_related != 'hdd'">
-                        <field name="ptp_hdd_typ"/>
-                        <field name="ptp_hdd_kapacita"/>
-                        <field name="ptp_hdd_kapacita_unit"/>
-                    </group>
-                    <group string="SEN Fields" invisible="ptp_category_type_related != 'sen'">
-                        <field name="ptp_sen_merena_velicina"/>
-                        <field name="ptp_sen_typ_vystupu"/>
-                    </group>
-                    <group string="BAT Fields" invisible="ptp_category_type_related != 'bat'">
-                        <field name="ptp_bat_typ"/>
-                        <field name="ptp_bat_napeti_value"/>
-                        <field name="ptp_bat_napeti_unit"/>
-                        <field name="ptp_bat_kapacita_value"/>
-                        <field name="ptp_bat_kapacita_unit"/>
-                        <field name="ptp_bat_chemie"/>
-                    </group>
-                    <group string="POJ Fields" invisible="ptp_category_type_related != 'poj'">
-                        <field name="ptp_poj_proud_value"/>
-                        <field name="ptp_poj_proud_unit"/>
-                        <field name="ptp_poj_napeti_value"/>
-                        <field name="ptp_poj_napeti_unit"/>
-                        <field name="ptp_poj_typ"/>
-                        <field name="ptp_poj_typ_pojistky"/>
-                    </group>
-                    <group string="TVS Fields" invisible="ptp_category_type_related != 'tvs'">
-                        <field name="ptp_tvs_napeti_value"/>
-                        <field name="ptp_tvs_napeti_unit"/>
-                        <field name="ptp_tvs_proud_value"/>
-                        <field name="ptp_tvs_proud_unit"/>
-                        <field name="ptp_tvs_typ"/>
-                        <field name="ptp_tvs_polarity"/>
-                        <field name="ptp_tvs_chanel"/>
-                    </group>
-                    <group string="VAR Fields" invisible="ptp_category_type_related != 'var'">
-                        <field name="ptp_var_napeti_value"/>
-                        <field name="ptp_var_napeti_unit"/>
-                        <field name="ptp_var_proud_value"/>
-                        <field name="ptp_var_proud_unit"/>
-                    </group>
-                    <group string="LAD Fields" invisible="ptp_category_type_related != 'lad'">
-                        <field name="ptp_lad_vlnova_delka_value"/>
-                        <field name="ptp_lad_vlnova_delka_unit"/>
-                        <field name="ptp_lad_proud_value"/>
-                        <field name="ptp_lad_proud_unit"/>
-                        <field name="ptp_lad_napeti_value"/>
-                        <field name="ptp_lad_napeti_unit"/>
-                    </group>
-                    <group string="DIO Fields" invisible="ptp_category_type_related != 'dio'">
-                        <field name="ptp_dio_typ"/>
-                        <field name="ptp_dio_napeti_value"/>
-                        <field name="ptp_dio_napeti_unit"/>
-                        <field name="ptp_dio_proud_value"/>
-                        <field name="ptp_dio_proud_unit"/>
-                    </group>
-                    <group string="SCH Fields" invisible="ptp_category_type_related != 'sch'">
-                        <field name="ptp_sch_ifpropustny_proud_value"/>
-                        <field name="ptp_sch_ifpropustny_proud_unit"/>
-                        <field name="ptp_sch_vrrm_value"/>
-                        <field name="ptp_sch_vrrm_unit"/>
-                    </group>
-                    <group string="ZEN Fields" invisible="ptp_category_type_related != 'zen'">
-                        <field name="ptp_zen_vz_value"/>
-                        <field name="ptp_zen_vz_unit"/>
-                    </group>
-                    <group string="TYR Fields" invisible="ptp_category_type_related != 'tyr'">
-                        <field name="ptp_tyr_napeti_value"/>
-                        <field name="ptp_tyr_napeti_unit"/>
-                        <field name="ptp_tyr_proud_value"/>
-                        <field name="ptp_tyr_proud_unit"/>
-                    </group>
-                    <group string="BIP Fields" invisible="ptp_category_type_related != 'bip'">
-                        <field name="ptp_bip_typ"/>
-                        <field name="ptp_bip_napeti_uce_value"/>
-                        <field name="ptp_bip_napeti_uce_unit"/>
-                        <field name="ptp_bip_proud_ice_value"/>
-                        <field name="ptp_bip_proud_ice_unit"/>
-                    </group>
-                    <group string="UNI Fields" invisible="ptp_category_type_related != 'uni'">
-                        <field name="ptp_uni_typ_value"/>
-                        <field name="ptp_uni_napeti_vds_value"/>
-                        <field name="ptp_uni_napeti_vds_unit"/>
-                        <field name="ptp_uni_proud_ids_value"/>
-                        <field name="ptp_uni_proud_ids_unit"/>
-                    </group>
-                    <group string="MAS Fields" invisible="ptp_category_type_related != 'mas'">
-                        <field name="ptp_mas_sirka_value"/>
-                        <field name="ptp_mas_sirka_unit"/>
-                        <field name="ptp_mas_material"/>
-                    </group>
-                    <group string="PAS Fields" invisible="ptp_category_type_related != 'pas'">
-                        <field name="ptp_pas_typ_value"/>
-                        <field name="ptp_pas_slozeni"/>
-                    </group>
-                </page>
-            </xpath>
-        </field>
-    </record>
+      <xpath expr="//sheet/notebook" position="inside">
+        <page string="Technical Parameters">
+          <group string="Antény" invisible="ptp_category_type_related != 'ant'"/>
+          <group string="Baterie a články" invisible="ptp_category_type_related != 'bat'">
+            <field name="ptp_bat_typ"/>
+            <field name="ptp_bat_napeti_value"/>
+            <field name="ptp_bat_napeti_unit"/>
+            <field name="ptp_bat_kapacita_value"/>
+            <field name="ptp_bat_kapacita_unit"/>
+            <field name="ptp_bat_chemie"/>
+          </group>
+          <group string="Bipolární tranzistory" invisible="ptp_category_type_related != 'bip'">
+            <field name="ptp_bip_typ"/>
+            <field name="ptp_bip_napeti_uce_value"/>
+            <field name="ptp_bip_napeti_uce_unit"/>
+            <field name="ptp_bip_proud_ice_value"/>
+            <field name="ptp_bip_proud_ice_unit"/>
+          </group>
+          <group string="Bluetooth a wifi" invisible="ptp_category_type_related != 'blu'">
+            <field name="ptp_blu_typ"/>
+          </group>
+          <group string="Kondenzátory" invisible="ptp_category_type_related != 'cap'">
+            <field name="ptp_cap_value"/>
+            <field name="ptp_cap_unit"/>
+            <field name="ptp_cap_voltage_rating"/>
+            <field name="ptp_cap_dielectric"/>
+            <field name="ptp_cap_tolerance"/>
+          </group>
+          <group string="Chladiče" invisible="ptp_category_type_related != 'chl'">
+            <field name="ptp_chl_rozmery"/>
+            <field name="ptp_chl_material"/>
+          </group>
+          <group string="Diody" invisible="ptp_category_type_related != 'dio'">
+            <field name="ptp_dio_typ"/>
+            <field name="ptp_dio_napeti_value"/>
+            <field name="ptp_dio_napeti_unit"/>
+            <field name="ptp_dio_proud_value"/>
+            <field name="ptp_dio_proud_unit"/>
+          </group>
+          <group string="Displeje" invisible="ptp_category_type_related != 'dis'">
+            <field name="ptp_dis_typ"/>
+          </group>
+          <group string="Desky plošných spojů" invisible="ptp_category_type_related != 'dps'">
+            <field name="ptp_dps_rozmery_value"/>
+            <field name="ptp_dps_rozmery_unit"/>
+            <field name="ptp_dps_pocet_vrstev_value"/>
+            <field name="ptp_dps_pocet_vrstev_unit"/>
+            <field name="ptp_dps_tloustka_value"/>
+            <field name="ptp_dps_tloustka_unit"/>
+            <field name="ptp_dps_povrchova_uprava"/>
+            <field name="ptp_dps_material"/>
+          </group>
+          <group string="Držáky baterií" invisible="ptp_category_type_related != 'drb'">
+            <field name="ptp_drb_typ_baterie"/>
+            <field name="ptp_drb_pocet_clanku_value"/>
+            <field name="ptp_drb_pocet_clanku_unit"/>
+            <field name="ptp_drb_montaz"/>
+          </group>
+          <group string="Držáky pojistek" invisible="ptp_category_type_related != 'drp'">
+            <field name="ptp_drp_typ_pojistky"/>
+            <field name="ptp_drp_montaz"/>
+          </group>
+          <group string="Ferity" invisible="ptp_category_type_related != 'fer'"/>
+          <group string="HDD/SSD" invisible="ptp_category_type_related != 'hdd'">
+            <field name="ptp_hdd_typ"/>
+            <field name="ptp_hdd_kapacita"/>
+            <field name="ptp_hdd_kapacita_unit"/>
+          </group>
+          <group string="Feritové perličky" invisible="ptp_category_type_related != 'imp'">
+            <field name="ptp_imp_value"/>
+            <field name="ptp_imp_unit"/>
+          </group>
+          <group string="Induktory" invisible="ptp_category_type_related != 'ind'">
+            <field name="ptp_ind_value"/>
+            <field name="ptp_ind_unit"/>
+          </group>
+          <group string="Integrované obvody" invisible="ptp_category_type_related != 'int'">
+            <field name="ptp_int_typ"/>
+            <field name="ptp_int_funkce"/>
+          </group>
+          <group string="Laserové diody" invisible="ptp_category_type_related != 'lad'">
+            <field name="ptp_lad_vlnova_delka_value"/>
+            <field name="ptp_lad_vlnova_delka_unit"/>
+            <field name="ptp_lad_proud_value"/>
+            <field name="ptp_lad_proud_unit"/>
+            <field name="ptp_lad_napeti_value"/>
+            <field name="ptp_lad_napeti_unit"/>
+          </group>
+          <group string="LED diody" invisible="ptp_category_type_related != 'led'">
+            <field name="ptp_led_barva"/>
+            <field name="ptp_led_proud_value"/>
+            <field name="ptp_led_proud_unit"/>
+            <field name="ptp_led_napeti_value"/>
+            <field name="ptp_led_napeti_unit"/>
+          </group>
+          <group string="Maskovací pásky" invisible="ptp_category_type_related != 'mas'">
+            <field name="ptp_mas_sirka_value"/>
+            <field name="ptp_mas_sirka_unit"/>
+            <field name="ptp_mas_material"/>
+          </group>
+          <group string="Napájecí konektory" invisible="ptp_category_type_related != 'nap'">
+            <field name="ptp_nap_typ_konektoru"/>
+            <field name="ptp_nap_pocet_pinu_value"/>
+            <field name="ptp_nap_pocet_pinu_unit"/>
+            <field name="ptp_nap_montaz"/>
+            <field name="ptp_nap_roztec_kontaktu_value"/>
+            <field name="ptp_nap_roztec_kontaktu_unit"/>
+          </group>
+          <group string="Ostatní" invisible="ptp_category_type_related != 'oth'"/>
+          <group string="Pájecí pasty a tavidla" invisible="ptp_category_type_related != 'pas'">
+            <field name="ptp_pas_typ_value"/>
+            <field name="ptp_pas_slozeni"/>
+          </group>
+          <group string="Pinové lišty" invisible="ptp_category_type_related != 'pin'">
+            <field name="ptp_pin_roztec_kontaktu_value"/>
+            <field name="ptp_pin_roztec_kontaktu_unit"/>
+            <field name="ptp_pin_typ"/>
+            <field name="ptp_pin_pocet_pinu_value"/>
+            <field name="ptp_pin_pocet_pinu_unit"/>
+            <field name="ptp_pin_montaz"/>
+          </group>
+          <group string="PLC prvky" invisible="ptp_category_type_related != 'plc'">
+            <field name="ptp_plc_typ"/>
+          </group>
+          <group string="Pojistky" invisible="ptp_category_type_related != 'poj'">
+            <field name="ptp_poj_proud_value"/>
+            <field name="ptp_poj_proud_unit"/>
+            <field name="ptp_poj_napeti_value"/>
+            <field name="ptp_poj_napeti_unit"/>
+            <field name="ptp_poj_typ"/>
+            <field name="ptp_poj_typ_pojistky"/>
+          </group>
+          <group string="Rezistory" invisible="ptp_category_type_related != 'res'">
+            <field name="ptp_res_value"/>
+            <field name="ptp_res_unit"/>
+            <field name="ptp_res_power_rating"/>
+            <field name="ptp_res_tolerance"/>
+            <field name="ptp_res_voltage_rating"/>
+          </group>
+          <group string="Šablony" invisible="ptp_category_type_related != 'sab'">
+            <field name="ptp_sab_typ"/>
+            <field name="ptp_sab_rozmer"/>
+            <field name="ptp_sab_typ_uchyceni"/>
+          </group>
+          <group string="Schottkyho diody" invisible="ptp_category_type_related != 'sch'">
+            <field name="ptp_sch_ifpropustny_proud_value"/>
+            <field name="ptp_sch_ifpropustny_proud_unit"/>
+            <field name="ptp_sch_vrrm_value"/>
+            <field name="ptp_sch_vrrm_unit"/>
+          </group>
+          <group string="Senzory" invisible="ptp_category_type_related != 'sen'">
+            <field name="ptp_sen_merena_velicina"/>
+            <field name="ptp_sen_typ_vystupu"/>
+          </group>
+          <group string="Tlačítka a přepínače" invisible="ptp_category_type_related != 'tla'">
+            <field name="ptp_tla_typ"/>
+            <field name="ptp_tla_pocet_poloh_value"/>
+            <field name="ptp_tla_pocet_poloh_unit"/>
+            <field name="ptp_tla_montaz"/>
+          </group>
+          <group string="TVS diody" invisible="ptp_category_type_related != 'tvs'">
+            <field name="ptp_tvs_napeti_value"/>
+            <field name="ptp_tvs_napeti_unit"/>
+            <field name="ptp_tvs_proud_value"/>
+            <field name="ptp_tvs_proud_unit"/>
+            <field name="ptp_tvs_typ"/>
+            <field name="ptp_tvs_polarity"/>
+            <field name="ptp_tvs_chanel"/>
+          </group>
+          <group string="Tyristory" invisible="ptp_category_type_related != 'tyr'">
+            <field name="ptp_tyr_napeti_value"/>
+            <field name="ptp_tyr_napeti_unit"/>
+            <field name="ptp_tyr_proud_value"/>
+            <field name="ptp_tyr_proud_unit"/>
+          </group>
+          <group string="Unipolární tranzistory" invisible="ptp_category_type_related != 'uni'">
+            <field name="ptp_uni_typ_value"/>
+            <field name="ptp_uni_napeti_vds_value"/>
+            <field name="ptp_uni_napeti_vds_unit"/>
+            <field name="ptp_uni_proud_ids_value"/>
+            <field name="ptp_uni_proud_ids_unit"/>
+          </group>
+          <group string="USB konektory" invisible="ptp_category_type_related != 'usb'">
+            <field name="ptp_usb_typ"/>
+          </group>
+          <group string="Usměrňovací diody" invisible="ptp_category_type_related != 'usm'">
+            <field name="ptp_usm_if_value"/>
+            <field name="ptp_usm_if_unit"/>
+            <field name="ptp_usm_vr_value"/>
+            <field name="ptp_usm_vr_unit"/>
+          </group>
+          <group string="Varistory" invisible="ptp_category_type_related != 'var'">
+            <field name="ptp_var_napeti_value"/>
+            <field name="ptp_var_napeti_unit"/>
+            <field name="ptp_var_proud_value"/>
+            <field name="ptp_var_proud_unit"/>
+          </group>
+          <group string="Zásuvky a zástrčky" invisible="ptp_category_type_related != 'zas'">
+            <field name="ptp_zas_typ_konektoru"/>
+            <field name="ptp_zas_pocet_pinu_value"/>
+            <field name="ptp_zas_pocet_pinu_unit"/>
+            <field name="ptp_zas_montaz"/>
+          </group>
+          <group string="Zenerovy diody" invisible="ptp_category_type_related != 'zen'">
+            <field name="ptp_zen_vz_value"/>
+            <field name="ptp_zen_vz_unit"/>
+          </group>
+        </page>
+      </xpath>
+    </field>
+  </record>
 </odoo>
