@@ -11,7 +11,7 @@
             <xpath expr="//field[@name='categ_id']" position="after">
                 <field name="ptp_part_number" invisible="not ptp_category_type_related"/>
                 <field name="ptp_value_unit_combined" invisible="not ptp_category_type_related" readonly="1"/>
-                <field name="qr_code" invisible="not ptp_category_type_related" widget="image" class="oe_avatar"/>
+                <field name="qr_code" widget="image" class="oe_avatar"/>
             </xpath>
       <xpath expr="//sheet/notebook" position="inside">
         <page string="Technical Parameters" invisible="not ptp_category_type_related">>
