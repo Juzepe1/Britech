@@ -102,7 +102,7 @@ class ProductTemplate(models.Model):
     ptp_plc_typ = fields.Many2one('ptp.plc.typ', string='Typ PLC')
     # Jednotlivá pole HDD
     ptp_hdd_typ = fields.Many2one('ptp.hdd.typ', string='Typ HDD')
-    ptp_hdd_kapacita = fields.Float(string='Kapacita')
+    ptp_hdd_kapacita_value = fields.Float(string='Kapacita')
     ptp_hdd_kapacita_unit = fields.Many2one('ptp.hdd.kapacita_unit', string='Kapacita HDD Unit')
     # Jednotlivá pole SEN
     ptp_sen_merena_velicina = fields.Many2one('ptp.sen.merena_velicina', string='Měřená veličina senzoru')
@@ -256,6 +256,7 @@ class ProductTemplate(models.Model):
     ptp_var_proud_full_value = fields.Char(string="Ptp Var Proud Full Value", compute="_compute_all_full_values", store=True)
     ptp_zas_pocet_pinu_full_value = fields.Char(string="Ptp Zas Pocet Pinu Full Value", compute="_compute_all_full_values", store=True)
     ptp_zen_vz_full_value = fields.Char(string="Ptp Zen Vz Full Value", compute="_compute_all_full_values", store=True)
+    ptp_hdd_kapacita_full_value = fields.Char(string="HDD kap full value", compute="_compute_all_full_values", store=True)
 
 
     @api.depends(
@@ -300,6 +301,7 @@ class ProductTemplate(models.Model):
         'ptp_var_proud_value', 'ptp_var_proud_unit',
         'ptp_zas_pocet_pinu_value', 'ptp_zas_pocet_pinu_unit',
         'ptp_zen_vz_value', 'ptp_zen_vz_unit'
+        'ptp_hdd_kapacita_value', 'ptp_hdd_kapacita_unit'
     )
     def _compute_all_full_values(self):
         for rec in self:
@@ -371,7 +373,7 @@ class ProductTemplate(models.Model):
     # Přenos description do SALE
     # ------------------------------------------
 
-    @api.depends('ptp_value_unit_combined')
+    @api.depends('ptp_value_unit_combined)
     def _compute_description_sale(self):
         """ Automaticky aktualizuje `description_sale` při změně `ptp_value_unit_combined` """
         for rec in self:
@@ -397,10 +399,14 @@ class ProductTemplate(models.Model):
     # ------------------------------------------
 
     @api.depends(
-        'ptp_bat_kapacita_value', 'ptp_bat_kapacita_unit', 'ptp_bat_napeti_value', 'ptp_bat_napeti_unit', 'ptp_bip_napeti_uce_value', 'ptp_bip_napeti_uce_unit', 'ptp_bip_proud_ice_value', 'ptp_bip_proud_ice_unit', 'ptp_cap_value', 'ptp_cap_unit', 'ptp_dio_napeti_value', 'ptp_dio_napeti_unit', 'ptp_dio_proud_value', 'ptp_dio_proud_unit', 'ptp_dps_pocet_vrstev_value', 'ptp_dps_pocet_vrstev_unit', 'ptp_dps_rozmery_value', 'ptp_dps_rozmery_unit', 'ptp_dps_tloustka_value', 'ptp_dps_tloustka_unit', 'ptp_drb_pocet_clanku_value', 'ptp_drb_pocet_clanku_unit', 'ptp_imp_value', 'ptp_imp_unit', 'ptp_ind_value', 'ptp_ind_unit', 'ptp_lad_napeti_value', 'ptp_lad_napeti_unit', 'ptp_lad_proud_value', 'ptp_lad_proud_unit', 'ptp_lad_vlnova_delka_value', 'ptp_lad_vlnova_delka_unit', 'ptp_led_napeti_value', 'ptp_led_napeti_unit', 'ptp_led_proud_value', 'ptp_led_proud_unit', 'ptp_mas_sirka_value', 'ptp_mas_sirka_unit', 'ptp_nap_pocet_pinu_value', 'ptp_nap_pocet_pinu_unit', 'ptp_nap_roztec_kontaktu_value', 'ptp_nap_roztec_kontaktu_unit', 'ptp_pin_pocet_pinu_value', 'ptp_pin_pocet_pinu_unit', 'ptp_pin_roztec_kontaktu_value', 'ptp_pin_roztec_kontaktu_unit', 'ptp_poj_napeti_value', 'ptp_poj_napeti_unit', 'ptp_poj_proud_value', 'ptp_poj_proud_unit', 'ptp_res_value', 'ptp_res_unit', 'ptp_sch_ifpropustny_proud_value', 'ptp_sch_ifpropustny_proud_unit', 'ptp_sch_vrrm_value', 'ptp_sch_vrrm_unit', 'ptp_tla_pocet_poloh_value', 'ptp_tla_pocet_poloh_unit', 'ptp_tvs_napeti_value', 'ptp_tvs_napeti_unit', 'ptp_tvs_proud_value', 'ptp_tvs_proud_unit', 'ptp_tyr_napeti_value', 'ptp_tyr_napeti_unit', 'ptp_tyr_proud_value', 'ptp_tyr_proud_unit', 'ptp_uni_napeti_vds_value', 'ptp_uni_napeti_vds_unit', 'ptp_uni_proud_ids_value', 'ptp_uni_proud_ids_unit', 'ptp_usm_if_value', 'ptp_usm_if_unit', 'ptp_usm_vr_value', 'ptp_usm_vr_unit', 'ptp_var_napeti_value', 'ptp_var_napeti_unit', 'ptp_var_proud_value', 'ptp_var_proud_unit', 'ptp_zas_pocet_pinu_value', 'ptp_zas_pocet_pinu_unit', 'ptp_zen_vz_value', 'ptp_zen_vz_unit'
+        'ptp_hdd_kapacita_value', 'ptp_hdd_kapacita_unit', 'ptp_bat_kapacita_value', 'ptp_bat_kapacita_unit', 'ptp_bat_napeti_value', 'ptp_bat_napeti_unit', 'ptp_bip_napeti_uce_value', 'ptp_bip_napeti_uce_unit', 'ptp_bip_proud_ice_value', 'ptp_bip_proud_ice_unit', 'ptp_cap_value', 'ptp_cap_unit', 'ptp_dio_napeti_value', 'ptp_dio_napeti_unit', 'ptp_dio_proud_value', 'ptp_dio_proud_unit', 'ptp_dps_pocet_vrstev_value', 'ptp_dps_pocet_vrstev_unit', 'ptp_dps_rozmery_value', 'ptp_dps_rozmery_unit', 'ptp_dps_tloustka_value', 'ptp_dps_tloustka_unit', 'ptp_drb_pocet_clanku_value', 'ptp_drb_pocet_clanku_unit', 'ptp_imp_value', 'ptp_imp_unit', 'ptp_ind_value', 'ptp_ind_unit', 'ptp_lad_napeti_value', 'ptp_lad_napeti_unit', 'ptp_lad_proud_value', 'ptp_lad_proud_unit', 'ptp_lad_vlnova_delka_value', 'ptp_lad_vlnova_delka_unit', 'ptp_led_napeti_value', 'ptp_led_napeti_unit', 'ptp_led_proud_value', 'ptp_led_proud_unit', 'ptp_mas_sirka_value', 'ptp_mas_sirka_unit', 'ptp_nap_pocet_pinu_value', 'ptp_nap_pocet_pinu_unit', 'ptp_nap_roztec_kontaktu_value', 'ptp_nap_roztec_kontaktu_unit', 'ptp_pin_pocet_pinu_value', 'ptp_pin_pocet_pinu_unit', 'ptp_pin_roztec_kontaktu_value', 'ptp_pin_roztec_kontaktu_unit', 'ptp_poj_napeti_value', 'ptp_poj_napeti_unit', 'ptp_poj_proud_value', 'ptp_poj_proud_unit', 'ptp_res_value', 'ptp_res_unit', 'ptp_sch_ifpropustny_proud_value', 'ptp_sch_ifpropustny_proud_unit', 'ptp_sch_vrrm_value', 'ptp_sch_vrrm_unit', 'ptp_tla_pocet_poloh_value', 'ptp_tla_pocet_poloh_unit', 'ptp_tvs_napeti_value', 'ptp_tvs_napeti_unit', 'ptp_tvs_proud_value', 'ptp_tvs_proud_unit', 'ptp_tyr_napeti_value', 'ptp_tyr_napeti_unit', 'ptp_tyr_proud_value', 'ptp_tyr_proud_unit', 'ptp_uni_napeti_vds_value', 'ptp_uni_napeti_vds_unit', 'ptp_uni_proud_ids_value', 'ptp_uni_proud_ids_unit', 'ptp_usm_if_value', 'ptp_usm_if_unit', 'ptp_usm_vr_value', 'ptp_usm_vr_unit', 'ptp_var_napeti_value', 'ptp_var_napeti_unit', 'ptp_var_proud_value', 'ptp_var_proud_unit', 'ptp_zas_pocet_pinu_value', 'ptp_zas_pocet_pinu_unit', 'ptp_zen_vz_value', 'ptp_zen_vz_unit'
     )
     def _compute_value_unit_combined(self):
         for rec in self:
+        
+            value = rec.ptp_hdd_kapacita_value or ''
+            unit = rec.ptp_hdd_kapacita_unit.name if rec.ptp_hdd_kapacita_unit else rec.ptp_hdd_kapacita_unit or ''
+            rec.ptp_hdd_kapacita_full_value = f"{value}{unit}".strip()
 
             value = rec.ptp_bat_kapacita_value or ''
             unit = rec.ptp_bat_kapacita_unit.name if rec.ptp_bat_kapacita_unit else rec.ptp_bat_kapacita_unit or ''
@@ -566,11 +572,6 @@ class ProductTemplate(models.Model):
             unit = rec.ptp_zen_vz_unit.name if rec.ptp_zen_vz_unit else rec.ptp_zen_vz_unit or ''
             rec.ptp_zen_vz_full_value = f"{value}{unit}".strip()
     
-
-    # --------------------------------------------------------------------------------
-    # Metoda pro opravu . za , u typu char
-    # --------------------------------------------------------------------------------
-
     # --------------------------------------------------------------------------------
     # Metoda pro vymazání starých dat, která nepatří k novému typu
     # --------------------------------------------------------------------------------
