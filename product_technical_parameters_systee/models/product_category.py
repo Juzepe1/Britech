@@ -3,14 +3,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
-class ProductTemplate(models.Model):
-    _name = 'product.template'
-    _inherit = 'product.template'
-
-    # Tento modul byl automaticky sestaven podle Excel specifikace, každá komponenta má vlastní prefix podle sloupce B
-
-    categ_component_type = fields.Selection(related='categ_id.ptp_component_type', store=True, readonly=True, string='Typ komponenty kategorie')
-
 class ProductCategory(models.Model):
     _inherit = 'product.category'
 
