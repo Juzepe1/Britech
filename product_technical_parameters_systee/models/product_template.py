@@ -333,7 +333,6 @@ class ProductTemplate(models.Model):
     'ptp_bip_proud_ice_full_value',
     'ptp_bip_typ',
     'ptp_blu_typ',
-    'ptp_cap',
     'ptp_cap_dielectric',
     'ptp_cap_full_value',
     'ptp_cap_tolerance',
