@@ -432,6 +432,7 @@ class ProductTemplate(models.Model):
             for field_name in rec._fields:
                 if field_name.startswith('ptp_') \
                     and not field_name.endswith('_unit') \
+                    and not field_name.endswith('_unit_combined') \
                     and not field_name.endswith('_value'):
 
                     val = getattr(rec, field_name, False)
