@@ -45,7 +45,7 @@ class ProductTemplate(models.Model):
     ptp_note = fields.Text(string='Note')
 
     # Jednotlivá pole DPS
-    ptp_dps_rozmery_value = fields.Char(string='Rozměry DPS')
+    ptp_dps_rozmery_value = fields.Float(string='Rozměry DPS')
     ptp_dps_rozmery_unit = fields.Many2one('ptp.delka.unit', string='Rozměr jednotka')
     ptp_dps_pocet_vrstev_value = fields.Integer(string='Počet vrstev')
     ptp_dps_pocet_vrstev_unit = fields.Char(string='ks')
@@ -79,7 +79,7 @@ class ProductTemplate(models.Model):
     ptp_zas_pocet_pinu_unit = fields.Char(string='pin')
     ptp_zas_montaz = fields.Many2one('ptp.zas.montaz', string='Montáž')
     # Jednotlivá pole CHL
-    ptp_chl_rozmery = fields.Char(string='Rozměry chladiče')
+    ptp_chl_rozmery = fields.Text(string='Rozměry chladiče')
     ptp_chl_material = fields.Many2one('ptp.chl.material', string='Materiál')
     # Jednotlivá pole DRB
     ptp_drb_typ_baterie = fields.Many2one('ptp.drb.typ_baterie', string='Typ baterie')
@@ -142,7 +142,7 @@ class ProductTemplate(models.Model):
     ptp_led_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
     # Jednotlivá pole LAD
     ptp_lad_vlnova_delka_value = fields.Float(string='Vlnová délka')
-    ptp_lad_vlnova_delka_unit = fields.Char(string='nm')
+    ptp_lad_vlnova_delka_unit = fields.Integer(string='nm')
     ptp_lad_proud_value = fields.Float(string='Proud')
     ptp_lad_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
     ptp_lad_napeti_value = fields.Float(string='Napětí')
@@ -194,22 +194,27 @@ class ProductTemplate(models.Model):
     ptp_pas_typ_value = fields.Many2one('ptp.pas.typ', string='Typ pasty')
     ptp_pas_slozeni = fields.Many2one('ptp.pas.slozeni', string='Složení')
     # Pole pro kondenzátory
-    ptp_cap_value = fields.Char(string='Value (C)')
+    ptp_cap_value = fields.Float(string='Value (C)')
     ptp_cap_unit = fields.Many2one('ptp.cap.unit', string='Unit (C)')
-    ptp_cap_voltage_rating = fields.Char(string='Voltage Rating [VDC]')
+    ptp_cap_voltage_rating_value = fields.Float(string='Voltage Rating [VDC]')
+    ptp_cap_voltage_rating_unit = fields.Char(string='V')
     ptp_cap_dielectric = fields.Many2one('ptp.cap.dielectric', string='Dielectric')
-    ptp_cap_tolerance = fields.Char(string='Tolerance [%]')
+    ptp_cap_tolerance_value = fields.Float(string='Tolerance [%]')
+    ptp_cap_tolerance_unit = fields.Char(string='%')
     # Pole pro rezistory
-    ptp_res_value = fields.Char(string='Value (R)')
+    ptp_res_value = fields.Float(string='Value (R)')
     ptp_res_unit = fields.Many2one('ptp.res.unit', string='Unit (R)')
-    ptp_res_power_rating = fields.Char(string='Power Rating')
-    ptp_res_tolerance = fields.Char(string='Tolerance [%]')
-    ptp_res_voltage_rating = fields.Char(string='Voltage Rating [V]')
+    ptp_res_power_rating_value = fields.Float(string='Power Rating')
+    ptp_res_power_rating_unit = fields.Char(string='W')
+    ptp_res_tolerance_value = fields.Float(string='Tolerance [%]')
+    ptp_res_tolerance_unit = fields.Char(string='%')
+    ptp_res_voltage_rating_value = fields.Char(string='Voltage Rating [V]')
+    ptp_cap_voltage_rating_unit = fields.Char(string='V')
     # Pole pro Feritové perličky
-    ptp_imp_value = fields.Char(string="Impedance")
+    ptp_imp_value = fields.Float(string="Impedance")
     ptp_imp_unit = fields.Many2one('ptp.imp.unit', string='Unit (Z)')
     # Pole pro Induktory
-    ptp_ind_value = fields.Char(string="Induktance")
+    ptp_ind_value = fields.Float(string="Induktance")
     ptp_ind_unit = fields.Many2one('ptp.ind.unit', string='Unit (X)')
     # Pole pro Tranzistory
     ptp_tra_polarity = fields.Many2one('ptp.tra.polarity', string='Tranzistor polarity')
@@ -219,7 +224,9 @@ class ProductTemplate(models.Model):
     ptp_bat_napeti_full_value = fields.Char(string="Ptp Bat Napeti Full Value", compute="_compute_all_full_values", store=True)
     ptp_bip_napeti_uce_full_value = fields.Char(string="Ptp Bip Napeti Uce Full Value", compute="_compute_all_full_values", store=True)
     ptp_bip_proud_ice_full_value = fields.Char(string="Ptp Bip Proud Ice Full Value", compute="_compute_all_full_values", store=True)
+    ptp_cap_voltage_rating_full_value = fields.Char(string="Ptp Cap voltage rating Full Value", compute="_compute_all_full_values", store=True)
     ptp_cap_full_value = fields.Char(string="Ptp Cap Full Value", compute="_compute_all_full_values", store=True)
+    ptp_cap_tolerance_full_value = fields.Char(string="Ptp Cap tolerance Full Value", compute="_compute_all_full_values", store=True)
     ptp_dio_napeti_full_value = fields.Char(string="Ptp Dio Napeti Full Value", compute="_compute_all_full_values", store=True)
     ptp_dio_proud_full_value = fields.Char(string="Ptp Dio Proud Full Value", compute="_compute_all_full_values", store=True)
     ptp_dps_pocet_vrstev_full_value = fields.Char(string="Ptp Dps Pocet Vrstev Full Value", compute="_compute_all_full_values", store=True)
@@ -241,6 +248,9 @@ class ProductTemplate(models.Model):
     ptp_poj_napeti_full_value = fields.Char(string="Ptp Poj Napeti Full Value", compute="_compute_all_full_values", store=True)
     ptp_poj_proud_full_value = fields.Char(string="Ptp Poj Proud Full Value", compute="_compute_all_full_values", store=True)
     ptp_res_full_value = fields.Char(string="Ptp Res Full Value", compute="_compute_all_full_values", store=True)
+    ptp_res_power_rating_full_value = fields.Char(string="Ptp Res power rating Full Value", compute="_compute_all_full_values", store=True)
+    ptp_res_tolerance_full_value = fields.Char(string="Ptp Res tolerance Full Value", compute="_compute_all_full_values", store=True)
+    ptp_res_voltage_rating_full_value = fields.Char(string="Ptp Res voltage rating Full Value", compute="_compute_all_full_values", store=True)
     ptp_sch_ifpropustny_proud_full_value = fields.Char(string="Ptp Sch Ifpropustny Proud Full Value", compute="_compute_all_full_values", store=True)
     ptp_sch_vrrm_full_value = fields.Char(string="Ptp Sch Vrrm Full Value", compute="_compute_all_full_values", store=True)
     ptp_tla_pocet_poloh_full_value = fields.Char(string="Ptp Tla Pocet Poloh Full Value", compute="_compute_all_full_values", store=True)
@@ -268,6 +278,8 @@ class ProductTemplate(models.Model):
         'ptp_bip_napeti_uce_value', 'ptp_bip_napeti_uce_unit',
         'ptp_bip_proud_ice_value', 'ptp_bip_proud_ice_unit',
         'ptp_cap_value', 'ptp_cap_unit',
+        'ptp_cap_voltage_rating_value', 'ptp_cap_voltage_rating_unit',
+        'ptp_cap_tolerance_value', 'ptp_cap_tolerance_unit',
         'ptp_dio_napeti_value', 'ptp_dio_napeti_unit',
         'ptp_dio_proud_value', 'ptp_dio_proud_unit',
         'ptp_dps_pocet_vrstev_value', 'ptp_dps_pocet_vrstev_unit',
@@ -289,6 +301,9 @@ class ProductTemplate(models.Model):
         'ptp_poj_napeti_value', 'ptp_poj_napeti_unit',
         'ptp_poj_proud_value', 'ptp_poj_proud_unit',
         'ptp_res_value', 'ptp_res_unit',
+        'ptp_res_power_rating_value', 'ptp_res_power_rating_unit',
+        'ptp_res_tolerance_value', 'ptp_res_tolerance_unit',
+        'ptp_res_voltage_rating_value', 'ptp_res_voltage_rating_unit',
         'ptp_sch_ifpropustny_proud_value', 'ptp_sch_ifpropustny_proud_unit',
         'ptp_sch_vrrm_value', 'ptp_sch_vrrm_unit',
         'ptp_tla_pocet_poloh_value', 'ptp_tla_pocet_poloh_unit',
@@ -335,8 +350,8 @@ class ProductTemplate(models.Model):
     'ptp_blu_typ',
     'ptp_cap_dielectric',
     'ptp_cap_full_value',
-    'ptp_cap_tolerance',
-    'ptp_cap_voltage_rating',
+    'ptp_cap_tolerance_full_value',
+    'ptp_cap_voltage_rating_full_value',
     'ptp_category_type_related',
     'ptp_chl_material',
     'ptp_chl_rozmery',
@@ -387,9 +402,9 @@ class ProductTemplate(models.Model):
     'ptp_poj_typ',
     'ptp_poj_typ_pojistky',
     'ptp_res_full_value',
-    'ptp_res_power_rating',
-    'ptp_res_tolerance',
-    'ptp_res_voltage_rating',
+    'ptp_res_power_rating_full_value',
+    'ptp_res_tolerance_full_value',
+    'ptp_res_voltage_rating_full_value',
     'ptp_sab_rozmer',
     'ptp_sab_typ',
     'ptp_sab_typ_uchyceni',
