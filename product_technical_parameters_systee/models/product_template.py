@@ -23,12 +23,9 @@ def is_float_or_dash(val):
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
-
+    # Obecná pole 
     qr_code = fields.Binary("QR Code", compute="_generate_qr_code", store=True)
-
     ptp_sequence_number = fields.Integer(string="Product Sequence", readonly=True)
-
-
     ptp_category_type_related = fields.Selection(
         related='categ_id.ptp_component_type',
         string='Category Type (related)',
@@ -37,73 +34,179 @@ class ProductTemplate(models.Model):
 
     # Společná pole
     ptp_part_number = fields.Char(string='Part Number')
-    ptp_footprint = fields.Many2one(
-        'ptp.footprint',
-        string='Footprint'
-    )
+    ptp_footprint = fields.Many2one('ptp.footprint', string='Footprint')
     ptp_note = fields.Text(string='Note')
 
+    # Jednotlivá pole DPS
+    ptp_dps_rozmery_value = fields.Char(string='Rozměry DPS')
+    ptp_dps_rozmery_unit = fields.Many2one('ptp.delka.unit', string='Rozměr jednotka')
+    ptp_dps_pocet_vrstev_value = fields.Integer(string='Počet vrstev')
+    ptp_dps_pocet_vrstev_unit = fields.Char(string='ks')
+    ptp_dps_tloustka_value = fields.Float(string='Tloušťka')
+    ptp_dps_tloustka_unit = fields.Many2one('ptp.delka.unit', string='Tloušťka jednotka')
+    ptp_dps_povrchova_uprava = fields.Many2one('ptp.dps.povrchova_uprava', string='Povrchová úprava')
+    ptp_dps_material = fields.Many2one('ptp.dps.material', string='Materiál')
+    # Jednotlivá pole SAB
+    ptp_sab_typ = fields.Many2one('ptp.sab.typ', string='Typ šablony')
+    ptp_sab_rozmer = fields.Text(string='Rozmer')
+    ptp_sab_typ_uchyceni = fields.Many2one('ptp.sab.typ_uchyceni', string='Typ uchycení')
+    # Jednotlivá pole NAP
+    ptp_nap_typ_konektoru = fields.Many2one('ptp.nap.typ_konektoru', string='Typ konektoru')
+    ptp_nap_pocet_pinu_value = fields.Integer(string='Počet pinů')
+    ptp_nap_pocet_pinu_unit = fields.Char(string='pin')
+    ptp_nap_montaz = fields.Many2one('ptp.nap.montaz', string='Montáž')
+    ptp_nap_roztec_kontaktu_value = fields.Float(string='Rozteč kontaktů')
+    ptp_nap_roztec_kontaktu_unit = fields.Many2one('ptp.delka.unit', string='Rozteč kontaktů jednotka')
+    # Jednotlivá pole PIN
+    ptp_pin_roztec_kontaktu_value = fields.Float(string='Rozteč kontaktů')
+    ptp_pin_roztec_kontaktu_unit = fields.Many2one('ptp.delka.unit', string='Rozteč kontaktů jednotka')
+    ptp_pin_typ = fields.Many2one('ptp.pin.typ', string='Typ Pinů')
+    ptp_pin_pocet_pinu_value = fields.Integer(string='Počet pinů')
+    ptp_pin_pocet_pinu_unit = fields.Char(string='pin')
+    ptp_pin_montaz = fields.Many2one('ptp.pin.montaz', string='Montáž')
+    # Jednotlivá pole USB
+    ptp_usb_typ = fields.Many2one('ptp.usb.typ', string='Typ USB')
+    # Jednotlivá pole ZAS
+    ptp_zas_typ_konektoru = fields.Many2one('ptp.zas.typ_konektoru', string='Typ konektoru')
+    ptp_zas_pocet_pinu_value = fields.Integer(string='Počet pinů')
+    ptp_zas_pocet_pinu_unit = fields.Char(string='pin')
+    ptp_zas_montaz = fields.Many2one('ptp.zas.montaz', string='Montáž')
+    # Jednotlivá pole CHL
+    ptp_chl_rozmery = fields.Char(string='Rozměry chladiče')
+    ptp_chl_material = fields.Many2one('ptp.chl.material', string='Materiál')
+    # Jednotlivá pole DRB
+    ptp_drb_typ_baterie = fields.Many2one('ptp.drb.typ_baterie', string='Typ baterie')
+    ptp_drb_pocet_clanku_value = fields.Integer(string='Počet článků')
+    ptp_drb_pocet_clanku_unit = fields.Char(string='ks')
+    ptp_drb_montaz = fields.Many2one('ptp.drb.montaz', string='Montáž')
+    # Jednotlivá pole DRP
+    ptp_drp_typ_pojistky = fields.Many2one('ptp.drp.typ_pojistky', string='Typ pojistky')
+    ptp_drp_montaz = fields.Many2one('ptp.drp.montaz', string='Montáž')
+    # Jednotlivá pole TLA
+    ptp_tla_typ = fields.Many2one('ptp.tla.typ', string='Typ')
+    ptp_tla_pocet_poloh_value = fields.Integer(string='Počet poloh')
+    ptp_tla_pocet_poloh_unit = fields.Char(string='poloh')
+    ptp_tla_montaz = fields.Many2one('ptp.tla.montaz', string='Montáž')
+    # Jednotlivá pole BLU
+    ptp_blu_typ = fields.Many2one('ptp.blu.typ', string='Typ bluetooth a wifi')
+    # Jednotlivá pole DIS
+    ptp_dis_typ = fields.Many2one('ptp.dis.typ', string='Typ Displeje')
+    # Jednotlivá pole PLC
+    ptp_plc_typ = fields.Many2one('ptp.plc.typ', string='Typ PLC')
+    # Jednotlivá pole HDD
+    ptp_hdd_typ = fields.Many2one('ptp.hdd.typ', string='Typ HDD')
+    ptp_hdd_kapacita = fields.Float(string='Kapacita')
+    ptp_hdd_kapacita_unit = fields.Many2one('ptp.hdd.kapacita_unit', string='Kapacita HDD Unit')
+    # Jednotlivá pole SEN
+    ptp_sen_merena_velicina = fields.Many2one('ptp.sen.merena_velicina', string='Měřená veličina senzoru')
+    ptp_sen_typ_vystupu = fields.Many2one('ptp.usb.typ_vystupu', string='Typ výstupu senzoru')
+    # Jednotlivá pole BAT
+    ptp_bat_typ = fields.Many2one('ptp.bat.typ', string='Typ baterie')
+    ptp_bat_napeti_value = fields.Float(string='Napětí baterie')
+    ptp_bat_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    ptp_bat_kapacita_value = fields.Float(string='Kapacita baterie')
+    ptp_bat_kapacita_unit = fields.Many2one('ptp.bat.kapacita_unit', string='Kapacita baterie')
+    ptp_bat_chemie = fields.Many2one('ptp.bat.chemie', string='Chemie')
+    # Jednotlivá pole POJ
+    ptp_poj_proud_value = fields.Float(string='Proud')
+    ptp_poj_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    ptp_poj_napeti_value = fields.Float(string='Napětí')
+    ptp_poj_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    ptp_poj_typ = fields.Many2one('ptp.poj.typ', string='Rychlost pojistky')
+    ptp_poj_typ_pojistky = fields.Many2one('ptp.poj.typ_pojistky', string='Typ pojistky')
+    # Jednotlivá pole TVS
+    ptp_tvs_napeti_value = fields.Float(string='Napětí')
+    ptp_tvs_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    ptp_tvs_proud_value = fields.Float(string='Proud')
+    ptp_tvs_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    ptp_tvs_typ = fields.Many2one('ptp.tvs.typ', string='Typ TVS')
+    ptp_tvs_polarity = fields.Many2one('ptp.tvs.polarity', string='TVS dioda polarity')
+    ptp_tvs_chanel = fields.Many2one('ptp.tvs.chanel', string='TVS dioda počet kanálů')
+    # Jednotlivá pole VAR
+    ptp_var_napeti_value = fields.Float(string='Napětí')
+    ptp_var_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    ptp_var_proud_value = fields.Float(string='Proud')
+    ptp_var_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    # Jednotlivá pole LED
+    ptp_led_barva = fields.Many2one('ptp.led.barva', string='Barva')
+    ptp_led_proud_value = fields.Float(string='Proud')
+    ptp_led_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    ptp_led_napeti_value = fields.Float(string='Napětí')
+    ptp_led_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    # Jednotlivá pole LAD
+    ptp_lad_vlnova_delka_value = fields.Float(string='Vlnová délka')
+    ptp_lad_vlnova_delka_unit = fields.Char(string='nm')
+    ptp_lad_proud_value = fields.Float(string='Proud')
+    ptp_lad_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    ptp_lad_napeti_value = fields.Float(string='Napětí')
+    ptp_lad_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    # Jednotlivá pole DIO
+    ptp_dio_typ = fields.Many2one('ptp.dio.typ', string='Typ')
+    ptp_dio_napeti_value = fields.Float(string='Napětí')
+    ptp_dio_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    ptp_dio_proud_value = fields.Float(string='Proud')
+    ptp_dio_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    # Jednotlivá pole SCH
+    ptp_sch_ifpropustny_proud_value = fields.Float(string='If – propustný proud')
+    ptp_sch_ifpropustny_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    ptp_sch_vrrm_value = fields.Float(string='Vrrm – opakované závěrné napětí')
+    ptp_sch_vrrm_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    # Jednotlivá pole USM
+    ptp_usm_if_value = fields.Float(string='If – propustný proud')
+    ptp_usm_if_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    ptp_usm_vr_value = fields.Float(string='Vr – závěrné napětí')
+    ptp_usm_vr_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    # Jednotlivá pole ZEN
+    ptp_zen_vz_value = fields.Float(string='Vz – Zenerovo napětí')
+    ptp_zen_vz_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    # Jednotlivá pole INT
+    ptp_int_typ = fields.Many2one('ptp.int.typ', string='Typ Integrovaného obvodu')
+    ptp_int_funkce = fields.Text(string='Funkce')
+    # Jednotlivá pole TYR
+    ptp_tyr_napeti_value = fields.Float(string='Napětí tyristoru')
+    ptp_tyr_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    ptp_tyr_proud_value = fields.Float(string='Proud tyristoru')
+    ptp_tyr_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    # Jednotlivá pole BIP
+    ptp_bip_typ = fields.Many2one('ptp.bip.typ', string='Typ Bipolárního tranzistoru')
+    ptp_bip_napeti_uce_value = fields.Float(string='Napetí Uce')
+    ptp_bip_napeti_uce_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    ptp_bip_proud_ice_value = fields.Float(string='Proud Ice')
+    ptp_bip_proud_ice_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    # Jednotlivá pole UNI
+    ptp_uni_typ_value = fields.Many2one('ptp.uni.typ', string='Typ Unipolárního tranzistoru')
+    ptp_uni_napeti_vds_value = fields.Float(string='Napeti Vds')
+    ptp_uni_napeti_vds_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    ptp_uni_proud_ids_value = fields.Float(string='Proud Ids')
+    ptp_uni_proud_ids_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    # Jednotlivá pole MAS
+    ptp_mas_sirka_value = fields.Float(string='Šířka')
+    ptp_mas_sirka_unit = fields.Many2one('ptp.delka.unit', string='Šířka jednotka')
+    ptp_mas_material = fields.Many2one('ptp.mas.material', string='Materiál')
+    # Jednotlivá pole PAS
+    ptp_pas_typ_value = fields.Many2one('ptp.pas.typ', string='Typ pasty')
+    ptp_pas_slozeni = fields.Many2one('ptp.pas.slozeni', string='Složení')
     # Pole pro kondenzátory
     ptp_cap_value = fields.Char(string='Value (C)')
-    ptp_cap_unit = fields.Many2one(
-        'ptp.cap.unit',
-        string='Unit (C)'
-    )
+    ptp_cap_unit = fields.Many2one('ptp.cap.unit', string='Unit (C)')
     ptp_cap_voltage_rating = fields.Char(string='Voltage Rating [VDC]')
-    ptp_cap_dielectric = fields.Many2one(
-        'ptp.cap.dielectric',
-        string='Dielectric'
-    )
+    ptp_cap_dielectric = fields.Many2one('ptp.cap.dielectric', string='Dielectric')
     ptp_cap_tolerance = fields.Char(string='Tolerance [%]')
-
     # Pole pro rezistory
     ptp_res_value = fields.Char(string='Value (R)')
-    ptp_res_unit = fields.Many2one(
-        'ptp.res.unit',
-        string='Unit (R)'
-    )
+    ptp_res_unit = fields.Many2one('ptp.res.unit', string='Unit (R)')
     ptp_res_power_rating = fields.Char(string='Power Rating')
     ptp_res_tolerance = fields.Char(string='Tolerance [%]')
     ptp_res_voltage_rating = fields.Char(string='Voltage Rating [V]')
-
     # Pole pro Feritové perličky
     ptp_imp_value = fields.Char(string="Impedance")
-    ptp_imp_unit = fields.Many2one(
-        'ptp.imp.unit',
-        string='Unit (Z)'
-    )
+    ptp_imp_unit = fields.Many2one('ptp.imp.unit', string='Unit (Z)')
     # Pole pro Induktory
     ptp_ind_value = fields.Char(string="Induktance")
-    ptp_ind_unit = fields.Many2one(
-        'ptp.ind.unit',
-        string='Unit (X)'
-    )
-
+    ptp_ind_unit = fields.Many2one('ptp.ind.unit', string='Unit (X)')
     # Pole pro Tranzistory
-    ptp_tran_polarity = fields.Many2one(
-        'ptp.tran.polarity',
-        string='Tranzistor polarity'
-    )
-    ptp_tran_type = fields.Many2one(
-        'ptp.tran.type',
-        string='Tranzistor typ'
-    )
-
-    # Pole pro TVS diody
-    ptp_tvs_polarity = fields.Many2one(
-        'ptp.tvs.polarity',
-        string='TVS dioda polarity'
-    )
-    ptp_tvs_chanel = fields.Many2one(
-        'ptp.tvs.chanel',
-        string='TVS dioda počet kanálů'
-    )
-
-    # Pole pro LED
-    ptp_led_color = fields.Many2one(
-        'ptp.led.color',
-        string='LED barva'
-    )
+    ptp_tra_polarity = fields.Many2one('ptp.tra.polarity', string='Tranzistor polarity')
+    ptp_tra_type = fields.Many2one('ptp.tra.type', string='Tranzistor typ')
 
     # Počítané pole: sloučená hodnota + jednotka
     ptp_value_unit_combined = fields.Char(
@@ -112,7 +215,9 @@ class ProductTemplate(models.Model):
         store=True,
         index=True
     )
-
+    # ------------------------------------------
+    # QR kody
+    # ------------------------------------------
     @api.depends('default_code')
     def _compute_qr_code(self):
         """ Automaticky generuje QR kód při změně `default_code`. """
@@ -158,6 +263,10 @@ class ProductTemplate(models.Model):
             }
         }
 
+    # ------------------------------------------
+    # Přenos description do SALE
+    # ------------------------------------------
+
     @api.depends('ptp_value_unit_combined')
     def _compute_description_sale(self):
         """ Automaticky aktualizuje `description_sale` při změně `ptp_value_unit_combined` """
@@ -179,104 +288,59 @@ class ProductTemplate(models.Model):
                 # Aktualizace popisu
                 rec.description_sale = f"{ptp_value}\n{user_text}".strip()
 
-    @api.depends(
-        'categ_id.ptp_component_type',
-        'ptp_cap_value', 'ptp_cap_unit', 'ptp_cap_voltage_rating','ptp_cap_dielectric', 'ptp_cap_tolerance',
-        'ptp_res_value', 'ptp_res_unit', 'ptp_res_power_rating', 'ptp_res_tolerance', 'ptp_res_voltage_rating',
-        'ptp_imp_value', 'ptp_imp_unit',
-        'ptp_ind_value', 'ptp_ind_unit',
-        'ptp_tran_polarity', 'ptp_tran_type',
-        'ptp_tvs_polarity', 'ptp_tvs_chanel',
-        'ptp_led_color'
-    )
-    def _compute_value_unit_combined(self):
-        for rec in self:
-            if not rec.categ_id:
-                rec.ptp_value_unit_combined = False
-                continue
+    # ------------------------------------------
+    # Sloučené hodnoty a kontroly
+    # ------------------------------------------
 
-            category_type = getattr(rec.categ_id, "ptp_component_type", "")
-            value_unit_map = {
-                'capacitor': [
-                    ('ptp_cap_value', 'ptp_cap_unit'),
-                    ('ptp_cap_voltage_rating', 'V'),
-                    ('ptp_cap_dielectric', None),
-                    ('ptp_cap_tolerance', '%'),
-                ],
-                'resistor': [
-                    ('ptp_res_value', 'ptp_res_unit'),
-                    ('ptp_res_power_rating', 'W'),
-                    ('ptp_res_voltage_rating', 'V'),
-                    ('ptp_res_tolerance', '%'),
-                ],
-                'ferrite_bead': [
-                    ('ptp_imp_value', 'ptp_imp_unit'),
-                ],
-                'inductor': [
-                    ('ptp_ind_value', 'ptp_ind_unit'),
-                ],
-                'transistor': [
-                    ('ptp_tran_polarity', None),
-                    ('ptp_tran_type', None),
-                ],
-                'tvs_diode': [
-                    ('ptp_tvs_polarity', None),
-                    ('ptp_tvs_chanel', None),
-                ],
-                'led': [
-                    ('ptp_led_color', None),
-                ],
-            }
+@api.depends('categ_id.ptp_component_type')
+def _compute_value_unit_combined(self):
+    for rec in self:
+        ctype = rec.categ_id.ptp_component_type if rec.categ_id else ''
+        combined = []
 
-            combined_values = []
-            if category_type in value_unit_map:
-                for value_field, unit_field in value_unit_map[category_type]:
-                    value = getattr(rec, value_field, "") or ""
-                    unit_name = ""
+        if not ctype:
+            rec.ptp_value_unit_combined = False
+            continue
 
-                    # Získání správné jednotky
-                    if unit_field:
-                        unit = getattr(rec, unit_field, False)
-                        if unit and hasattr(unit, "name"):  # Kontrola, zda má `.name`
-                            unit_name = unit.name or ""
-                        elif isinstance(unit_field, str):  # Pevně definované jednotky ('V', 'W', '%')
-                            unit_name = unit_field
+        prefix = f"ptp_{ctype}_"
 
-                    # Pokud je hodnota Many2one, převedeme na `.name`
-                    if isinstance(value, models.Model):
-                        value = value.name or ""
+        for fname in rec._fields:
+            if fname.startswith(prefix) and fname.endswith('_value'):
+                val = getattr(rec, fname)
+                if val in [False, '', None]:
+                    continue
 
-                    value = str(value).strip()
-                    unit_name = str(unit_name).strip()
+                unit_name = ''
+                # pokusíme se najít odpovídající _unit pole
+                unit_field = fname.replace('_value', '_unit')
+                if unit_field in rec._fields:
+                    unit_val = getattr(rec, unit_field)
+                    if isinstance(unit_val, models.BaseModel):
+                        unit_name = unit_val.name or ''
+                    elif isinstance(unit_val, str):
+                        unit_name = unit_val
 
-                    # Správné spojení hodnoty a jednotky
-                    if value and unit_name:
-                        combined_values.append(f"{value}{unit_name}")
-                    elif value:
-                        combined_values.append(value)
-            # Kombinujeme všechny hodnoty do jednoho řetězce
-            rec.ptp_value_unit_combined = " ".join(combined_values) if combined_values else False
-        self.env.cr.flush()
-        self._compute_description_sale()
+                # spojení bez mezery mezi hodnotou a jednotkou
+                combined.append(f"{val}{unit_name}" if unit_name else f"{val}")
 
-    @api.onchange(
-        'ptp_cap_value', 'ptp_cap_tolerance', 'ptp_cap_voltage_rating',
-        'ptp_res_value', 'ptp_res_tolerance', 'ptp_res_voltage_rating',
-        'ptp_res_power_rating'
-    )
+        rec.ptp_value_unit_combined = ' '.join(combined) if combined else False
+    # --------------------------------------------------------------------------------
+    # Metoda pro opravu . za , u typu char
+    # --------------------------------------------------------------------------------
+    @api.onchange(*[
+        fname for fname, field in ProductTemplate._fields.items()
+        if isinstance(field, fields.Char)
+    ])
     def _onchange_replace_dot_with_comma(self):
         """
-        Pokud uživatel zadá desetinnou tečku, automaticky ji nahradíme za čárku.
+        Pokud uživatel zadá desetinnou tečku v textových polích, nahradíme ji čárkou.
         """
-        fields_to_clean = [
-            'ptp_cap_value', 'ptp_cap_tolerance', 'ptp_cap_voltage_rating',
-            'ptp_res_value', 'ptp_res_tolerance', 'ptp_res_voltage_rating',
-            'ptp_res_power_rating'
-        ]
         for rec in self:
-            for field_name in fields_to_clean:
+            for field_name, field in rec._fields.items():
+                if not isinstance(field, fields.Char):
+                    continue
                 val = getattr(rec, field_name)
-                if val and val.strip() != '-' and '.' in val:
+                if isinstance(val, str) and '.' in val and val.strip() not in ('', '-'):
                     setattr(rec, field_name, val.replace('.', ','))
 
     # --------------------------------------------------------------------------------
@@ -284,53 +348,15 @@ class ProductTemplate(models.Model):
     # --------------------------------------------------------------------------------
     def _clear_fields_for_type(self, new_type):
         """
-        Podle `new_type` smaže pole kondenzátoru / rezistoru, 
-        pokud se k novému typu nehodí.
+        Vymaže všechna pole začínající na 'ptp_' kromě 'ptp_part_number'.
         """
         for rec in self:
-            rec.ptp_part_number = False
-            rec.ptp_footprint = False
-            rec.ptp_note = False
-            rec.ptp_value_unit_combined = False
-            # Není capacitor => vymažeme kondenzátorová pole
-            if new_type != 'capacitor':
-                rec.ptp_cap_value = False
-                rec.ptp_cap_unit = False
-                rec.ptp_cap_voltage_rating = False
-                rec.ptp_cap_dielectric = False
-                rec.ptp_cap_tolerance = False
-
-            # Není resistor => vymažeme rezistorová pole
-            if new_type != 'resistor':
-                rec.ptp_res_value = False
-                rec.ptp_res_unit = False
-                rec.ptp_res_power_rating = False
-                rec.ptp_res_tolerance = False
-                rec.ptp_res_voltage_rating = False
-
-            # Není ferrite_bead => vymažeme ferrite_bead pole
-            if new_type != 'ferrite_bead':
-                rec.ptp_imp_value = False
-                rec.ptp_imp_unit = False
-
-            # Není inductor => vymažeme inductor pole
-            if new_type != 'inductor':
-                rec.ptp_ind_value = False
-                rec.ptp_ind_unit = False
-
-            # Není transistor => vymažeme transistor pole
-            if new_type != 'transistor':
-                rec.ptp_tran_polarity = False
-                rec.ptp_tran_type = False
-
-            # Není tvs_diode => vymažeme tvs_diode pole
-            if new_type != 'tvs_diode':
-                rec.ptp_tvs_polarity = False
-                rec.ptp_tvs_chanel = False
-
-            # Není led => vymažeme led pole
-            if new_type != 'led':
-                rec.ptp_led_color = False
+            for field_name in rec._fields:
+                if field_name.startswith('ptp_') and field_name != 'ptp_part_number':
+                    try:
+                        setattr(rec, field_name, False)
+                    except Exception:
+                        pass  # některá pole mohou být readonly nebo computed
 
     # --------------------------------------------------------------------------------
     # Onchange: při změně kategorie v detailu produktu 
@@ -344,79 +370,37 @@ class ProductTemplate(models.Model):
     # --------------------------------------------------------------------------------
     # Validace: zkontroluje jen pole relevantní k finálnímu typu
     # --------------------------------------------------------------------------------
-    @api.constrains(
-        'ptp_cap_value', 'ptp_cap_unit', 'ptp_cap_voltage_rating',
-        'ptp_cap_dielectric', 'ptp_cap_tolerance',
-        'ptp_res_value', 'ptp_res_unit', 'ptp_res_power_rating',
-        'ptp_res_tolerance', 'ptp_res_voltage_rating', 
-        'ptp_part_number', 'ptp_footprint'
-    )
+    @api.constrains('ptp_part_number')
     def _check_required_fields(self):
         for rec in self:
-            ctype = rec.categ_id.ptp_component_type
-            # Pokud typ není vyplněn (False) nebo je 'other', 
-            # žádné speciální validace nepotřebujeme.
-            if not ctype:
+            ctype = rec.categ_id.ptp_component_type if rec.categ_id else None
+            if not ctype or ctype == 'other':
                 continue
 
-            if ctype == 'other':
-                # Zde definujte, co je povinné u Other
-                if not rec.ptp_part_number:
-                    raise ValidationError("U jingo je pole 'ptp_part_number' povinné.")
-                continue
+            if not rec.ptp_part_number:
+                raise ValidationError("Pole 'Part Number' je povinné.")
 
-            if ctype == 'capacitor':
-                # Zde definujte, co je povinné u kondenzátoru
-                if not rec.ptp_part_number:
-                    raise ValidationError("U kondenzátoru je pole 'ptp_part_number' povinné.")
-                if not rec.ptp_footprint:
-                    raise ValidationError("U kondenzátoru je pole 'ptp_footprint' povinné.")
-                if not rec.ptp_cap_value:
-                    raise ValidationError("U kondenzátoru je pole 'cap_value' povinné.")
-                if not rec.ptp_cap_unit:
-                    raise ValidationError("U kondenzátoru je pole 'cap_unit' povinné.")
-                if not rec.ptp_cap_dielectric:
-                    raise ValidationError("U kondenzátoru je pole 'cap_dielectric' povinné.")
-                # Další logika validace může následovat...
+            prefix = f'ptp_{ctype}_'
+            for field_name in rec._fields:
+                if not field_name.startswith(prefix):
+                    continue
+                if field_name in ('ptp_note', 'ptp_value_unit_combined'):
+                    continue
+                field = rec._fields[field_name]
+                value = getattr(rec, field_name)
 
-            elif ctype == 'resistor':
-                # Zde definujte, co je povinné u rezistoru
-                if not rec.ptp_part_number:
-                    raise ValidationError("U rezistoru je pole 'ptp_part_number' povinné.")
-                if not rec.ptp_footprint:
-                    raise ValidationError("U rezistoru je pole 'ptp_footprint' povinné.")
-                if not rec.ptp_res_value:
-                    raise ValidationError("U rezistoru je pole 'res_value' povinné.")
-                if not rec.ptp_res_unit:
-                    raise ValidationError("U rezistoru je pole 'res_unit' povinné.")
-                # Další logika validace může následovat...
+                # Many2one: kontrola, že záznam je vyplněn
+                if isinstance(field, fields.Many2one):
+                    if not value:
+                        raise ValidationError(f"Pole '{field.string}' je povinné.")
+                # Float / Char / Integer
+                elif isinstance(field, (fields.Float, fields.Char, fields.Integer)):
+                    if value in (None, '', 0):
+                        raise ValidationError(f"Pole '{field.string}' je povinné.")
 
-            elif ctype == 'ferrite_bead':
-                # Zde definujte, co je povinné u rezistoru
-                if not rec.ptp_part_number:
-                    raise ValidationError("U feritu je pole 'ptp_part_number' povinné.")
-
-            elif ctype == 'inductor':
-                # Zde definujte, co je povinné u rezistoru
-                if not rec.ptp_part_number:
-                    raise ValidationError("U induktoru je pole 'ptp_part_number' povinné.")
-
-            elif ctype == 'transistor':
-                # Zde definujte, co je povinné u rezistoru
-                if not rec.ptp_part_number:
-                    raise ValidationError("U tranzistoru je pole 'ptp_part_number' povinné.")
-
-            elif ctype == 'tvs_diode':
-                # Zde definujte, co je povinné u rezistoru
-                if not rec.ptp_part_number:
-                    raise ValidationError("U TVS diod je pole 'ptp_part_number' povinné.")
-
-            elif ctype == 'led':
-                # Zde definujte, co je povinné u rezistoru
-                if not rec.ptp_part_number:
-                    raise ValidationError("U led je pole 'ptp_part_number' povinné.")
-
-
+    # --------------------------------------------------------------------------------
+    # Generování interní reference
+    # --------------------------------------------------------------------------------
     def _ensure_default_code(self, vals, new_sequence=False):
         """
         Vždy vygeneruje `default_code`. Pokud `new_sequence=True`, vytvoří nové číslo sekvence,
@@ -522,77 +506,320 @@ class ProductTemplate(models.Model):
 
 # --- Definice referenčních modelů pro many2one pole ---
 
-class PtpFootprint(models.Model):
-    _name = 'ptp.footprint'
-    _description = 'Systee Footprint'
 
-    name = fields.Char(string="Footprint", required=True)
+class PtpBatChemie(models.Model):
+    _name = 'ptp.bat.chemie'
+    _description = 'Chemie baterie'
+    name = fields.Char(string='Name', required=True)
 
 
-class PtpCapUnit(models.Model):
-    _name = 'ptp.cap.unit'
-    _description = 'Capacitor Unit'
+class PtpBatKapacitaUnit(models.Model):
+    _name = 'ptp.bat.kapacita_unit'
+    _description = 'Kapacita baterie unit'
+    name = fields.Char(string='Name', required=True)
 
-    name = fields.Char(string="Unit", required=True)
+
+class PtpBatTyp(models.Model):
+    _name = 'ptp.bat.typ'
+    _description = 'Typ baterie'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpBipTyp(models.Model):
+    _name = 'ptp.bip.typ'
+    _description = 'Typ bipolárního tranzistoru'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpBluTyp(models.Model):
+    _name = 'ptp.blu.typ'
+    _description = 'Typ bluetooth wifi'
+    name = fields.Char(string='Name', required=True)
 
 
 class PtpCapDielectric(models.Model):
     _name = 'ptp.cap.dielectric'
-    _description = 'Capacitor Dielectric'
+    _description = 'Dielectric'
+    name = fields.Char(string='Name', required=True)
 
-    name = fields.Char(string="Dielectric", required=True)
+
+class PtpCapUnit(models.Model):
+    _name = 'ptp.cap.unit'
+    _description = 'Unit (C)'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpChlMaterial(models.Model):
+    _name = 'ptp.chl.material'
+    _description = 'Materiál chladiče'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpDelkaUnit(models.Model):
+    _name = 'ptp.delka.unit'
+    _description = 'Unit délky'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpDioTyp(models.Model):
+    _name = 'ptp.dio.typ'
+    _description = 'Typ diody'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpDisTyp(models.Model):
+    _name = 'ptp.dis.typ'
+    _description = 'Typ displeje'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpDpsMaterial(models.Model):
+    _name = 'ptp.dps.material'
+    _description = 'Material DPS'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpDpsPovrchovaUprava(models.Model):
+    _name = 'ptp.dps.povrchova_uprava'
+    _description = 'Povrchova uprava'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpDrbMontaz(models.Model):
+    _name = 'ptp.drb.montaz'
+    _description = 'Montaz držáku'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpDrbTypBaterie(models.Model):
+    _name = 'ptp.drb.typ_baterie'
+    _description = 'Typ držáku baterie'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpDrpMontaz(models.Model):
+    _name = 'ptp.drp.montaz'
+    _description = 'Montaz držáku pojistky'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpDrpTypPojistky(models.Model):
+    _name = 'ptp.drp.typ_pojistky'
+    _description = 'Typ držáku pojistky'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpFootprint(models.Model):
+    _name = 'ptp.footprint'
+    _description = 'Footprint'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpHddKapacitaUnit(models.Model):
+    _name = 'ptp.hdd.kapacita_unit'
+    _description = 'Kapacita HDD unit'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpHddTyp(models.Model):
+    _name = 'ptp.hdd.typ'
+    _description = 'Typ HDD'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpImpUnit(models.Model):
+    _name = 'ptp.imp.unit'
+    _description = 'Unit (Z)'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpIndUnit(models.Model):
+    _name = 'ptp.ind.unit'
+    _description = 'Unit (X)'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpIntTyp(models.Model):
+    _name = 'ptp.int.typ'
+    _description = 'Typ integrovaného obvodu'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpMasMaterial(models.Model):
+    _name = 'ptp.mas.material'
+    _description = 'Material pásky'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpNapMontaz(models.Model):
+    _name = 'ptp.nap.montaz'
+    _description = 'Montaz napájecích konektorů'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpNapTypKonektoru(models.Model):
+    _name = 'ptp.nap.typ_konektoru'
+    _description = 'Typ napájecího konektoru'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpNapetiUnit(models.Model):
+    _name = 'ptp.napeti.unit'
+    _description = 'Unit (V)'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpPasSlozeni(models.Model):
+    _name = 'ptp.pas.slozeni'
+    _description = 'Slozeni pasty'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpPasTyp(models.Model):
+    _name = 'ptp.pas.typ'
+    _description = 'Typ pasty'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpPinMontaz(models.Model):
+    _name = 'ptp.pin.montaz'
+    _description = 'Montaz pin'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpPinTyp(models.Model):
+    _name = 'ptp.pin.typ'
+    _description = 'Typ pin'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpPlcTyp(models.Model):
+    _name = 'ptp.plc.typ'
+    _description = 'Typ PLC'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpPojTyp(models.Model):
+    _name = 'ptp.poj.typ'
+    _description = 'Rychlost pojistky'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpPojTypPojistky(models.Model):
+    _name = 'ptp.poj.typ_pojistky'
+    _description = 'Typ pojistky'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpProudUnit(models.Model):
+    _name = 'ptp.proud.unit'
+    _description = 'Unit (I)'
+    name = fields.Char(string='Name', required=True)
 
 
 class PtpResUnit(models.Model):
     _name = 'ptp.res.unit'
-    _description = 'Resistor Unit'
+    _description = 'Unit (R)'
+    name = fields.Char(string='Name', required=True)
 
-    name = fields.Char(string="Unit", required=True)
 
-class PtpImpUnit(models.Model):
-    _name = 'ptp.imp.unit'
-    _description = 'Ferrite Bead Unit'
+class PtpSabTyp(models.Model):
+    _name = 'ptp.sab.typ'
+    _description = 'Typ šablony'
+    name = fields.Char(string='Name', required=True)
 
-    name = fields.Char(string="Impedance Unit", required=True)
 
-# --- Induktory ---
-class PtpIndUnit(models.Model):
-    _name = 'ptp.ind.unit'
-    _description = 'Inductor Unit'
+class PtpSabTypUchyceni(models.Model):
+    _name = 'ptp.sab.typ_uchyceni'
+    _description = 'Typ uchyceni šablony'
+    name = fields.Char(string='Name', required=True)
 
-    name = fields.Char(string="Inductance Unit", required=True)
 
-# --- Tranzistory ---
+class PtpSchVrrm(models.Model):
+    _name = 'ptp.sch.vrrm'
+    _description = 'Vrrm'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpSenMerenaVelicina(models.Model):
+    _name = 'ptp.sen.merena_velicina'
+    _description = 'Merena velicina senzoru'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpTlaMontaz(models.Model):
+    _name = 'ptp.tla.montaz'
+    _description = 'Montaz tlačítka'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpTlaTyp(models.Model):
+    _name = 'ptp.tla.typ'
+    _description = 'Typ tlačítka'
+    name = fields.Char(string='Name', required=True)
+
+
 class PtpTranPolarity(models.Model):
     _name = 'ptp.tran.polarity'
-    _description = 'Transistor Polarity'
+    _description = 'Polarita tranzistoru'
+    name = fields.Char(string='Name', required=True)
 
-    name = fields.Char(string="Polarity", required=True)
 
 class PtpTranType(models.Model):
     _name = 'ptp.tran.type'
-    _description = 'Transistor Type'
+    _description = 'Type tranzistoru'
+    name = fields.Char(string='Name', required=True)
 
-    name = fields.Char(string="Type", required=True)
-
-# --- TVS diody ---
-class PtpTvsPolarity(models.Model):
-    _name = 'ptp.tvs.polarity'
-    _description = 'TVS Diode Polarity'
-
-    name = fields.Char(string="Polarity", required=True)
 
 class PtpTvsChannel(models.Model):
     _name = 'ptp.tvs.chanel'
-    _description = 'TVS Diode Channel Count'
-
-    name = fields.Char(string="Channel Count", required=True)
-
-# --- LED ---
-class PtpLedColor(models.Model):
-    _name = 'ptp.led.color'
-    _description = 'LED Color'
-
-    name = fields.Char(string="Color", required=True)
+    _description = 'Chanel TVS'
+    name = fields.Char(string='Name', required=True)
 
 
+class PtpTvsPolarity(models.Model):
+    _name = 'ptp.tvs.polarity'
+    _description = 'Polarita TVS'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpTvsTyp(models.Model):
+    _name = 'ptp.tvs.typ'
+    _description = 'Typ TVS'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpUniTyp(models.Model):
+    _name = 'ptp.uni.typ'
+    _description = 'Typ unipolárního tranzistoru'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpUsbTyp(models.Model):
+    _name = 'ptp.usb.typ'
+    _description = 'Typ USB'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpUsbTypVystupu(models.Model):
+    _name = 'ptp.usb.typ_vystupu'
+    _description = 'Typ USB vystupu'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpZasMontaz(models.Model):
+    _name = 'ptp.zas.montaz'
+    _description = 'Montaz zásuvek'
+    name = fields.Char(string='Name', required=True)
+
+
+class PtpZasTypKonektoru(models.Model):
+    _name = 'ptp.zas.typ_konektoru'
+    _description = 'Typ zásuvky konektoru'
+    name = fields.Char(string='Name', required=True')
+
+
+class PtpLedBarva(models.Model):
+    _name = 'ptp.led.barva'
+    _description = 'Barva LED'
+    name = fields.Char(string='Name', required=True)
