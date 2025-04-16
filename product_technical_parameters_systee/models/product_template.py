@@ -605,20 +605,20 @@ class ProductTemplate(models.Model):
 
             for field_name, field_obj in rec._fields.items():
                 if field_name.startswith(prefix) and not field_name.endswith('_full_value'):
-                	value = getattr(rec, field_name, False)
+                    value = getattr(rec, field_name, False)
 
-                	if isinstance(value, models.BaseModel):  # Many2one
-                    	value = value.name or ''
-                	elif isinstance(value, (int, float)):
-                    	value = str(value)
-                	elif not value:
-                    	continue
+                    if isinstance(value, models.BaseModel):  # Many2one
+                        value = value.name or ''
+                    elif isinstance(value, (int, float)):
+                        value = str(value)
+                    elif not value:
+                        continue
 
-                	value = str(value).strip()
-                	if value:
-                    	combined_values.append(value)
+                    value = str(value).strip()
+                    if value:
+                        combined_values.append(value)
 
-        	rec.ptp_value_unit_combined = ' '.join(combined_values) if combined_values else False
+            rec.ptp_value_unit_combined = ' '.join(combined_values) if combined_values else False
     # --------------------------------------------------------------------------------
     # Validace: zkontroluje jen pole relevantní k finálnímu typu
     # --------------------------------------------------------------------------------
