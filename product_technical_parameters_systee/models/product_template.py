@@ -216,7 +216,7 @@ class ProductTemplate(models.Model):
         index=True
     )
 
-        @api.depends('default_code')
+    @api.depends('default_code')
     def _compute_qr_code(self):
         """ Automaticky generuje QR kód při změně `default_code`. """
         for rec in self:
