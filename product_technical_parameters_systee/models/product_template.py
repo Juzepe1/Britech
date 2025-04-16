@@ -597,7 +597,7 @@ class ProductTemplate(models.Model):
         self.ptp_category_type_related = new_type
         
         
-	@api.depends('ptp_category_type_related', *[field_name for field_name in product_template._fields if field_name.startswith('ptp_')])
+	@api.depends('ptp_category_type_related')
 	def _compute_value_unit_combined_desc(self):
     	for rec in self:
         	prefix = f'ptp_{rec.ptp_category_type_related}_'
