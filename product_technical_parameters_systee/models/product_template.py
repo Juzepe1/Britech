@@ -31,6 +31,13 @@ class ProductTemplate(models.Model):
         string='Category Type (related)',
         store=False  # nepotřebujeme ukládat do DB
     )
+    # Počítané pole: sloučená hodnota + jednotka
+    ptp_value_unit_combined = fields.Char(
+        string='Description',
+        compute='_compute_value_unit_combined',
+        store=True,
+        index=True
+    )
 
     # Společná pole
     ptp_part_number = fields.Char(string='Part Number')
@@ -250,16 +257,6 @@ class ProductTemplate(models.Model):
     ptp_zas_pocet_pinu_full_value = fields.Char(string="Ptp Zas Pocet Pinu Full Value", compute="_compute_all_full_values", store=True)
     ptp_zen_vz_full_value = fields.Char(string="Ptp Zen Vz Full Value", compute="_compute_all_full_values", store=True)
 
-
-    # Počítané pole: sloučená hodnota + jednotka
-    ptp_value_unit_combined = fields.Char(
-        string='Description',
-        compute='_compute_value_unit_combined',
-        store=True,
-        index=True
-    )
-    
-    
 
     @api.depends(
         'ptp_bat_kapacita_value', 'ptp_bat_kapacita_unit',
@@ -569,40 +566,39 @@ class ProductTemplate(models.Model):
             unit = rec.ptp_zen_vz_unit.name if rec.ptp_zen_vz_unit else rec.ptp_zen_vz_unit or ''
             rec.ptp_zen_vz_full_value = f"{value}{unit}".strip()
             
-            for rec in self:
-                combined = []
+            combined = []
 
-                for field_name, field in rec._fields.items():
-                    # Zajímá nás jen "ptp_" prefix, ale vynecháme pár výjimek
-                    if not field_name.startswith('ptp_'):
-                        continue
-                    if field_name in ('ptp_value_unit_combined', 'ptp_part_number', 'ptp_note', 'ptp_footprint', 'ptp_sequence_number'):
-                        continue
-                    if field_name.endswith('_full_value'):
-                        continue
+            for field_name, field in rec._fields.items():
+                if not field_name.startswith('ptp_'):
+                    continue
+                if field_name in (
+        'ptp_value_unit_combined', 'ptp_part_number', 'ptp_note',
+        'ptp_footprint', 'ptp_sequence_number'
+                ):
+                    continue
+                if field_name.endswith('_full_value'):
+                    continue
 
-                    val = getattr(rec, field_name, False)
-                    if val in (None, False, '', 0):
-                        continue
+                val = getattr(rec, field_name, False)
+                if val in (None, False, '', 0):
+                    continue
 
-                    display_value = ''
-                    try:
-                        if isinstance(field, fields.Many2one):
-                            # Bezpečný přístup na .name
-                            if isinstance(val, models.BaseModel):
-                                display_value = val.name or ''
-                        elif isinstance(field, (fields.Char, fields.Text)):
-                            display_value = str(val).strip()
-                        elif isinstance(field, (fields.Integer, fields.Float)):
-                            display_value = str(val)
-                    except Exception:
-                        # Bezpečnostní fallback
-                        continue
+                display_value = ''
+                try:
+                    if isinstance(field, fields.Many2one):
+                        if isinstance(val, models.BaseModel):
+                            display_value = val.name or ''
+                    elif isinstance(field, (fields.Char, fields.Text)):
+                        display_value = str(val).strip()
+                    elif isinstance(field, (fields.Integer, fields.Float)):
+                        display_value = str(val)
+                except Exception:
+                    continue
 
-                    if display_value:
-                        combined.append(display_value)
+                if display_value:
+                    combined.append(display_value)
 
-                rec.ptp_value_unit_combined = ' '.join(combined) if combined else False
+            rec.ptp_value_unit_combined = ' '.join(combined) if combined else False
     # --------------------------------------------------------------------------------
     # Metoda pro opravu . za , u typu char
     # --------------------------------------------------------------------------------
