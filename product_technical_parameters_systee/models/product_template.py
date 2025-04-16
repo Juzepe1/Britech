@@ -425,27 +425,22 @@ class ProductTemplate(models.Model):
     'ptp_zen_vz_full_value',
     )              
 
-    def get_non_full_value_ptp_fields(model):
-        ptp_fields = []
-        for field_name in model._fields:
-            if field_name.startswith('ptp_') \
-                and not field_name.endswith('_value') \
-                and not field_name.endswith('_unit'):
-                ptp_fields.append(field_name)
-        return ptp_fields
-        
     def _compute_value_unit_combined(self):
-        non_numeric_fields = get_non_full_value_ptp_fields(self)
-
         for rec in self:
             combined = []
-            for field_name in non_numeric_fields:
-                val = getattr(rec, field_name, False)
-                if isinstance(val, models.BaseModel):
-                    val = val.name or ''
-                if val:
-                    combined.append(str(val).strip())
-            rec.ptp_value_unit_combined = ' '.join(combined)
+
+            for field_name in rec._fields:
+                if field_name.startswith('ptp_') \
+                    and not field_name.endswith('_unit') \
+                    and not field_name.endswith('_value'):
+                    
+                    val = getattr(rec, field_name, False)
+                    if isinstance(val, models.BaseModel):
+                        val = val.name or ''
+                    if val:
+                        combined.append(str(val).strip())
+
+            rec.ptp_value_unit_combined = ' '.join(combined) if combined else False
 
     # ------------------------------------------
     # QR kody
