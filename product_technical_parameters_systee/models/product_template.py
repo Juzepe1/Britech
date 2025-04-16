@@ -455,7 +455,7 @@ class ProductTemplate(models.Model):
                         combined.append(str(val).strip())
                         break  # použij první nalezený
                         
-            static_fields = ['ptp_part_number', 'ptp_footprint', 'ptp_code']
+            static_fields = ['ptp_footprint', 'ptp_code']
             for field in static_fields:
                 if field in rec._fields:
                     val = getattr(rec, field, False)
