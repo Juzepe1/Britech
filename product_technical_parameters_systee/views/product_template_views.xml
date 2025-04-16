@@ -42,9 +42,11 @@
           <group string="Kondenzátory" invisible="ptp_category_type_related != 'cap'">
             <field name="ptp_cap_value"/>
             <field name="ptp_cap_unit"/>
-            <field name="ptp_cap_voltage_rating"/>
+            <field name="ptp_cap_voltage_rating_unit"/>
+            <field name="ptp_cap_voltage_rating_value"/>
             <field name="ptp_cap_dielectric"/>
-            <field name="ptp_cap_tolerance"/>
+            <field name="ptp_cap_tolerance_unit"/>
+            <field name="ptp_cap_tolerance_value"/>
           </group>
           <group string="Chladiče" invisible="ptp_category_type_related != 'chl'">
             <field name="ptp_chl_rozmery"/>
@@ -152,9 +154,12 @@
           <group string="Rezistory" invisible="ptp_category_type_related != 'res'">
             <field name="ptp_res_value"/>
             <field name="ptp_res_unit"/>
-            <field name="ptp_res_power_rating"/>
-            <field name="ptp_res_tolerance"/>
-            <field name="ptp_res_voltage_rating"/>
+            <field name="ptp_res_power_rating_unit"/>
+            <field name="ptp_res_power_rating_value"/>
+            <field name="ptp_res_tolerance_unit"/>
+            <field name="ptp_res_tolerance_value"/>
+            <field name="ptp_res_voltage_rating_unit"/>
+            <field name="ptp_res_voltage_rating_value"/>
           </group>
           <group string="Šablony" invisible="ptp_category_type_related != 'sab'">
             <field name="ptp_sab_typ"/>
