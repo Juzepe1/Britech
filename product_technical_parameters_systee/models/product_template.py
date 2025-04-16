@@ -323,6 +323,28 @@ class ProductTemplate(models.Model):
                 unit_raw = getattr(rec, f'{attr}_unit', '')
                 unit = unit_raw.name if hasattr(unit_raw, 'name') else unit_raw or ''
                 setattr(rec, f'{attr}_full_value', f"{value}{unit}".strip())
+                
+    def _compute_value_unit_combined(self):
+        for rec in self:
+            prefix = f'ptp_{rec.ptp_category_type_related}_'
+            combined_values = []
+
+            for field_name, field_obj in rec._fields.items():
+                if field_name.startswith(prefix) and not field_name.endswith('_full_value'):
+                    value = getattr(rec, field_name, False)
+
+                    if isinstance(value, models.BaseModel):  # Many2one
+                        value = value.name or ''
+                    elif isinstance(value, (int, float)):
+                        value = str(value)
+                    elif not value:
+                        continue
+
+                    value = str(value).strip()
+                    if value:
+                        combined_values.append(value)
+
+            rec.ptp_value_unit_combined = ' '.join(combined_values) if combined_values else False
 
     # ------------------------------------------
     # QR kody
@@ -424,27 +446,6 @@ class ProductTemplate(models.Model):
         self.ptp_category_type_related = new_type
         
         
-    def _compute_value_unit_combined(self):
-        for rec in self:
-            prefix = f'ptp_{rec.ptp_category_type_related}_'
-            combined_values = []
-
-            for field_name, field_obj in rec._fields.items():
-                if field_name.startswith(prefix) and not field_name.endswith('_full_value'):
-                    value = getattr(rec, field_name, False)
-
-                    if isinstance(value, models.BaseModel):  # Many2one
-                        value = value.name or ''
-                    elif isinstance(value, (int, float)):
-                        value = str(value)
-                    elif not value:
-                        continue
-
-                    value = str(value).strip()
-                    if value:
-                        combined_values.append(value)
-
-            rec.ptp_value_unit_combined = ' '.join(combined_values) if combined_values else False
     # --------------------------------------------------------------------------------
     # Validace: zkontroluje jen pole relevantní k finálnímu typu
     # --------------------------------------------------------------------------------
