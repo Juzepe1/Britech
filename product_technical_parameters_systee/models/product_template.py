@@ -597,14 +597,14 @@ class ProductTemplate(models.Model):
         self.ptp_category_type_related = new_type
         
         
-	@api.depends('ptp_category_type_related')
-	def _compute_value_unit_combined_desc(self):
-    	for rec in self:
-        	prefix = f'ptp_{rec.ptp_category_type_related}_'
-        	combined_values = []
+    @api.depends('ptp_category_type_related')
+    def _compute_value_unit_combined_desc(self):
+        for rec in self:
+            prefix = f'ptp_{rec.ptp_category_type_related}_'
+            combined_values = []
 
-        	for field_name, field_obj in rec._fields.items():
-            	if field_name.startswith(prefix) and not field_name.endswith('_full_value'):
+            for field_name, field_obj in rec._fields.items():
+                if field_name.startswith(prefix) and not field_name.endswith('_full_value'):
                 	value = getattr(rec, field_name, False)
 
                 	if isinstance(value, models.BaseModel):  # Many2one
