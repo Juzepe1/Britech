@@ -34,7 +34,7 @@ class ProductTemplate(models.Model):
     # Počítané pole: sloučená hodnota + jednotka
     ptp_value_unit_combined = fields.Char(
         string='Description',
-        compute='_compute_value_unit_combined',
+        compute='_compute_value_unit_combined_desc',
         store=True,
         index=True
     )
@@ -565,40 +565,8 @@ class ProductTemplate(models.Model):
             value = rec.ptp_zen_vz_value or ''
             unit = rec.ptp_zen_vz_unit.name if rec.ptp_zen_vz_unit else rec.ptp_zen_vz_unit or ''
             rec.ptp_zen_vz_full_value = f"{value}{unit}".strip()
-            
-            combined = []
+    
 
-            for field_name, field in rec._fields.items():
-                if not field_name.startswith('ptp_'):
-                    continue
-                if field_name in (
-        'ptp_value_unit_combined', 'ptp_part_number', 'ptp_note',
-        'ptp_footprint', 'ptp_sequence_number'
-                ):
-                    continue
-                if field_name.endswith('_full_value'):
-                    continue
-
-                val = getattr(rec, field_name, False)
-                if val in (None, False, '', 0):
-                    continue
-
-                display_value = ''
-                try:
-                    if isinstance(field, fields.Many2one):
-                        if isinstance(val, models.BaseModel):
-                            display_value = val.name or ''
-                    elif isinstance(field, (fields.Char, fields.Text)):
-                        display_value = str(val).strip()
-                    elif isinstance(field, (fields.Integer, fields.Float)):
-                        display_value = str(val)
-                except Exception:
-                    continue
-
-                if display_value:
-                    combined.append(display_value)
-
-            rec.ptp_value_unit_combined = ' '.join(combined) if combined else False
     # --------------------------------------------------------------------------------
     # Metoda pro opravu . za , u typu char
     # --------------------------------------------------------------------------------
@@ -627,7 +595,30 @@ class ProductTemplate(models.Model):
         new_type = self.categ_id.ptp_component_type or False
         self._clear_fields_for_type(new_type)
         self.ptp_category_type_related = new_type
+        
+        
+	@api.depends(lambda self: [f for f in self._fields if f.startswith('ptp_')])
+	def _compute_value_unit_combined_desc(self):
+    	for rec in self:
+        	prefix = f'ptp_{rec.ptp_category_type_related}_'
+        	combined_values = []
 
+        	for field_name, field_obj in rec._fields.items():
+            	if field_name.startswith(prefix) and not field_name.endswith('_full_value'):
+                	value = getattr(rec, field_name, False)
+
+                	if isinstance(value, models.BaseModel):  # Many2one
+                    	value = value.name or ''
+                	elif isinstance(value, (int, float)):
+                    	value = str(value)
+                	elif not value:
+                    	continue
+
+                	value = str(value).strip()
+                	if value:
+                    	combined_values.append(value)
+
+        	rec.ptp_value_unit_combined = ' '.join(combined_values) if combined_values else False
     # --------------------------------------------------------------------------------
     # Validace: zkontroluje jen pole relevantní k finálnímu typu
     # --------------------------------------------------------------------------------
