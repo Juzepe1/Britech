@@ -258,6 +258,69 @@ class ProductTemplate(models.Model):
         store=True,
         index=True
     )
+    
+    
+
+    @api.depends(
+        'ptp_bat_kapacita_value', 'ptp_bat_kapacita_unit',
+        'ptp_bat_napeti_value', 'ptp_bat_napeti_unit',
+        'ptp_bip_napeti_uce_value', 'ptp_bip_napeti_uce_unit',
+        'ptp_bip_proud_ice_value', 'ptp_bip_proud_ice_unit',
+        'ptp_cap_value', 'ptp_cap_unit',
+        'ptp_dio_napeti_value', 'ptp_dio_napeti_unit',
+        'ptp_dio_proud_value', 'ptp_dio_proud_unit',
+        'ptp_dps_pocet_vrstev_value', 'ptp_dps_pocet_vrstev_unit',
+        'ptp_dps_rozmery_value', 'ptp_dps_rozmery_unit',
+        'ptp_dps_tloustka_value', 'ptp_dps_tloustka_unit',
+        'ptp_drb_pocet_clanku_value', 'ptp_drb_pocet_clanku_unit',
+        'ptp_imp_value', 'ptp_imp_unit',
+        'ptp_ind_value', 'ptp_ind_unit',
+        'ptp_lad_napeti_value', 'ptp_lad_napeti_unit',
+        'ptp_lad_proud_value', 'ptp_lad_proud_unit',
+        'ptp_lad_vlnova_delka_value', 'ptp_lad_vlnova_delka_unit',
+        'ptp_led_napeti_value', 'ptp_led_napeti_unit',
+        'ptp_led_proud_value', 'ptp_led_proud_unit',
+        'ptp_mas_sirka_value', 'ptp_mas_sirka_unit',
+        'ptp_nap_pocet_pinu_value', 'ptp_nap_pocet_pinu_unit',
+        'ptp_nap_roztec_kontaktu_value', 'ptp_nap_roztec_kontaktu_unit',
+        'ptp_pin_pocet_pinu_value', 'ptp_pin_pocet_pinu_unit',
+        'ptp_pin_roztec_kontaktu_value', 'ptp_pin_roztec_kontaktu_unit',
+        'ptp_poj_napeti_value', 'ptp_poj_napeti_unit',
+        'ptp_poj_proud_value', 'ptp_poj_proud_unit',
+        'ptp_res_value', 'ptp_res_unit',
+        'ptp_sch_ifpropustny_proud_value', 'ptp_sch_ifpropustny_proud_unit',
+        'ptp_sch_vrrm_value', 'ptp_sch_vrrm_unit',
+        'ptp_tla_pocet_poloh_value', 'ptp_tla_pocet_poloh_unit',
+        'ptp_tvs_napeti_value', 'ptp_tvs_napeti_unit',
+        'ptp_tvs_proud_value', 'ptp_tvs_proud_unit',
+        'ptp_tyr_napeti_value', 'ptp_tyr_napeti_unit',
+        'ptp_tyr_proud_value', 'ptp_tyr_proud_unit',
+        'ptp_uni_napeti_vds_value', 'ptp_uni_napeti_vds_unit',
+        'ptp_uni_proud_ids_value', 'ptp_uni_proud_ids_unit',
+        'ptp_usm_if_value', 'ptp_usm_if_unit',
+        'ptp_usm_vr_value', 'ptp_usm_vr_unit',
+        'ptp_var_napeti_value', 'ptp_var_napeti_unit',
+        'ptp_var_proud_value', 'ptp_var_proud_unit',
+        'ptp_zas_pocet_pinu_value', 'ptp_zas_pocet_pinu_unit',
+        'ptp_zen_vz_value', 'ptp_zen_vz_unit'
+    )
+    def _compute_all_full_values(self):
+        for rec in self:
+            for attr in [
+                'ptp_bat_kapacita', 'ptp_bat_napeti', 'ptp_bip_napeti_uce', 'ptp_bip_proud_ice', 'ptp_cap',
+                'ptp_dio_napeti', 'ptp_dio_proud', 'ptp_dps_pocet_vrstev', 'ptp_dps_rozmery', 'ptp_dps_tloustka',
+                'ptp_drb_pocet_clanku', 'ptp_imp', 'ptp_ind', 'ptp_lad_napeti', 'ptp_lad_proud',
+                'ptp_lad_vlnova_delka', 'ptp_led_napeti', 'ptp_led_proud', 'ptp_mas_sirka', 'ptp_nap_pocet_pinu',
+                'ptp_nap_roztec_kontaktu', 'ptp_pin_pocet_pinu', 'ptp_pin_roztec_kontaktu', 'ptp_poj_napeti',
+                'ptp_poj_proud', 'ptp_res', 'ptp_sch_ifpropustny_proud', 'ptp_sch_vrrm', 'ptp_tla_pocet_poloh',
+                'ptp_tvs_napeti', 'ptp_tvs_proud', 'ptp_tyr_napeti', 'ptp_tyr_proud', 'ptp_uni_napeti_vds',
+                'ptp_uni_proud_ids', 'ptp_usm_if', 'ptp_usm_vr', 'ptp_var_napeti', 'ptp_var_proud',
+                'ptp_zas_pocet_pinu', 'ptp_zen_vz'
+            ]:
+                value = getattr(rec, f'{attr}_value', '') or ''
+                unit_raw = getattr(rec, f'{attr}_unit', '')
+                unit = unit_raw.name if hasattr(unit_raw, 'name') else unit_raw or ''
+                setattr(rec, f'{attr}_full_value', f"{value}{unit}".strip())
 
     # ------------------------------------------
     # QR kody
