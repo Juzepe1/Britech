@@ -465,21 +465,6 @@ class ProductTemplate(models.Model):
     # --------------------------------------------------------------------------------
     # Metoda pro opravu . za , u typu char
     # --------------------------------------------------------------------------------
-    @api.onchange(*[
-        fname for fname, field in ProductTemplate._fields.items()
-        if isinstance(field, fields.Char)
-    ])
-    def _onchange_replace_dot_with_comma(self):
-        """
-        Pokud uživatel zadá desetinnou tečku v textových polích, nahradíme ji čárkou.
-        """
-        for rec in self:
-            for field_name, field in rec._fields.items():
-                if not isinstance(field, fields.Char):
-                    continue
-                val = getattr(rec, field_name)
-                if isinstance(val, str) and '.' in val and val.strip() not in ('', '-'):
-                    setattr(rec, field_name, val.replace('.', ','))
 
     # --------------------------------------------------------------------------------
     # Metoda pro vymazání starých dat, která nepatří k novému typu
