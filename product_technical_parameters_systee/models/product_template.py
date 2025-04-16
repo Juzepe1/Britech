@@ -340,7 +340,6 @@ class ProductTemplate(models.Model):
     'ptp_category_type_related',
     'ptp_chl_material',
     'ptp_chl_rozmery',
-    'ptp_component_type',
     'ptp_dio_napeti_full_value',
     'ptp_dio_proud_full_value',
     'ptp_dio_typ',
