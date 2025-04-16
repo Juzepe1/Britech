@@ -541,7 +541,7 @@ class ProductTemplate(models.Model):
     # Přenos description do SALE
     # ------------------------------------------
 
-    @api.depends('ptp_value_unit_combined')
+    @api.onchange('ptp_value_unit_combined')
     def _compute_description_sale(self):
         """ Automaticky aktualizuje `description_sale` při změně `ptp_value_unit_combined` """
         for rec in self:
