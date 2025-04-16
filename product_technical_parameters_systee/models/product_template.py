@@ -430,21 +430,40 @@ class ProductTemplate(models.Model):
             combined_values = []
 
             for field_name, field_obj in rec._fields.items():
-                if field_name.startswith(prefix) and not field_name.endswith('_full_value'):
-                    value = getattr(rec, field_name, False)
+                if not field_name.startswith(prefix) or field_name.endswith('_full_value'):
+                    continue
 
-                    if isinstance(value, models.BaseModel):  # Many2one
-                        value = value.name or ''
-                    elif isinstance(value, (int, float)):
-                        value = str(value)
-                    elif not value:
+                base_name = field_name.replace('_value', '')
+                value_field = f"{base_name}_value"
+                unit_field = f"{base_name}_unit"
+
+            # Pokud máme jak _value tak _unit, spojíme je bez mezery
+                if value_field in rec._fields and unit_field in rec._fields:
+                    value = getattr(rec, value_field, '')
+                    unit = getattr(rec, unit_field, '')
+                    if value and unit:
+                        combined_values.append(f"{value}{unit}")
+                        continue  # skip, už jsme přidali
+                    elif value:
+                        combined_values.append(str(value).strip())
+                    elif unit:
+                        combined_values.append(str(unit).strip())
+                else:
+                    val = getattr(rec, field_name, False)
+
+                    if isinstance(val, models.BaseModel):
+                        val = val.name or ''
+                    elif isinstance(val, (int, float)):
+                        val = str(val)
+                    elif not val:
                         continue
 
-                    value = str(value).strip()
-                    if value:
-                        combined_values.append(value)
+                    val = str(val).strip()
+                    if val:
+                        combined_values.append(val)
 
             rec.ptp_value_unit_combined = ' '.join(combined_values) if combined_values else False
+
 
     # ------------------------------------------
     # QR kody
