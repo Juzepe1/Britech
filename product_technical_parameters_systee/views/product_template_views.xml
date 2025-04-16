@@ -17,8 +17,7 @@
                 <field name="qr_code" widget="image" class="oe_avatar"/>
             </xpath>
             <xpath expr="//sheet/notebook" position="inside">
-                <page string="Technical Parameters"
-                      invisible="not ptp_category_type_related">
+                <page string="Technical Parameters" invisible="not ptp_category_type_related">
                     <group>
                         <field name="ptp_category_type_related" readonly="1"/>
                         <field name="ptp_part_number"/>
@@ -28,17 +27,110 @@
                         <field name="qr_code" widget="image" class="oe_avatar"/>
                     </group>
 
-                    <xpath expr="." position="inside">
-                        <template id="ptp_dynamic_groups" inherit_id="base.view_partner_form">
-                            <xpath expr="/form/sheet/group" position="inside">
-                                <t t-foreach="fields_get().keys()" t-as="f">
-                                    <t t-if="f.startswith('ptp_') and not f in ['ptp_part_number', 'ptp_footprint', 'ptp_note', 'ptp_value_unit_combined', 'qr_code']">
-                                        <field name="[[ f ]]" attrs="{'invisible': [('ptp_category_type_related','!=', f.split('_')[1])]}"/>
-                                    </t>
-                                </t>
-                            </xpath>
-                        </template>
-                    </xpath>
+                    <!-- Group blocks for all known types -->
+                    <group string="BLU Fields" invisible="ptp_category_type_related != 'blu'">
+                        <field name="ptp_blu_typ"/>
+                    </group>
+                    <group string="DIS Fields" invisible="ptp_category_type_related != 'dis'">
+                        <field name="ptp_dis_typ"/>
+                    </group>
+                    <group string="PLC Fields" invisible="ptp_category_type_related != 'plc'">
+                        <field name="ptp_plc_typ"/>
+                    </group>
+                    <group string="HDD Fields" invisible="ptp_category_type_related != 'hdd'">
+                        <field name="ptp_hdd_typ"/>
+                        <field name="ptp_hdd_kapacita"/>
+                        <field name="ptp_hdd_kapacita_unit"/>
+                    </group>
+                    <group string="SEN Fields" invisible="ptp_category_type_related != 'sen'">
+                        <field name="ptp_sen_merena_velicina"/>
+                        <field name="ptp_sen_typ_vystupu"/>
+                    </group>
+                    <group string="BAT Fields" invisible="ptp_category_type_related != 'bat'">
+                        <field name="ptp_bat_typ"/>
+                        <field name="ptp_bat_napeti_value"/>
+                        <field name="ptp_bat_napeti_unit"/>
+                        <field name="ptp_bat_kapacita_value"/>
+                        <field name="ptp_bat_kapacita_unit"/>
+                        <field name="ptp_bat_chemie"/>
+                    </group>
+                    <group string="POJ Fields" invisible="ptp_category_type_related != 'poj'">
+                        <field name="ptp_poj_proud_value"/>
+                        <field name="ptp_poj_proud_unit"/>
+                        <field name="ptp_poj_napeti_value"/>
+                        <field name="ptp_poj_napeti_unit"/>
+                        <field name="ptp_poj_typ"/>
+                        <field name="ptp_poj_typ_pojistky"/>
+                    </group>
+                    <group string="TVS Fields" invisible="ptp_category_type_related != 'tvs'">
+                        <field name="ptp_tvs_napeti_value"/>
+                        <field name="ptp_tvs_napeti_unit"/>
+                        <field name="ptp_tvs_proud_value"/>
+                        <field name="ptp_tvs_proud_unit"/>
+                        <field name="ptp_tvs_typ"/>
+                        <field name="ptp_tvs_polarity"/>
+                        <field name="ptp_tvs_chanel"/>
+                    </group>
+                    <group string="VAR Fields" invisible="ptp_category_type_related != 'var'">
+                        <field name="ptp_var_napeti_value"/>
+                        <field name="ptp_var_napeti_unit"/>
+                        <field name="ptp_var_proud_value"/>
+                        <field name="ptp_var_proud_unit"/>
+                    </group>
+                    <group string="LAD Fields" invisible="ptp_category_type_related != 'lad'">
+                        <field name="ptp_lad_vlnova_delka_value"/>
+                        <field name="ptp_lad_vlnova_delka_unit"/>
+                        <field name="ptp_lad_proud_value"/>
+                        <field name="ptp_lad_proud_unit"/>
+                        <field name="ptp_lad_napeti_value"/>
+                        <field name="ptp_lad_napeti_unit"/>
+                    </group>
+                    <group string="DIO Fields" invisible="ptp_category_type_related != 'dio'">
+                        <field name="ptp_dio_typ"/>
+                        <field name="ptp_dio_napeti_value"/>
+                        <field name="ptp_dio_napeti_unit"/>
+                        <field name="ptp_dio_proud_value"/>
+                        <field name="ptp_dio_proud_unit"/>
+                    </group>
+                    <group string="SCH Fields" invisible="ptp_category_type_related != 'sch'">
+                        <field name="ptp_sch_ifpropustny_proud_value"/>
+                        <field name="ptp_sch_ifpropustny_proud_unit"/>
+                        <field name="ptp_sch_vrrm_value"/>
+                        <field name="ptp_sch_vrrm_unit"/>
+                    </group>
+                    <group string="ZEN Fields" invisible="ptp_category_type_related != 'zen'">
+                        <field name="ptp_zen_vz_value"/>
+                        <field name="ptp_zen_vz_unit"/>
+                    </group>
+                    <group string="TYR Fields" invisible="ptp_category_type_related != 'tyr'">
+                        <field name="ptp_tyr_napeti_value"/>
+                        <field name="ptp_tyr_napeti_unit"/>
+                        <field name="ptp_tyr_proud_value"/>
+                        <field name="ptp_tyr_proud_unit"/>
+                    </group>
+                    <group string="BIP Fields" invisible="ptp_category_type_related != 'bip'">
+                        <field name="ptp_bip_typ"/>
+                        <field name="ptp_bip_napeti_uce_value"/>
+                        <field name="ptp_bip_napeti_uce_unit"/>
+                        <field name="ptp_bip_proud_ice_value"/>
+                        <field name="ptp_bip_proud_ice_unit"/>
+                    </group>
+                    <group string="UNI Fields" invisible="ptp_category_type_related != 'uni'">
+                        <field name="ptp_uni_typ_value"/>
+                        <field name="ptp_uni_napeti_vds_value"/>
+                        <field name="ptp_uni_napeti_vds_unit"/>
+                        <field name="ptp_uni_proud_ids_value"/>
+                        <field name="ptp_uni_proud_ids_unit"/>
+                    </group>
+                    <group string="MAS Fields" invisible="ptp_category_type_related != 'mas'">
+                        <field name="ptp_mas_sirka_value"/>
+                        <field name="ptp_mas_sirka_unit"/>
+                        <field name="ptp_mas_material"/>
+                    </group>
+                    <group string="PAS Fields" invisible="ptp_category_type_related != 'pas'">
+                        <field name="ptp_pas_typ_value"/>
+                        <field name="ptp_pas_slozeni"/>
+                    </group>
                 </page>
             </xpath>
         </field>
