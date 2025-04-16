@@ -430,7 +430,7 @@ class ProductTemplate(models.Model):
         for field_name in model._fields:
             if field_name.startswith('ptp_') \
                 and not field_name.endswith('_value') \
-                and not field_name.endswith('_unit') \
+                and not field_name.endswith('_unit'):
                 ptp_fields.append(field_name)
         return ptp_fields
         
