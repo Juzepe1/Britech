@@ -14,7 +14,7 @@ class ProductTemplate(models.Model):
 class ProductCategory(models.Model):
     _inherit = 'product.category'
 
-ptp_component_type = fields.Selection([
+    ptp_component_type = fields.Selection([
     ('ant', 'Antény'),
     ('bat', 'Baterie a články'),
     ('bip', 'Bipolární tranzistory'),
@@ -54,7 +54,7 @@ ptp_component_type = fields.Selection([
     ('var', 'Varistory'),
     ('zas', 'Zásuvky a zástrčky'),
     ('zen', 'Zenerovy diody'),
-], string='Component Type', required=False)
+    ], string='Component Type', required=False)
 
     @api.onchange('ptp_component_type')
     def _onchange_ptp_component_type(self):
