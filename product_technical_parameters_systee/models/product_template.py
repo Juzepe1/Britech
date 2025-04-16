@@ -568,6 +568,28 @@ class ProductTemplate(models.Model):
             value = rec.ptp_zen_vz_value or ''
             unit = rec.ptp_zen_vz_unit.name if rec.ptp_zen_vz_unit else rec.ptp_zen_vz_unit or ''
             rec.ptp_zen_vz_full_value = f"{value}{unit}".strip()
+            
+            for rec in self:
+                description_parts = []
+
+            # Přidej všechny *_full_value pole (např. ptp_led_napeti_full_value)
+                for field_name in rec._fields:
+                    if field_name.endswith('_full_value'):
+                        val = getattr(rec, field_name, False)
+                        if val:
+                            description_parts.append(str(val))
+
+                # Přidej další zajímavá pole: Many2one, Char (vyjma těch, co jsou full_value)
+                for field_name, field in rec._fields.items():
+                    if field_name.startswith('ptp_') and not field_name.endswith('_value') \
+                            and not field_name.endswith('_unit') and not field_name.endswith('_full_value') \
+                            and field_name not in ('ptp_value_unit_combined', 'ptp_part_number', 'ptp_note'):
+                        val = getattr(rec, field_name, False)
+                        if isinstance(val, models.BaseModel):  # Many2one
+                            val = val.name
+                        if val:
+                            description_parts.append(str(val))
+                rec.ptp_value_unit_combined = " / ".join(description_parts)
     # --------------------------------------------------------------------------------
     # Metoda pro opravu . za , u typu char
     # --------------------------------------------------------------------------------
