@@ -816,7 +816,7 @@ class PtpZasMontaz(models.Model):
 class PtpZasTypKonektoru(models.Model):
     _name = 'ptp.zas.typ_konektoru'
     _description = 'Typ zásuvky konektoru'
-    name = fields.Char(string='Name', required=True')
+    name = fields.Char(string='Name', required=True)
 
 
 class PtpLedBarva(models.Model):
