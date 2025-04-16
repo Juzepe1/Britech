@@ -433,14 +433,21 @@ class ProductTemplate(models.Model):
                 if field_name.startswith('ptp_') \
                     and not field_name.endswith('_unit') \
                     and not field_name.endswith('_value'):
-                    
+
                     val = getattr(rec, field_name, False)
+
+                    # bezpečnější kontrola Many2one
                     if isinstance(val, models.BaseModel):
-                        val = val.name or ''
+                        val = getattr(val, 'name', '') or ''
+                    elif not val:
+                        continue
+
+                    val = str(val).strip()
                     if val:
-                        combined.append(str(val).strip())
+                        combined.append(val)
 
             rec.ptp_value_unit_combined = ' '.join(combined) if combined else False
+
 
     # ------------------------------------------
     # QR kody
