@@ -424,57 +424,31 @@ class ProductTemplate(models.Model):
     'ptp_zas_typ_konektoru',
     'ptp_zen_vz_full_value',
     )              
+
+    def get_non_full_value_ptp_fields(model):
+    """
+    Vrací seznam všech ptp_* polí kromě *_value, *_unit a *_full_value.
+    """
+        ptp_fields = []
+        for field_name in model._fields:
+            if field_name.startswith('ptp_') \
+                and not field_name.endswith('_value') \
+                and not field_name.endswith('_unit') \
+                ptp_fields.append(field_name)
+        return ptp_fields
+        
     def _compute_value_unit_combined(self):
+        non_numeric_fields = get_non_full_value_ptp_fields(self)
+
         for rec in self:
-            prefix = f'ptp_{rec.ptp_category_type_related}_'
-            combined_values = []
-
-            for field_name in rec._fields:
-                if not field_name.startswith(prefix):
-                    continue
-
-            # preferuj _full_value pokud existuje
-                if field_name.endswith('_full_value'):
-                    value = getattr(rec, field_name, False)
-                    if value:
-                        combined_values.append(str(value).strip())
-                    continue
-
-            # pokud není _full_value, fallback na value + unit
-                if field_name.endswith('_value'):
-                    base_name = field_name[:-6]  # odeber _value
-                    unit_field = f"{base_name}_unit"
-                    full_field = f"{base_name}_full_value"
-
-                # full_value bylo už zpracováno
-                    if full_field in rec._fields:
-                        continue
-
-                    value = getattr(rec, field_name, '')
-                    unit = getattr(rec, unit_field, '')
-
-                    if value and unit:
-                        combined_values.append(f"{value}{unit}")
-                    elif value:
-                        combined_values.append(str(value).strip())
-                    elif unit:
-                        combined_values.append(str(unit).strip())
-                    continue
-
-            # fallback: normální hodnota
+            combined = []
+            for field_name in non_numeric_fields:
                 val = getattr(rec, field_name, False)
                 if isinstance(val, models.BaseModel):
                     val = val.name or ''
-                elif isinstance(val, (int, float)):
-                    val = str(val)
-                elif not val:
-                    continue
-
-                val = str(val).strip()
                 if val:
-                    combined_values.append(val)
-
-            rec.ptp_value_unit_combined = ' '.join(combined_values) if combined_values else False
+                    combined.append(str(val).strip())
+            rec.ptp_value_unit_combined = ' '.join(combined)
 
     # ------------------------------------------
     # QR kody
