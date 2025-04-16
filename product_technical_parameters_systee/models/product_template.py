@@ -595,6 +595,7 @@ class ProductTemplate(models.Model):
     def _onchange_categ_id_clear_fields(self):
         new_type = self.categ_id.ptp_component_type or False
         self._clear_fields_for_type(new_type)
+        self.ptp_category_type_related = new_type
 
     # --------------------------------------------------------------------------------
     # Validace: zkontroluje jen pole relevantní k finálnímu typu
