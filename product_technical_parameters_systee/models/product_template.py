@@ -258,6 +258,9 @@ class ProductTemplate(models.Model):
     ptp_zen_vz_full_value = fields.Char(string="Ptp Zen Vz Full Value", compute="_compute_all_full_values", store=True)
     ptp_hdd_kapacita_full_value = fields.Char(string="HDD kap full value", compute="_compute_all_full_values", store=True)
 
+    # ------------------------------------------
+    # Sloučené hodnoty a kontroly
+    # ------------------------------------------
 
     @api.depends(
         'ptp_bat_kapacita_value', 'ptp_bat_kapacita_unit',
@@ -394,183 +397,6 @@ class ProductTemplate(models.Model):
                 # Aktualizace popisu
                 rec.description_sale = f"{ptp_value}\n{user_text}".strip()
 
-    # ------------------------------------------
-    # Sloučené hodnoty a kontroly
-    # ------------------------------------------
-
-    @api.depends(
-        'ptp_hdd_kapacita_value', 'ptp_hdd_kapacita_unit', 'ptp_bat_kapacita_value', 'ptp_bat_kapacita_unit', 'ptp_bat_napeti_value', 'ptp_bat_napeti_unit', 'ptp_bip_napeti_uce_value', 'ptp_bip_napeti_uce_unit', 'ptp_bip_proud_ice_value', 'ptp_bip_proud_ice_unit', 'ptp_cap_value', 'ptp_cap_unit', 'ptp_dio_napeti_value', 'ptp_dio_napeti_unit', 'ptp_dio_proud_value', 'ptp_dio_proud_unit', 'ptp_dps_pocet_vrstev_value', 'ptp_dps_pocet_vrstev_unit', 'ptp_dps_rozmery_value', 'ptp_dps_rozmery_unit', 'ptp_dps_tloustka_value', 'ptp_dps_tloustka_unit', 'ptp_drb_pocet_clanku_value', 'ptp_drb_pocet_clanku_unit', 'ptp_imp_value', 'ptp_imp_unit', 'ptp_ind_value', 'ptp_ind_unit', 'ptp_lad_napeti_value', 'ptp_lad_napeti_unit', 'ptp_lad_proud_value', 'ptp_lad_proud_unit', 'ptp_lad_vlnova_delka_value', 'ptp_lad_vlnova_delka_unit', 'ptp_led_napeti_value', 'ptp_led_napeti_unit', 'ptp_led_proud_value', 'ptp_led_proud_unit', 'ptp_mas_sirka_value', 'ptp_mas_sirka_unit', 'ptp_nap_pocet_pinu_value', 'ptp_nap_pocet_pinu_unit', 'ptp_nap_roztec_kontaktu_value', 'ptp_nap_roztec_kontaktu_unit', 'ptp_pin_pocet_pinu_value', 'ptp_pin_pocet_pinu_unit', 'ptp_pin_roztec_kontaktu_value', 'ptp_pin_roztec_kontaktu_unit', 'ptp_poj_napeti_value', 'ptp_poj_napeti_unit', 'ptp_poj_proud_value', 'ptp_poj_proud_unit', 'ptp_res_value', 'ptp_res_unit', 'ptp_sch_ifpropustny_proud_value', 'ptp_sch_ifpropustny_proud_unit', 'ptp_sch_vrrm_value', 'ptp_sch_vrrm_unit', 'ptp_tla_pocet_poloh_value', 'ptp_tla_pocet_poloh_unit', 'ptp_tvs_napeti_value', 'ptp_tvs_napeti_unit', 'ptp_tvs_proud_value', 'ptp_tvs_proud_unit', 'ptp_tyr_napeti_value', 'ptp_tyr_napeti_unit', 'ptp_tyr_proud_value', 'ptp_tyr_proud_unit', 'ptp_uni_napeti_vds_value', 'ptp_uni_napeti_vds_unit', 'ptp_uni_proud_ids_value', 'ptp_uni_proud_ids_unit', 'ptp_usm_if_value', 'ptp_usm_if_unit', 'ptp_usm_vr_value', 'ptp_usm_vr_unit', 'ptp_var_napeti_value', 'ptp_var_napeti_unit', 'ptp_var_proud_value', 'ptp_var_proud_unit', 'ptp_zas_pocet_pinu_value', 'ptp_zas_pocet_pinu_unit', 'ptp_zen_vz_value', 'ptp_zen_vz_unit'
-    )
-    def _compute_value_unit_combined(self):
-        for rec in self:
-        
-            value = rec.ptp_hdd_kapacita_value or ''
-            unit = rec.ptp_hdd_kapacita_unit.name if rec.ptp_hdd_kapacita_unit else rec.ptp_hdd_kapacita_unit or ''
-            rec.ptp_hdd_kapacita_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_bat_kapacita_value or ''
-            unit = rec.ptp_bat_kapacita_unit.name if rec.ptp_bat_kapacita_unit else rec.ptp_bat_kapacita_unit or ''
-            rec.ptp_bat_kapacita_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_bat_napeti_value or ''
-            unit = rec.ptp_bat_napeti_unit.name if rec.ptp_bat_napeti_unit else rec.ptp_bat_napeti_unit or ''
-            rec.ptp_bat_napeti_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_bip_napeti_uce_value or ''
-            unit = rec.ptp_bip_napeti_uce_unit.name if rec.ptp_bip_napeti_uce_unit else rec.ptp_bip_napeti_uce_unit or ''
-            rec.ptp_bip_napeti_uce_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_bip_proud_ice_value or ''
-            unit = rec.ptp_bip_proud_ice_unit.name if rec.ptp_bip_proud_ice_unit else rec.ptp_bip_proud_ice_unit or ''
-            rec.ptp_bip_proud_ice_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_cap_value or ''
-            unit = rec.ptp_cap_unit.name if rec.ptp_cap_unit else rec.ptp_cap_unit or ''
-            rec.ptp_cap_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_dio_napeti_value or ''
-            unit = rec.ptp_dio_napeti_unit.name if rec.ptp_dio_napeti_unit else rec.ptp_dio_napeti_unit or ''
-            rec.ptp_dio_napeti_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_dio_proud_value or ''
-            unit = rec.ptp_dio_proud_unit.name if rec.ptp_dio_proud_unit else rec.ptp_dio_proud_unit or ''
-            rec.ptp_dio_proud_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_dps_pocet_vrstev_value or ''
-            unit = rec.ptp_dps_pocet_vrstev_unit.name if rec.ptp_dps_pocet_vrstev_unit else rec.ptp_dps_pocet_vrstev_unit or ''
-            rec.ptp_dps_pocet_vrstev_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_dps_rozmery_value or ''
-            unit = rec.ptp_dps_rozmery_unit.name if rec.ptp_dps_rozmery_unit else rec.ptp_dps_rozmery_unit or ''
-            rec.ptp_dps_rozmery_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_dps_tloustka_value or ''
-            unit = rec.ptp_dps_tloustka_unit.name if rec.ptp_dps_tloustka_unit else rec.ptp_dps_tloustka_unit or ''
-            rec.ptp_dps_tloustka_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_drb_pocet_clanku_value or ''
-            unit = rec.ptp_drb_pocet_clanku_unit.name if rec.ptp_drb_pocet_clanku_unit else rec.ptp_drb_pocet_clanku_unit or ''
-            rec.ptp_drb_pocet_clanku_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_imp_value or ''
-            unit = rec.ptp_imp_unit.name if rec.ptp_imp_unit else rec.ptp_imp_unit or ''
-            rec.ptp_imp_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_ind_value or ''
-            unit = rec.ptp_ind_unit.name if rec.ptp_ind_unit else rec.ptp_ind_unit or ''
-            rec.ptp_ind_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_lad_napeti_value or ''
-            unit = rec.ptp_lad_napeti_unit.name if rec.ptp_lad_napeti_unit else rec.ptp_lad_napeti_unit or ''
-            rec.ptp_lad_napeti_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_lad_proud_value or ''
-            unit = rec.ptp_lad_proud_unit.name if rec.ptp_lad_proud_unit else rec.ptp_lad_proud_unit or ''
-            rec.ptp_lad_proud_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_lad_vlnova_delka_value or ''
-            unit = rec.ptp_lad_vlnova_delka_unit.name if rec.ptp_lad_vlnova_delka_unit else rec.ptp_lad_vlnova_delka_unit or ''
-            rec.ptp_lad_vlnova_delka_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_led_napeti_value or ''
-            unit = rec.ptp_led_napeti_unit.name if rec.ptp_led_napeti_unit else rec.ptp_led_napeti_unit or ''
-            rec.ptp_led_napeti_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_led_proud_value or ''
-            unit = rec.ptp_led_proud_unit.name if rec.ptp_led_proud_unit else rec.ptp_led_proud_unit or ''
-            rec.ptp_led_proud_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_mas_sirka_value or ''
-            unit = rec.ptp_mas_sirka_unit.name if rec.ptp_mas_sirka_unit else rec.ptp_mas_sirka_unit or ''
-            rec.ptp_mas_sirka_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_nap_pocet_pinu_value or ''
-            unit = rec.ptp_nap_pocet_pinu_unit.name if rec.ptp_nap_pocet_pinu_unit else rec.ptp_nap_pocet_pinu_unit or ''
-            rec.ptp_nap_pocet_pinu_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_nap_roztec_kontaktu_value or ''
-            unit = rec.ptp_nap_roztec_kontaktu_unit.name if rec.ptp_nap_roztec_kontaktu_unit else rec.ptp_nap_roztec_kontaktu_unit or ''
-            rec.ptp_nap_roztec_kontaktu_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_pin_pocet_pinu_value or ''
-            unit = rec.ptp_pin_pocet_pinu_unit.name if rec.ptp_pin_pocet_pinu_unit else rec.ptp_pin_pocet_pinu_unit or ''
-            rec.ptp_pin_pocet_pinu_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_pin_roztec_kontaktu_value or ''
-            unit = rec.ptp_pin_roztec_kontaktu_unit.name if rec.ptp_pin_roztec_kontaktu_unit else rec.ptp_pin_roztec_kontaktu_unit or ''
-            rec.ptp_pin_roztec_kontaktu_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_poj_napeti_value or ''
-            unit = rec.ptp_poj_napeti_unit.name if rec.ptp_poj_napeti_unit else rec.ptp_poj_napeti_unit or ''
-            rec.ptp_poj_napeti_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_poj_proud_value or ''
-            unit = rec.ptp_poj_proud_unit.name if rec.ptp_poj_proud_unit else rec.ptp_poj_proud_unit or ''
-            rec.ptp_poj_proud_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_res_value or ''
-            unit = rec.ptp_res_unit.name if rec.ptp_res_unit else rec.ptp_res_unit or ''
-            rec.ptp_res_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_sch_ifpropustny_proud_value or ''
-            unit = rec.ptp_sch_ifpropustny_proud_unit.name if rec.ptp_sch_ifpropustny_proud_unit else rec.ptp_sch_ifpropustny_proud_unit or ''
-            rec.ptp_sch_ifpropustny_proud_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_sch_vrrm_value or ''
-            unit = rec.ptp_sch_vrrm_unit.name if rec.ptp_sch_vrrm_unit else rec.ptp_sch_vrrm_unit or ''
-            rec.ptp_sch_vrrm_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_tla_pocet_poloh_value or ''
-            unit = rec.ptp_tla_pocet_poloh_unit.name if rec.ptp_tla_pocet_poloh_unit else rec.ptp_tla_pocet_poloh_unit or ''
-            rec.ptp_tla_pocet_poloh_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_tvs_napeti_value or ''
-            unit = rec.ptp_tvs_napeti_unit.name if rec.ptp_tvs_napeti_unit else rec.ptp_tvs_napeti_unit or ''
-            rec.ptp_tvs_napeti_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_tvs_proud_value or ''
-            unit = rec.ptp_tvs_proud_unit.name if rec.ptp_tvs_proud_unit else rec.ptp_tvs_proud_unit or ''
-            rec.ptp_tvs_proud_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_tyr_napeti_value or ''
-            unit = rec.ptp_tyr_napeti_unit.name if rec.ptp_tyr_napeti_unit else rec.ptp_tyr_napeti_unit or ''
-            rec.ptp_tyr_napeti_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_tyr_proud_value or ''
-            unit = rec.ptp_tyr_proud_unit.name if rec.ptp_tyr_proud_unit else rec.ptp_tyr_proud_unit or ''
-            rec.ptp_tyr_proud_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_uni_napeti_vds_value or ''
-            unit = rec.ptp_uni_napeti_vds_unit.name if rec.ptp_uni_napeti_vds_unit else rec.ptp_uni_napeti_vds_unit or ''
-            rec.ptp_uni_napeti_vds_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_uni_proud_ids_value or ''
-            unit = rec.ptp_uni_proud_ids_unit.name if rec.ptp_uni_proud_ids_unit else rec.ptp_uni_proud_ids_unit or ''
-            rec.ptp_uni_proud_ids_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_usm_if_value or ''
-            unit = rec.ptp_usm_if_unit.name if rec.ptp_usm_if_unit else rec.ptp_usm_if_unit or ''
-            rec.ptp_usm_if_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_usm_vr_value or ''
-            unit = rec.ptp_usm_vr_unit.name if rec.ptp_usm_vr_unit else rec.ptp_usm_vr_unit or ''
-            rec.ptp_usm_vr_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_var_napeti_value or ''
-            unit = rec.ptp_var_napeti_unit.name if rec.ptp_var_napeti_unit else rec.ptp_var_napeti_unit or ''
-            rec.ptp_var_napeti_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_var_proud_value or ''
-            unit = rec.ptp_var_proud_unit.name if rec.ptp_var_proud_unit else rec.ptp_var_proud_unit or ''
-            rec.ptp_var_proud_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_zas_pocet_pinu_value or ''
-            unit = rec.ptp_zas_pocet_pinu_unit.name if rec.ptp_zas_pocet_pinu_unit else rec.ptp_zas_pocet_pinu_unit or ''
-            rec.ptp_zas_pocet_pinu_full_value = f"{value}{unit}".strip()
-
-            value = rec.ptp_zen_vz_value or ''
-            unit = rec.ptp_zen_vz_unit.name if rec.ptp_zen_vz_unit else rec.ptp_zen_vz_unit or ''
-            rec.ptp_zen_vz_full_value = f"{value}{unit}".strip()
     
     # --------------------------------------------------------------------------------
     # Metoda pro vymazání starých dat, která nepatří k novému typu
@@ -598,8 +424,7 @@ class ProductTemplate(models.Model):
         self.ptp_category_type_related = new_type
         
         
-    @api.depends('ptp_category_type_related')
-    def _compute_value_unit_combined_desc(self):
+    def _compute_value_unit_combined(self):
         for rec in self:
             prefix = f'ptp_{rec.ptp_category_type_related}_'
             combined_values = []
@@ -754,9 +579,7 @@ class ProductTemplate(models.Model):
             # Pokud nová kategorie má `ptp_component_type`, validujeme povinná pole
                 if new_category and new_category.ptp_component_type:
                     record._check_required_fields()
-                    
         self._compute_value_unit_combined()
-        self._compute_value_unit_combined_desc()
         return result
 
 
