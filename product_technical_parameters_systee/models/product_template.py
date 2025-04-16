@@ -429,22 +429,38 @@ class ProductTemplate(models.Model):
         for rec in self:
             combined = []
 
-            for field_name in rec._fields:
-                if field_name.startswith('ptp_') \
-                    and not field_name.endswith('_unit') \
-                    and not field_name.endswith('_unit_combined') \
-                    and not (field_name.endswith('_value') and not field_name.endswith('_full_value')):
-
-                    val = getattr(rec, field_name, False)
-
+            prefix = f"ptp_{rec.ptp_category_type_related}_"
+            # Přidej první hodnotu typu: ptp_uni_typ nebo ptp_uni_typ_value
+            for typ_field in [f"{prefix}typ", f"{prefix}typ_value"]:
+                if typ_field in rec._fields:
+                    val = getattr(rec, typ_field, False)
                     if isinstance(val, models.BaseModel):
                         val = getattr(val, 'name', '')
-                    elif not val or val in [False, None, 'False']:
-                        continue  # přeskoč prázdné/False hodnoty
+                    if val and str(val).strip().lower() != 'false':
+                        combined.append(str(val).strip())
+                        break  # použij první nalezený
 
-                    val = str(val).strip()
-                    if val:
-                        combined.append(val)
+            # Pak přidej ostatní pole
+            for field_name in rec._fields:
+                if not field_name.startswith(prefix):
+                    continue
+
+                if field_name in [f"{prefix}typ", f"{prefix}typ_value"]:
+                    continue  # už zpracováno
+
+                if field_name.endswith('_unit') or (field_name.endswith('_value') and not field_name.endswith('_full_value')):
+                    continue
+
+                val = getattr(rec, field_name, False)
+
+                if isinstance(val, models.BaseModel):
+                    val = getattr(val, 'name', '')
+                elif not val or val in [False, None, 'False']:
+                    continue
+
+                val = str(val).strip()
+                if val and val.lower() != "false":
+                    combined.append(val)
 
             rec.ptp_value_unit_combined = ' '.join(combined) if combined else False
 
