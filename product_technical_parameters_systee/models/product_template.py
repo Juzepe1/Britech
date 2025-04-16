@@ -439,6 +439,15 @@ class ProductTemplate(models.Model):
                     if val and str(val).strip().lower() != 'false':
                         combined.append(str(val).strip())
                         break  # použij první nalezený
+                        
+            static_fields = ['ptp_part_number', 'ptp_footprint', 'ptp_code']
+            for field in static_fields:
+                if field in rec._fields:
+                    val = getattr(rec, field, False)
+                    if isinstance(val, models.BaseModel):
+                        val = getattr(val, 'name', '')
+                    if val and str(val).strip().lower() != 'false':
+                        combined.append(str(val).strip())
 
             # Pak přidej ostatní pole
             for field_name in rec._fields:
