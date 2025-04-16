@@ -74,7 +74,6 @@
             <field name="ptp_drp_typ_pojistky"/>
             <field name="ptp_drp_montaz"/>
           </group>
-          <group string="Ferity" invisible="ptp_category_type_related != 'fer'"/>
           <group string="HDD/SSD" invisible="ptp_category_type_related != 'hdd'">
             <field name="ptp_hdd_typ"/>
             <field name="ptp_hdd_kapacita"/>
