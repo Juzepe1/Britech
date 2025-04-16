@@ -269,7 +269,7 @@ class ProductTemplate(models.Model):
     ptp_hdd_kapacita_full_value = fields.Char(string="HDD kap full value", compute="_compute_all_full_values", store=True)
 
     # ------------------------------------------
-    # Sloučené hodnoty a kontroly
+    # Sloučené hodnoty a kontroly unit a value
     # ------------------------------------------
 
     @api.depends(
@@ -338,7 +338,9 @@ class ProductTemplate(models.Model):
                 unit_raw = getattr(rec, f'{attr}_unit', '')
                 unit = unit_raw.name if hasattr(unit_raw, 'name') else unit_raw or ''
                 setattr(rec, f'{attr}_full_value', f"{value}{unit}".strip())
-                
+    # ------------------------------------------
+    # Aktualizace pole Technical description
+    # ------------------------------------------            
     @api.depends(
     'ptp_bat_chemie',
     'ptp_bat_kapacita_full_value',
@@ -572,7 +574,7 @@ class ProductTemplate(models.Model):
         """
         for rec in self:
             for field_name in rec._fields:
-                if field_name.startswith('ptp_') and field_name != 'ptp_part_number':
+                if field_name.startswith('ptp_') and field_name != 'ptp_part_numberxxxxxxxxx':
                     try:
                         setattr(rec, field_name, False)
                     except Exception:
