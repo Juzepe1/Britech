@@ -82,7 +82,7 @@
           </group>
           <group string="HDD/SSD" invisible="ptp_category_type_related != 'hdd'">
             <field name="ptp_hdd_typ"/>
-            <field name="ptp_hdd_kapacita"/>
+            <field name="ptp_hdd_kapacita_value"/>
             <field name="ptp_hdd_kapacita_unit"/>
           </group>
           <group string="Feritové perličky" invisible="ptp_category_type_related != 'imp'">
