@@ -300,7 +300,7 @@ class ProductTemplate(models.Model):
         'ptp_var_napeti_value', 'ptp_var_napeti_unit',
         'ptp_var_proud_value', 'ptp_var_proud_unit',
         'ptp_zas_pocet_pinu_value', 'ptp_zas_pocet_pinu_unit',
-        'ptp_zen_vz_value', 'ptp_zen_vz_unit'
+        'ptp_zen_vz_value', 'ptp_zen_vz_unit',
         'ptp_hdd_kapacita_value', 'ptp_hdd_kapacita_unit'
     )
     def _compute_all_full_values(self):
