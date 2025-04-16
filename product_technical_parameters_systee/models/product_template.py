@@ -306,7 +306,7 @@ class ProductTemplate(models.Model):
     def _compute_all_full_values(self):
         for rec in self:
             for attr in [
-                'ptp_bat_kapacita', 'ptp_bat_napeti', 'ptp_bip_napeti_uce', 'ptp_bip_proud_ice', 'ptp_cap',
+                'ptp_bat_kapacita','ptp_hdd_kapacita', 'ptp_bat_napeti', 'ptp_bip_napeti_uce', 'ptp_bip_proud_ice', 'ptp_cap',
                 'ptp_dio_napeti', 'ptp_dio_proud', 'ptp_dps_pocet_vrstev', 'ptp_dps_rozmery', 'ptp_dps_tloustka',
                 'ptp_drb_pocet_clanku', 'ptp_imp', 'ptp_ind', 'ptp_lad_napeti', 'ptp_lad_proud',
                 'ptp_lad_vlnova_delka', 'ptp_led_napeti', 'ptp_led_proud', 'ptp_mas_sirka', 'ptp_nap_pocet_pinu',
