@@ -33,8 +33,8 @@ class ProductTemplate(models.Model):
     )
     # Počítané pole: sloučená hodnota + jednotka
     ptp_value_unit_combined = fields.Char(
-        string='Description',
-        compute='_compute_value_unit_combined_desc',
+        string='Description technical',
+        compute='_compute_value_unit_combined',
         store=True,
         index=True
     )
