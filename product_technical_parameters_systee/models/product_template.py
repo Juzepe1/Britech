@@ -436,9 +436,8 @@ class ProductTemplate(models.Model):
 
                     val = getattr(rec, field_name, False)
 
-                    # bezpečnější kontrola Many2one
                     if isinstance(val, models.BaseModel):
-                        val = getattr(val, 'name', '') or ''
+                        val = val.name if val and hasattr(val, 'name') else ''
                     elif not val:
                         continue
 
