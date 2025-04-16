@@ -209,7 +209,7 @@ class ProductTemplate(models.Model):
     ptp_res_tolerance_value = fields.Float(string='Tolerance [%]')
     ptp_res_tolerance_unit = fields.Char(string='%')
     ptp_res_voltage_rating_value = fields.Float(string='Voltage Rating [V]')
-    ptp_cap_voltage_rating_unit = fields.Char(string='V')
+    ptp_res_voltage_rating_unit = fields.Char(string='V')
     # Pole pro Feritové perličky
     ptp_imp_value = fields.Float(string="Impedance")
     ptp_imp_unit = fields.Many2one('ptp.imp.unit', string='Unit (Z)')
