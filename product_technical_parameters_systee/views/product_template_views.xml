@@ -23,7 +23,6 @@
                         <field name="ptp_part_number"/>
                         <field name="ptp_footprint"/>
                         <field name="ptp_note"/>
-                        <field name="ptp_value_unit_combined" readonly="1"/>
                         <field name="qr_code" widget="image" class="oe_avatar"/>
                     </group>
 
