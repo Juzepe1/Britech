@@ -426,9 +426,6 @@ class ProductTemplate(models.Model):
     )              
 
     def get_non_full_value_ptp_fields(model):
-    """
-    Vrací seznam všech ptp_* polí kromě *_value, *_unit a *_full_value.
-    """
         ptp_fields = []
         for field_name in model._fields:
             if field_name.startswith('ptp_') \
