@@ -631,8 +631,8 @@ class ProductTemplate(models.Model):
                 if field_name in ('ptp_note', 'ptp_value_unit_combined'):
                     continue
                 field = rec._fields[field_name]
-                    if not isinstance(field, fields.Field):  # Vynechat pokud není Odoo pole
-                        continue
+                if not isinstance(field, fields.Field):  # Vynechat pokud není Odoo pole
+                    continue
                 value = getattr(rec, field_name)
 
                 # Many2one: kontrola, že záznam je vyplněn
