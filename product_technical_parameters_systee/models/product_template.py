@@ -332,7 +332,8 @@ class ProductTemplate(models.Model):
                 'ptp_poj_proud', 'ptp_res', 'ptp_sch_ifpropustny_proud', 'ptp_sch_vrrm', 'ptp_tla_pocet_poloh',
                 'ptp_tvs_napeti', 'ptp_tvs_proud', 'ptp_tyr_napeti', 'ptp_tyr_proud', 'ptp_uni_napeti_vds',
                 'ptp_uni_proud_ids', 'ptp_usm_if', 'ptp_usm_vr', 'ptp_var_napeti', 'ptp_var_proud',
-                'ptp_zas_pocet_pinu', 'ptp_zen_vz'
+                'ptp_zas_pocet_pinu', 'ptp_zen_vz', 'ptp_cap_tolerance', 'ptp_cap_voltage_rating',
+                'ptp_res_power_rating', 'ptp_res_tolerance', 'ptp_res_voltage_rating',
             ]:
                 unit_overrides = {
     'ptp_res_power_rating': 'W',
