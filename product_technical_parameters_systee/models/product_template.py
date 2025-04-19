@@ -344,10 +344,10 @@ class ProductTemplate(models.Model):
     'ptp_zas_pocet_pinu': 'pin',
     'ptp_nap_pocet_pinu': 'pin',
     'ptp_tla_pocet_poloh': 'pol',
-    'ptp_cap_tolerance_unit': '%',
-    'ptp_res_tolerance_unit': '%',
-    'ptp_res_voltage_rating_unit': 'V',
-    'ptp_cap_voltage_rating_unit': 'V',
+    'ptp_cap_tolerance': '%',
+    'ptp_res_tolerance': '%',
+    'ptp_res_voltage_rating': 'V',
+    'ptp_cap_voltage_rating': 'V',
                 }
                 value = getattr(rec, f'{attr}_value', '') or ''
                 unit_field = f'{attr}_unit'
