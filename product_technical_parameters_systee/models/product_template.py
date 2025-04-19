@@ -349,11 +349,14 @@ class ProductTemplate(models.Model):
     'ptp_cap_voltage_rating_unit': 'V',
                 }
                 value = getattr(rec, f'{attr}_value', '') or ''
+                unit_field = f'{attr}_unit'
                 if attr in unit_overrides:
                     unit = unit_overrides[attr]
-                else:
-                    unit_raw = getattr(rec, f'{attr}_unit', '')
+                elif unit_field in rec._fields:
+                    unit_raw = getattr(rec, unit_field, '')
                     unit = unit_raw.name if hasattr(unit_raw, 'name') else unit_raw or ''
+                else:
+                    unit = ''
                 setattr(rec, f'{attr}_full_value', f"{value}{unit}".strip())
     # ------------------------------------------
     # Aktualizace pole Technical description
@@ -628,6 +631,8 @@ class ProductTemplate(models.Model):
                 if field_name in ('ptp_note', 'ptp_value_unit_combined'):
                     continue
                 field = rec._fields[field_name]
+                    if not isinstance(field, fields.Field):  # Vynechat pokud není Odoo pole
+                        continue
                 value = getattr(rec, field_name)
 
                 # Many2one: kontrola, že záznam je vyplněn
