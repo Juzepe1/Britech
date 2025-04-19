@@ -334,9 +334,26 @@ class ProductTemplate(models.Model):
                 'ptp_uni_proud_ids', 'ptp_usm_if', 'ptp_usm_vr', 'ptp_var_napeti', 'ptp_var_proud',
                 'ptp_zas_pocet_pinu', 'ptp_zen_vz'
             ]:
+                unit_overrides = {
+    'ptp_res_power_rating': 'W',
+    'ptp_dps_pocet_vrstev': 'ks',
+    'ptp_drb_pocet_clanku': 'ks',
+    'ptp_lad_vlnova_delka': 'nm',
+    'ptp_pin_pocet_pinu': 'pin',
+    'ptp_zas_pocet_pinu': 'pin',
+    'ptp_nap_pocet_pinu': 'pin',
+    'ptp_tla_pocet_poloh': 'pol',
+    'ptp_cap_tolerance_unit': '%',
+    'ptp_res_tolerance_unit': '%',
+    'ptp_res_voltage_rating_unit': 'V',
+    'ptp_cap_voltage_rating_unit': 'V',
+                }
                 value = getattr(rec, f'{attr}_value', '') or ''
-                unit_raw = getattr(rec, f'{attr}_unit', '')
-                unit = unit_raw.name if hasattr(unit_raw, 'name') else unit_raw or ''
+                if attr in unit_overrides:
+                    unit = unit_overrides[attr]
+                else:
+                    unit_raw = getattr(rec, f'{attr}_unit', '')
+                    unit = unit_raw.name if hasattr(unit_raw, 'name') else unit_raw or ''
                 setattr(rec, f'{attr}_full_value', f"{value}{unit}".strip())
     # ------------------------------------------
     # Aktualizace pole Technical description
