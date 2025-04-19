@@ -48,7 +48,7 @@ class ProductTemplate(models.Model):
     ptp_dps_rozmery_value = fields.Float(string='Rozměry DPS', digits=(6, 3))
     ptp_dps_rozmery_unit = fields.Many2one('ptp.delka.unit', string='Rozměr jednotka')
     ptp_dps_pocet_vrstev_value = fields.Integer(string='Počet vrstev')
-    ptp_dps_pocet_vrstev_unit = fields.Char(string='ks', default="ks")
+    ptp_dps_pocet_vrstev_unit = "ks"
     ptp_dps_tloustka_value = fields.Float(string='Tloušťka', digits=(6, 3))
     ptp_dps_tloustka_unit = fields.Many2one('ptp.delka.unit', string='Tloušťka jednotka')
     ptp_dps_povrchova_uprava = fields.Many2one('ptp.dps.povrchova_uprava', string='Povrchová úprava')
@@ -60,7 +60,7 @@ class ProductTemplate(models.Model):
     # Jednotlivá pole NAP
     ptp_nap_typ_konektoru = fields.Many2one('ptp.nap.typ_konektoru', string='Typ konektoru')
     ptp_nap_pocet_pinu_value = fields.Integer(string='Počet pinů')
-    ptp_nap_pocet_pinu_unit = fields.Char(string='pin', default="pin")
+    ptp_nap_pocet_pinu_unit = "pin"
     ptp_nap_montaz = fields.Many2one('ptp.nap.montaz', string='Montáž')
     ptp_nap_roztec_kontaktu_value = fields.Float(string='Rozteč kontaktů', digits=(6, 3))
     ptp_nap_roztec_kontaktu_unit = fields.Many2one('ptp.delka.unit', string='Rozteč kontaktů jednotka')
@@ -69,14 +69,14 @@ class ProductTemplate(models.Model):
     ptp_pin_roztec_kontaktu_unit = fields.Many2one('ptp.delka.unit', string='Rozteč kontaktů jednotka')
     ptp_pin_typ = fields.Many2one('ptp.pin.typ', string='Typ Pinů')
     ptp_pin_pocet_pinu_value = fields.Integer(string='Počet pinů')
-    ptp_pin_pocet_pinu_unit = fields.Char(string='pin', default="pin")
+    ptp_pin_pocet_pinu_unit = "pin"
     ptp_pin_montaz = fields.Many2one('ptp.pin.montaz', string='Montáž')
     # Jednotlivá pole USB
     ptp_usb_typ = fields.Many2one('ptp.usb.typ', string='Typ USB')
     # Jednotlivá pole ZAS
     ptp_zas_typ_konektoru = fields.Many2one('ptp.zas.typ_konektoru', string='Typ konektoru')
     ptp_zas_pocet_pinu_value = fields.Integer(string='Počet pinů')
-    ptp_zas_pocet_pinu_unit = fields.Char(string='pin', default="pin")
+    ptp_zas_pocet_pinu_unit = "pin"
     ptp_zas_montaz = fields.Many2one('ptp.zas.montaz', string='Montáž')
     # Jednotlivá pole CHL
     ptp_chl_rozmery = fields.Text(string='Rozměry chladiče')
@@ -84,7 +84,7 @@ class ProductTemplate(models.Model):
     # Jednotlivá pole DRB
     ptp_drb_typ_baterie = fields.Many2one('ptp.drb.typ_baterie', string='Typ baterie')
     ptp_drb_pocet_clanku_value = fields.Integer(string='Počet článků')
-    ptp_drb_pocet_clanku_unit = fields.Char(string='ks', default="ks")
+    ptp_drb_pocet_clanku_unit = "ks"
     ptp_drb_montaz = fields.Many2one('ptp.drb.montaz', string='Montáž')
     # Jednotlivá pole DRP
     ptp_drp_typ_pojistky = fields.Many2one('ptp.drp.typ_pojistky', string='Typ pojistky')
@@ -92,7 +92,7 @@ class ProductTemplate(models.Model):
     # Jednotlivá pole TLA
     ptp_tla_typ = fields.Many2one('ptp.tla.typ', string='Typ')
     ptp_tla_pocet_poloh_value = fields.Integer(string='Počet poloh')
-    ptp_tla_pocet_poloh_unit = fields.Char(string='poloh', default="pol")
+    ptp_tla_pocet_poloh_unit = "pol"
     ptp_tla_montaz = fields.Many2one('ptp.tla.montaz', string='Montáž')
     # Jednotlivá pole BLU
     ptp_blu_typ = fields.Many2one('ptp.blu.typ', string='Typ bluetooth a wifi')
@@ -142,7 +142,7 @@ class ProductTemplate(models.Model):
     ptp_led_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
     # Jednotlivá pole LAD
     ptp_lad_vlnova_delka_value = fields.Integer(string='Vlnová délka')
-    ptp_lad_vlnova_delka_unit = fields.Char(string='nm', default="nm")
+    ptp_lad_vlnova_delka_unit = "nm"
     ptp_lad_proud_value = fields.Float(string='Proud', digits=(6, 3))
     ptp_lad_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
     ptp_lad_napeti_value = fields.Float(string='Napětí', digits=(6, 3))
@@ -200,14 +200,14 @@ class ProductTemplate(models.Model):
     ptp_cap_voltage_rating_unit = fields.Char(string='V', default="V")
     ptp_cap_dielectric = fields.Many2one('ptp.cap.dielectric', string='Dielectric')
     ptp_cap_tolerance_value = fields.Float(string='Tolerance [%]', digits=(6, 3))
-    ptp_cap_tolerance_unit = fields.Char(string='%', default="%")
+    ptp_cap_tolerance_unit = "%"
     # Pole pro rezistory
     ptp_res_value = fields.Float(string='Value (R)', digits=(6, 3))
     ptp_res_unit = fields.Many2one('ptp.res.unit', string='Unit (R)')
     ptp_res_power_rating_value = fields.Float(string='Power Rating', digits=(6, 3))
-    ptp_res_power_rating_unit = fields.Char(string='W', default="W")
+    ptp_res_power_rating_unit = "W"
     ptp_res_tolerance_value = fields.Float(string='Tolerance [%]', digits=(6, 3))
-    ptp_res_tolerance_unit = fields.Char(string='%', default="%")
+    ptp_res_tolerance_unit = "%"
     ptp_res_voltage_rating_value = fields.Float(string='Voltage Rating [V]', digits=(6, 3))
     ptp_res_voltage_rating_unit = fields.Char(string='V', default="V")
     # Pole pro Feritové perličky

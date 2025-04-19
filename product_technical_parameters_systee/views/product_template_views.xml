@@ -16,8 +16,8 @@
       <xpath expr="//sheet/notebook" position="inside">
         <page string="Technical Parameters" invisible="not ptp_category_type_related">>
           <group>
-                        <field name="ptp_footprint"/>
-                        <field name="ptp_note"/>
+            <field name="ptp_footprint"/>
+            <field name="ptp_note"/>
           </group>
           <group string="Antény" invisible="ptp_category_type_related != 'ant'">
           </group>          
@@ -45,8 +45,7 @@
             <field name="ptp_cap_voltage_rating_unit"/>
             <field name="ptp_cap_voltage_rating_value"/>
             <field name="ptp_cap_dielectric"/>
-            <field name="ptp_cap_tolerance_unit"/>
-            <field name="ptp_cap_tolerance_value"/>
+            <field name="ptp_cap_tolerance_value" string="Tolerance (%)"/>
           </group>
           <group string="Chladiče" invisible="ptp_category_type_related != 'chl'">
             <field name="ptp_chl_rozmery"/>
@@ -65,8 +64,7 @@
           <group string="Desky plošných spojů" invisible="ptp_category_type_related != 'dps'">
             <field name="ptp_dps_rozmery_value"/>
             <field name="ptp_dps_rozmery_unit"/>
-            <field name="ptp_dps_pocet_vrstev_value"/>
-            <field name="ptp_dps_pocet_vrstev_unit"/>
+            <field name="ptp_dps_pocet_vrstev_value" string="Počet vrstev (ks)"/>
             <field name="ptp_dps_tloustka_value"/>
             <field name="ptp_dps_tloustka_unit"/>
             <field name="ptp_dps_povrchova_uprava"/>
@@ -74,8 +72,7 @@
           </group>
           <group string="Držáky baterií" invisible="ptp_category_type_related != 'drb'">
             <field name="ptp_drb_typ_baterie"/>
-            <field name="ptp_drb_pocet_clanku_value"/>
-            <field name="ptp_drb_pocet_clanku_unit"/>
+            <field name="ptp_drb_pocet_clanku_value" string="Počet článků (ks)"/>
             <field name="ptp_drb_montaz"/>
           </group>
           <group string="Držáky pojistek" invisible="ptp_category_type_related != 'drp'">
@@ -100,8 +97,7 @@
             <field name="ptp_int_funkce"/>
           </group>
           <group string="Laserové diody" invisible="ptp_category_type_related != 'lad'">
-            <field name="ptp_lad_vlnova_delka_value"/>
-            <field name="ptp_lad_vlnova_delka_unit"/>
+            <field name="ptp_lad_vlnova_delka_value" string="Vlnová délka (nm)"/>
             <field name="ptp_lad_proud_value"/>
             <field name="ptp_lad_proud_unit"/>
             <field name="ptp_lad_napeti_value"/>
@@ -121,8 +117,7 @@
           </group>
           <group string="Napájecí konektory" invisible="ptp_category_type_related != 'nap'">
             <field name="ptp_nap_typ_konektoru"/>
-            <field name="ptp_nap_pocet_pinu_value"/>
-            <field name="ptp_nap_pocet_pinu_unit"/>
+            <field name="ptp_nap_pocet_pinu_value" string="Počet pinů (pin)"/>
             <field name="ptp_nap_montaz"/>
             <field name="ptp_nap_roztec_kontaktu_value"/>
             <field name="ptp_nap_roztec_kontaktu_unit"/>
@@ -136,8 +131,7 @@
             <field name="ptp_pin_roztec_kontaktu_value"/>
             <field name="ptp_pin_roztec_kontaktu_unit"/>
             <field name="ptp_pin_typ"/>
-            <field name="ptp_pin_pocet_pinu_value"/>
-            <field name="ptp_pin_pocet_pinu_unit"/>
+            <field name="ptp_pin_pocet_pinu_value" string="Počet pinů (pin)"/>
             <field name="ptp_pin_montaz"/>
           </group>
           <group string="PLC prvky" invisible="ptp_category_type_related != 'plc'">
@@ -154,10 +148,8 @@
           <group string="Rezistory" invisible="ptp_category_type_related != 'res'">
             <field name="ptp_res_value"/>
             <field name="ptp_res_unit"/>
-            <field name="ptp_res_power_rating_unit"/>
-            <field name="ptp_res_power_rating_value"/>
-            <field name="ptp_res_tolerance_unit"/>
-            <field name="ptp_res_tolerance_value"/>
+            <field name="ptp_res_power_rating_value" string="Power rating (W)"/>
+            <field name="ptp_res_tolerance_value" string="Tolerance (%)"/>
             <field name="ptp_res_voltage_rating_unit"/>
             <field name="ptp_res_voltage_rating_value"/>
           </group>
@@ -221,8 +213,7 @@
           </group>
           <group string="Zásuvky a zástrčky" invisible="ptp_category_type_related != 'zas'">
             <field name="ptp_zas_typ_konektoru"/>
-            <field name="ptp_zas_pocet_pinu_value"/>
-            <field name="ptp_zas_pocet_pinu_unit"/>
+            <field name="ptp_zas_pocet_pinu_value" string="Počet pinů (pin)"/>
             <field name="ptp_zas_montaz"/>
           </group>
           <group string="Zenerovy diody" invisible="ptp_category_type_related != 'zen'">
