@@ -354,7 +354,10 @@ class ProductTemplate(models.Model):
                     unit = unit_overrides[attr]
                 elif unit_field in rec._fields:
                     unit_raw = getattr(rec, unit_field, '')
-                    unit = unit_raw.name if hasattr(unit_raw, 'name') else unit_raw or ''
+                    if isinstance(unit_raw, models.BaseModel):
+                        unit = unit_raw.name or ''
+                    else:
+                        unit = unit_raw or ''
                 else:
                     unit = ''
                 setattr(rec, f'{attr}_full_value', f"{value}{unit}".strip())
