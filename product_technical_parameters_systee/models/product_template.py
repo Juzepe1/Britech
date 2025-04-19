@@ -656,7 +656,7 @@ class ProductTemplate(models.Model):
         Vždy vygeneruje `default_code`. Pokud `new_sequence=True`, vytvoří nové číslo sekvence,
         jinak zachová původní číslo sekvence.
         """
-        category_id = vals.get('categ_id', self.categ_id.id)
+        category_id = vals.get('categ_id', self.categ_id.id if self.categ_id else None)
         category = self.env['product.category'].browse(category_id) if category_id else None
         category_code = category.ptp_code if category and category.ptp_code else '000'
 
