@@ -170,8 +170,7 @@
           </group>
           <group string="Tlačítka a přepínače" invisible="ptp_category_type_related != 'tla'">
             <field name="ptp_tla_typ"/>
-            <field name="ptp_tla_pocet_poloh_value"/>
-            <field name="ptp_tla_pocet_poloh_unit"/>
+            <field name="ptp_tla_pocet_poloh_value" string="Počet poloh (pol)"/>
             <field name="ptp_tla_montaz"/>
           </group>
           <group string="TVS diody" invisible="ptp_category_type_related != 'tvs'">
