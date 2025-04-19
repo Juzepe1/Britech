@@ -45,7 +45,7 @@ class ProductTemplate(models.Model):
     ptp_note = fields.Text(string='Note')
 
     # Jednotlivá pole DPS
-    ptp_dps_rozmery_value = fields.Float(string='Rozměry DPS', digits=(6, 3))
+    ptp_dps_rozmery_value = fields.Text(string='Rozměry DPS')
     ptp_dps_rozmery_unit = fields.Many2one('ptp.delka.unit', string='Rozměr jednotka')
     ptp_dps_pocet_vrstev_value = fields.Integer(string='Počet vrstev')
     ptp_dps_pocet_vrstev_unit = "ks"
