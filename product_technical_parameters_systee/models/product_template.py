@@ -726,31 +726,29 @@ class ProductTemplate(models.Model):
         return records
 
     def write(self, vals):
+        category_changed = 'categ_id' in vals
+        old_categories = {}
 
-        if 'categ_id' in vals:
-            self._ensure_default_code(vals, new_sequence=False)
+        for rec in self:
+            if category_changed:
+                old_categories[rec.id] = rec.categ_id
+                rec._ensure_default_code(vals, new_sequence=False)
 
-        new_category = self.env['product.category'].browse(vals['categ_id']) if vals.get('categ_id') else self.categ_id
-        if new_category and new_category.ptp_component_type:
-            self._ensure_product_name(vals)
-        category_changed = 'categ_id' in vals  #  Kontrola, zda se mění kategorie
-
-        if category_changed:
-            old_categories = {rec.id: rec.categ_id for rec in self}  # Uložení staré kategorie
-            self._ensure_default_code(vals, new_sequence=False)
+            new_category = rec.env['product.category'].browse(vals['categ_id']) if vals.get('categ_id') else rec.categ_id
+            if new_category and new_category.ptp_component_type:
+                rec._ensure_product_name(vals)
 
         result = super().write(vals)
+
         if 'default_code' in vals:
-            self._compute_qr_code()  # Regenerace QR kódu
+            for rec in self:
+                rec._compute_qr_code()
 
         if category_changed:
-            for record in self:
-                old_category = old_categories.get(record.id)
-                new_category = record.categ_id
-
-            # Pokud nová kategorie má `ptp_component_type`, validujeme povinná pole
+            for rec in self:
+                new_category = rec.categ_id
                 if new_category and new_category.ptp_component_type:
-                    record._check_required_fields()
+                    rec._check_required_fields()
 
         return result
 
