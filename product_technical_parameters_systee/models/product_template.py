@@ -197,7 +197,7 @@ class ProductTemplate(models.Model):
     ptp_cap_value = fields.Float(string='Value (C)', digits=(6, 3))
     ptp_cap_unit = fields.Many2one('ptp.cap.unit', string='Unit (C)')
     ptp_cap_voltage_rating_value = fields.Float(string='Voltage Rating [VDC]', digits=(6, 3))
-    ptp_cap_voltage_rating_unit = fields.Char(string='V', default="V")
+    ptp_cap_voltage_rating_unit = "V"
     ptp_cap_dielectric = fields.Many2one('ptp.cap.dielectric', string='Dielectric')
     ptp_cap_tolerance_value = fields.Float(string='Tolerance [%]', digits=(6, 3))
     ptp_cap_tolerance_unit = "%"
@@ -209,7 +209,7 @@ class ProductTemplate(models.Model):
     ptp_res_tolerance_value = fields.Float(string='Tolerance [%]', digits=(6, 3))
     ptp_res_tolerance_unit = "%"
     ptp_res_voltage_rating_value = fields.Float(string='Voltage Rating [V]', digits=(6, 3))
-    ptp_res_voltage_rating_unit = fields.Char(string='V', default="V")
+    ptp_res_voltage_rating_unit = "V"
     # Pole pro Feritové perličky
     ptp_imp_value = fields.Float(string="Impedance", digits=(6, 3))
     ptp_imp_unit = fields.Many2one('ptp.imp.unit', string='Unit (Z)')
@@ -278,7 +278,7 @@ class ProductTemplate(models.Model):
         'ptp_bip_napeti_uce_value', 'ptp_bip_napeti_uce_unit',
         'ptp_bip_proud_ice_value', 'ptp_bip_proud_ice_unit',
         'ptp_cap_value', 'ptp_cap_unit',
-        'ptp_cap_voltage_rating_value', 'ptp_cap_voltage_rating_unit',
+        'ptp_cap_voltage_rating_value',
         'ptp_cap_tolerance_value',
         'ptp_dio_napeti_value', 'ptp_dio_napeti_unit',
         'ptp_dio_proud_value', 'ptp_dio_proud_unit',
@@ -303,7 +303,7 @@ class ProductTemplate(models.Model):
         'ptp_res_value', 'ptp_res_unit',
         'ptp_res_power_rating_value', 
         'ptp_res_tolerance_value', 
-        'ptp_res_voltage_rating_value', 'ptp_res_voltage_rating_unit',
+        'ptp_res_voltage_rating_value',
         'ptp_sch_ifpropustny_proud_value', 'ptp_sch_ifpropustny_proud_unit',
         'ptp_sch_vrrm_value', 'ptp_sch_vrrm_unit',
         'ptp_tla_pocet_poloh_value', 

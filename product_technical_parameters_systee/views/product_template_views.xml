@@ -42,8 +42,7 @@
           <group string="Kondenzátory" invisible="ptp_category_type_related != 'cap'">
             <field name="ptp_cap_value"/>
             <field name="ptp_cap_unit"/>
-            <field name="ptp_cap_voltage_rating_unit"/>
-            <field name="ptp_cap_voltage_rating_value"/>
+            <field name="ptp_cap_voltage_rating_value" string="Voltage rating (V)"/>
             <field name="ptp_cap_dielectric"/>
             <field name="ptp_cap_tolerance_value" string="Tolerance (%)"/>
           </group>
@@ -150,8 +149,7 @@
             <field name="ptp_res_unit"/>
             <field name="ptp_res_power_rating_value" string="Power rating (W)"/>
             <field name="ptp_res_tolerance_value" string="Tolerance (%)"/>
-            <field name="ptp_res_voltage_rating_unit"/>
-            <field name="ptp_res_voltage_rating_value"/>
+            <field name="ptp_res_voltage_rating_value" string="Voltage rating (V)"/>
           </group>
           <group string="Šablony" invisible="ptp_category_type_related != 'sab'">
             <field name="ptp_sab_typ"/>
