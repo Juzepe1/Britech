@@ -171,6 +171,10 @@
             <field name="ptp_tla_pocet_poloh_value" string="Počet poloh (pol)"/>
             <field name="ptp_tla_montaz"/>
           </group>
+          <group string="Tranzistory" invisible="ptp_category_type_related != 'tra'">
+            <field name="ptp_tra_type"/>
+            <field name="ptp_tra_polarity"/>
+          </group>
           <group string="TVS diody" invisible="ptp_category_type_related != 'tvs'">
             <field name="ptp_tvs_napeti_value"/>
             <field name="ptp_tvs_napeti_unit"/>

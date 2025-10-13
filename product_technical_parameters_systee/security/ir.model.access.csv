@@ -41,8 +41,8 @@ access_ptp_sch_vrrm_user,ptp.sch.vrrm user,model_ptp_sch_vrrm,base.group_user,1,
 access_ptp_sen_merena_velicina_user,ptp.sen.merena_velicina user,model_ptp_sen_merena_velicina,base.group_user,1,1,1,1
 access_ptp_tla_montaz_user,ptp.tla.montaz user,model_ptp_tla_montaz,base.group_user,1,1,1,1
 access_ptp_tla_typ_user,ptp.tla.typ user,model_ptp_tla_typ,base.group_user,1,1,1,1
-access_ptp_tran_polarity_user,ptp.tran.polarity user,model_ptp_tran_polarity,base.group_user,1,1,1,1
-access_ptp_tran_type_user,ptp.tran.type user,model_ptp_tran_type,base.group_user,1,1,1,1
+access_ptp_tra_polarity_user,ptp.tra.polarity user,model_ptp_tra_polarity,base.group_user,1,1,1,1
+access_ptp_tra_type_user,ptp.tra.type user,model_ptp_tra_type,base.group_user,1,1,1,1
 access_ptp_tvs_chanel_user,ptp.tvs.chanel user,model_ptp_tvs_chanel,base.group_user,1,1,1,1
 access_ptp_tvs_polarity_user,ptp.tvs.polarity user,model_ptp_tvs_polarity,base.group_user,1,1,1,1
 access_ptp_tvs_typ_user,ptp.tvs.typ user,model_ptp_tvs_typ,base.group_user,1,1,1,1

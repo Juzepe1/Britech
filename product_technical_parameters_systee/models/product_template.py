@@ -20,7 +20,6 @@ def is_float_or_dash(val):
     except ValueError:
         return False
 
-
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
     # Obecná pole 
@@ -40,60 +39,67 @@ class ProductTemplate(models.Model):
     )
 
     # Společná pole
-    ptp_part_number = fields.Char(string='Part Number')
+    ptp_part_number = fields.Char(string='Part Number', index=True)
+    _sql_constraints = [
+        ('ptp_part_number_unique',
+         'unique(ptp_part_number)',
+         'Part Number must be unique.'),
+    ]
+
     ptp_footprint = fields.Many2one('ptp.footprint', string='Footprint')
+
     ptp_note = fields.Text(string='Note')
 
     # Jednotlivá pole DPS
     ptp_dps_rozmery_value = fields.Text(string='Rozměry DPS')
-    ptp_dps_rozmery_unit = fields.Many2one('ptp.delka.unit', string='Rozměr jednotka')
-    ptp_dps_pocet_vrstev_value = fields.Integer(string='Počet vrstev')
-    ptp_dps_pocet_vrstev_unit = "ks"
-    ptp_dps_tloustka_value = fields.Float(string='Tloušťka', digits=(6, 3))
-    ptp_dps_tloustka_unit = fields.Many2one('ptp.delka.unit', string='Tloušťka jednotka')
-    ptp_dps_povrchova_uprava = fields.Many2one('ptp.dps.povrchova_uprava', string='Povrchová úprava')
-    ptp_dps_material = fields.Many2one('ptp.dps.material', string='Materiál')
+    ptp_dps_rozmery_unit = fields.Many2one('ptp.delka.unit', string='Rozměr jednotka DPS')
+    ptp_dps_pocet_vrstev_value = fields.Integer(string='Počet vrstev DPS')
+    ptp_dps_pocet_vrstev_unit = "ks DPS"
+    ptp_dps_tloustka_value = fields.Float(string='Tloušťka DPS', digits=(6, 3))
+    ptp_dps_tloustka_unit = fields.Many2one('ptp.delka.unit', string='Tloušťka jednotka DPS')
+    ptp_dps_povrchova_uprava = fields.Many2one('ptp.dps.povrchova_uprava', string='Povrchová úprava DPS')
+    ptp_dps_material = fields.Many2one('ptp.dps.material', string='Materiál DPS')
     # Jednotlivá pole SAB
-    ptp_sab_typ = fields.Many2one('ptp.sab.typ', string='Typ šablony')
-    ptp_sab_rozmer = fields.Text(string='Rozmer')
-    ptp_sab_typ_uchyceni = fields.Many2one('ptp.sab.typ_uchyceni', string='Typ uchycení')
+    ptp_sab_typ = fields.Many2one('ptp.sab.typ', string='Typ šablony SAB')
+    ptp_sab_rozmer = fields.Text(string='Rozmer SAB')
+    ptp_sab_typ_uchyceni = fields.Many2one('ptp.sab.typ_uchyceni', string='Typ uchycení SAB')
     # Jednotlivá pole NAP
-    ptp_nap_typ_konektoru = fields.Many2one('ptp.nap.typ_konektoru', string='Typ konektoru')
-    ptp_nap_pocet_pinu_value = fields.Integer(string='Počet pinů')
+    ptp_nap_typ_konektoru = fields.Many2one('ptp.nap.typ_konektoru', string='Typ konektoru NAP')
+    ptp_nap_pocet_pinu_value = fields.Integer(string='Počet pinů NAP')
     ptp_nap_pocet_pinu_unit = "pin"
-    ptp_nap_montaz = fields.Many2one('ptp.nap.montaz', string='Montáž')
-    ptp_nap_roztec_kontaktu_value = fields.Float(string='Rozteč kontaktů', digits=(6, 3))
-    ptp_nap_roztec_kontaktu_unit = fields.Many2one('ptp.delka.unit', string='Rozteč kontaktů jednotka')
+    ptp_nap_montaz = fields.Many2one('ptp.nap.montaz', string='Montáž NAP')
+    ptp_nap_roztec_kontaktu_value = fields.Float(string='Rozteč kontaktů NAP', digits=(6, 3))
+    ptp_nap_roztec_kontaktu_unit = fields.Many2one('ptp.delka.unit', string='Rozteč kontaktů jednotka NAP')
     # Jednotlivá pole PIN
-    ptp_pin_roztec_kontaktu_value = fields.Float(string='Rozteč kontaktů', digits=(6, 3))
-    ptp_pin_roztec_kontaktu_unit = fields.Many2one('ptp.delka.unit', string='Rozteč kontaktů jednotka')
-    ptp_pin_typ = fields.Many2one('ptp.pin.typ', string='Typ Pinů')
-    ptp_pin_pocet_pinu_value = fields.Integer(string='Počet pinů')
+    ptp_pin_roztec_kontaktu_value = fields.Float(string='Rozteč kontaktů PIN', digits=(6, 3))
+    ptp_pin_roztec_kontaktu_unit = fields.Many2one('ptp.delka.unit', string='Rozteč kontaktů jednotka PIN')
+    ptp_pin_typ = fields.Many2one('ptp.pin.typ', string='Typ Pinů PIN')
+    ptp_pin_pocet_pinu_value = fields.Integer(string='Počet pinů PIN')
     ptp_pin_pocet_pinu_unit = "pin"
-    ptp_pin_montaz = fields.Many2one('ptp.pin.montaz', string='Montáž')
+    ptp_pin_montaz = fields.Many2one('ptp.pin.montaz', string='Montáž PIN')
     # Jednotlivá pole USB
     ptp_usb_typ = fields.Many2one('ptp.usb.typ', string='Typ USB')
     # Jednotlivá pole ZAS
-    ptp_zas_typ_konektoru = fields.Many2one('ptp.zas.typ_konektoru', string='Typ konektoru')
-    ptp_zas_pocet_pinu_value = fields.Integer(string='Počet pinů')
+    ptp_zas_typ_konektoru = fields.Many2one('ptp.zas.typ_konektoru', string='Typ konektoru ZAS')
+    ptp_zas_pocet_pinu_value = fields.Integer(string='Počet pinů ZAS')
     ptp_zas_pocet_pinu_unit = "pin"
-    ptp_zas_montaz = fields.Many2one('ptp.zas.montaz', string='Montáž')
+    ptp_zas_montaz = fields.Many2one('ptp.zas.montaz', string='Montáž ZAS')
     # Jednotlivá pole CHL
-    ptp_chl_rozmery = fields.Text(string='Rozměry chladiče')
-    ptp_chl_material = fields.Many2one('ptp.chl.material', string='Materiál')
+    ptp_chl_rozmery = fields.Text(string='Rozměry chladiče CHL')
+    ptp_chl_material = fields.Many2one('ptp.chl.material', string='Materiál CHL')
     # Jednotlivá pole DRB
-    ptp_drb_typ_baterie = fields.Many2one('ptp.drb.typ_baterie', string='Typ baterie')
-    ptp_drb_pocet_clanku_value = fields.Integer(string='Počet článků')
+    ptp_drb_typ_baterie = fields.Many2one('ptp.drb.typ_baterie', string='Typ baterie DRB')
+    ptp_drb_pocet_clanku_value = fields.Integer(string='Počet článků DRB')
     ptp_drb_pocet_clanku_unit = "ks"
-    ptp_drb_montaz = fields.Many2one('ptp.drb.montaz', string='Montáž')
+    ptp_drb_montaz = fields.Many2one('ptp.drb.montaz', string='Montáž DRB')
     # Jednotlivá pole DRP
-    ptp_drp_typ_pojistky = fields.Many2one('ptp.drp.typ_pojistky', string='Typ pojistky')
-    ptp_drp_montaz = fields.Many2one('ptp.drp.montaz', string='Montáž')
+    ptp_drp_typ_pojistky = fields.Many2one('ptp.drp.typ_pojistky', string='Typ pojistky DRP')
+    ptp_drp_montaz = fields.Many2one('ptp.drp.montaz', string='Montáž DRP')
     # Jednotlivá pole TLA
-    ptp_tla_typ = fields.Many2one('ptp.tla.typ', string='Typ')
-    ptp_tla_pocet_poloh_value = fields.Integer(string='Počet poloh')
+    ptp_tla_typ = fields.Many2one('ptp.tla.typ', string='Typ TLA')
+    ptp_tla_pocet_poloh_value = fields.Integer(string='Počet poloh TLA')
     ptp_tla_pocet_poloh_unit = "pol"
-    ptp_tla_montaz = fields.Many2one('ptp.tla.montaz', string='Montáž')
+    ptp_tla_montaz = fields.Many2one('ptp.tla.montaz', string='Montáž TLA')
     # Jednotlivá pole BLU
     ptp_blu_typ = fields.Many2one('ptp.blu.typ', string='Typ bluetooth a wifi')
     # Jednotlivá pole DIS
@@ -102,123 +108,123 @@ class ProductTemplate(models.Model):
     ptp_plc_typ = fields.Many2one('ptp.plc.typ', string='Typ PLC')
     # Jednotlivá pole HDD
     ptp_hdd_typ = fields.Many2one('ptp.hdd.typ', string='Typ HDD')
-    ptp_hdd_kapacita_value = fields.Float(string='Kapacita', digits=(6, 3))
-    ptp_hdd_kapacita_unit = fields.Many2one('ptp.hdd.kapacita_unit', string='Kapacita HDD Unit')
+    ptp_hdd_kapacita_value = fields.Float(string='Kapacita HDD', digits=(6, 3))
+    ptp_hdd_kapacita_unit = fields.Many2one('ptp.hdd.kapacita_unit', string='Kapacita Unit HDD')
     # Jednotlivá pole SEN
-    ptp_sen_merena_velicina = fields.Many2one('ptp.sen.merena_velicina', string='Měřená veličina senzoru')
-    ptp_sen_typ_vystupu = fields.Many2one('ptp.usb.typ_vystupu', string='Typ výstupu senzoru')
+    ptp_sen_merena_velicina = fields.Many2one('ptp.sen.merena_velicina', string='Měřená veličina SEN')
+    ptp_sen_typ_vystupu = fields.Many2one('ptp.usb.typ_vystupu', string='Typ výstupu SEN')
     # Jednotlivá pole BAT
-    ptp_bat_typ = fields.Many2one('ptp.bat.typ', string='Typ baterie')
-    ptp_bat_napeti_value = fields.Float(string='Napětí baterie', digits=(6, 3))
-    ptp_bat_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
-    ptp_bat_kapacita_value = fields.Float(string='Kapacita baterie', digits=(6, 3))
-    ptp_bat_kapacita_unit = fields.Many2one('ptp.bat.kapacita_unit', string='Kapacita baterie')
-    ptp_bat_chemie = fields.Many2one('ptp.bat.chemie', string='Chemie')
+    ptp_bat_typ = fields.Many2one('ptp.bat.typ', string='Typ BAT')
+    ptp_bat_napeti_value = fields.Float(string='Napětí BAT', digits=(6, 3))
+    ptp_bat_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí) BAT')
+    ptp_bat_kapacita_value = fields.Float(string='Kapacita BAT', digits=(6, 3))
+    ptp_bat_kapacita_unit = fields.Many2one('ptp.bat.kapacita_unit', string='Unit (kapacita) BAT')
+    ptp_bat_chemie = fields.Many2one('ptp.bat.chemie', string='Chemie BAT')
     # Jednotlivá pole POJ
-    ptp_poj_proud_value = fields.Float(string='Proud', digits=(6, 3))
-    ptp_poj_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
-    ptp_poj_napeti_value = fields.Float(string='Napětí', digits=(6, 3))
-    ptp_poj_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
-    ptp_poj_typ = fields.Many2one('ptp.poj.typ', string='Rychlost pojistky')
-    ptp_poj_typ_pojistky = fields.Many2one('ptp.poj.typ_pojistky', string='Typ pojistky')
+    ptp_poj_proud_value = fields.Float(string='Proud POJ', digits=(6, 3))
+    ptp_poj_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud) POJ')
+    ptp_poj_napeti_value = fields.Float(string='Napětí POJ', digits=(6, 3))
+    ptp_poj_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí) POJ')
+    ptp_poj_typ = fields.Many2one('ptp.poj.typ', string='Rychlost POJ')
+    ptp_poj_typ_pojistky = fields.Many2one('ptp.poj.typ_pojistky', string='Typ POJ')
     # Jednotlivá pole TVS
-    ptp_tvs_napeti_value = fields.Float(string='Napětí', digits=(6, 3))
-    ptp_tvs_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
-    ptp_tvs_proud_value = fields.Float(string='Proud', digits=(6, 3))
-    ptp_tvs_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    ptp_tvs_napeti_value = fields.Float(string='Napětí TVS', digits=(6, 3))
+    ptp_tvs_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí) TVS')
+    ptp_tvs_proud_value = fields.Float(string='Proud TVS', digits=(6, 3))
+    ptp_tvs_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud) TVS')
     ptp_tvs_typ = fields.Many2one('ptp.tvs.typ', string='Typ TVS')
-    ptp_tvs_polarity = fields.Many2one('ptp.tvs.polarity', string='TVS dioda polarity')
-    ptp_tvs_chanel = fields.Many2one('ptp.tvs.chanel', string='TVS dioda počet kanálů')
+    ptp_tvs_polarity = fields.Many2one('ptp.tvs.polarity', string='Dioda polarita TVS')
+    ptp_tvs_chanel = fields.Many2one('ptp.tvs.chanel', string='Dioda počet kanálů TVS')
     # Jednotlivá pole VAR
-    ptp_var_napeti_value = fields.Float(string='Napětí', digits=(6, 3))
-    ptp_var_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
-    ptp_var_proud_value = fields.Float(string='Proud', digits=(6, 3))
-    ptp_var_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    ptp_var_napeti_value = fields.Float(string='Napětí VAR', digits=(6, 3))
+    ptp_var_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí) VAR')
+    ptp_var_proud_value = fields.Float(string='Proud VAR', digits=(6, 3))
+    ptp_var_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud) VAR')
     # Jednotlivá pole LED
-    ptp_led_barva = fields.Many2one('ptp.led.barva', string='Barva')
-    ptp_led_proud_value = fields.Float(string='Proud', digits=(6, 3))
-    ptp_led_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
-    ptp_led_napeti_value = fields.Float(string='Napětí', digits=(6, 3))
-    ptp_led_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    ptp_led_barva = fields.Many2one('ptp.led.barva', string='Barva LED')
+    ptp_led_proud_value = fields.Float(string='Proud LED', digits=(6, 3))
+    ptp_led_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud) LED')
+    ptp_led_napeti_value = fields.Float(string='Napětí LED', digits=(6, 3))
+    ptp_led_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí) LED')
     # Jednotlivá pole LAD
-    ptp_lad_vlnova_delka_value = fields.Integer(string='Vlnová délka')
+    ptp_lad_vlnova_delka_value = fields.Integer(string='Vlnová délka LAD')
     ptp_lad_vlnova_delka_unit = "nm"
-    ptp_lad_proud_value = fields.Float(string='Proud', digits=(6, 3))
-    ptp_lad_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
-    ptp_lad_napeti_value = fields.Float(string='Napětí', digits=(6, 3))
-    ptp_lad_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    ptp_lad_proud_value = fields.Float(string='Proud LAD', digits=(6, 3))
+    ptp_lad_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud) LAD')
+    ptp_lad_napeti_value = fields.Float(string='Napětí LAD', digits=(6, 3))
+    ptp_lad_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí) LAD')
     # Jednotlivá pole DIO
-    ptp_dio_typ = fields.Many2one('ptp.dio.typ', string='Typ')
-    ptp_dio_napeti_value = fields.Float(string='Napětí', digits=(6, 3))
-    ptp_dio_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
-    ptp_dio_proud_value = fields.Float(string='Proud', digits=(6, 3))
-    ptp_dio_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    ptp_dio_typ = fields.Many2one('ptp.dio.typ', string='Typ DIO')
+    ptp_dio_napeti_value = fields.Float(string='Napětí DIO', digits=(6, 3))
+    ptp_dio_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí) DIO')
+    ptp_dio_proud_value = fields.Float(string='Proud DIO', digits=(6, 3))
+    ptp_dio_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud) DIO')
     # Jednotlivá pole SCH
-    ptp_sch_ifpropustny_proud_value = fields.Float(string='If – propustný proud', digits=(6, 3))
-    ptp_sch_ifpropustny_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
-    ptp_sch_vrrm_value = fields.Float(string='Vrrm – opakované závěrné napětí', digits=(6, 3))
-    ptp_sch_vrrm_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    ptp_sch_ifpropustny_proud_value = fields.Float(string='If – propustný proud SCH', digits=(6, 3))
+    ptp_sch_ifpropustny_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud) SCH')
+    ptp_sch_vrrm_value = fields.Float(string='Vrrm – opakované závěrné napětí SCH', digits=(6, 3))
+    ptp_sch_vrrm_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí) SCH')
     # Jednotlivá pole USM
-    ptp_usm_if_value = fields.Float(string='If – propustný proud', digits=(6, 3))
-    ptp_usm_if_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
-    ptp_usm_vr_value = fields.Float(string='Vr – závěrné napětí', digits=(6, 3))
-    ptp_usm_vr_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    ptp_usm_if_value = fields.Float(string='If – propustný proud USM', digits=(6, 3))
+    ptp_usm_if_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud) USM')
+    ptp_usm_vr_value = fields.Float(string='Vr – závěrné napětí USM', digits=(6, 3))
+    ptp_usm_vr_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí) USM')
     # Jednotlivá pole ZEN
-    ptp_zen_vz_value = fields.Float(string='Vz – Zenerovo napětí', digits=(6, 3))
-    ptp_zen_vz_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
+    ptp_zen_vz_value = fields.Float(string='Vz – Zenerovo napětí ZEN', digits=(6, 3))
+    ptp_zen_vz_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí) ZEN')
     # Jednotlivá pole INT
-    ptp_int_typ = fields.Many2one('ptp.int.typ', string='Typ Integrovaného obvodu')
-    ptp_int_funkce = fields.Text(string='Funkce')
+    ptp_int_typ = fields.Many2one('ptp.int.typ', string='Typ Integrovaného obvodu INT')
+    ptp_int_funkce = fields.Text(string='Funkce INT')
     # Jednotlivá pole TYR
-    ptp_tyr_napeti_value = fields.Float(string='Napětí tyristoru', digits=(6, 3))
-    ptp_tyr_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
-    ptp_tyr_proud_value = fields.Float(string='Proud tyristoru', digits=(6, 3))
-    ptp_tyr_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    ptp_tyr_napeti_value = fields.Float(string='Napětí tyristoru TYR', digits=(6, 3))
+    ptp_tyr_napeti_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí) TYR')
+    ptp_tyr_proud_value = fields.Float(string='Proud tyristoru TYR', digits=(6, 3))
+    ptp_tyr_proud_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud) TYR')
     # Jednotlivá pole BIP
-    ptp_bip_typ = fields.Many2one('ptp.bip.typ', string='Typ Bipolárního tranzistoru')
-    ptp_bip_napeti_uce_value = fields.Float(string='Napetí Uce', digits=(6, 3))
-    ptp_bip_napeti_uce_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
-    ptp_bip_proud_ice_value = fields.Float(string='Proud Ice', digits=(6, 3))
-    ptp_bip_proud_ice_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    ptp_bip_typ = fields.Many2one('ptp.bip.typ', string='Typ Bipolárního tranzistoru BIP')
+    ptp_bip_napeti_uce_value = fields.Float(string='Napetí Uce BIP', digits=(6, 3))
+    ptp_bip_napeti_uce_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí) BIP')
+    ptp_bip_proud_ice_value = fields.Float(string='Proud Ice BIP', digits=(6, 3))
+    ptp_bip_proud_ice_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud) BIP')
     # Jednotlivá pole UNI
-    ptp_uni_typ_value = fields.Many2one('ptp.uni.typ', string='Typ Unipolárního tranzistoru')
-    ptp_uni_napeti_vds_value = fields.Float(string='Napeti Vds', digits=(6, 3))
-    ptp_uni_napeti_vds_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí)')
-    ptp_uni_proud_ids_value = fields.Float(string='Proud Ids', digits=(6, 3))
-    ptp_uni_proud_ids_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud)')
+    ptp_uni_typ_value = fields.Many2one('ptp.uni.typ', string='Typ Unipolárního tranzistoru UNI')
+    ptp_uni_napeti_vds_value = fields.Float(string='Napeti Vds UNI', digits=(6, 3))
+    ptp_uni_napeti_vds_unit = fields.Many2one('ptp.napeti.unit', string='Unit (napětí) UNI')
+    ptp_uni_proud_ids_value = fields.Float(string='Proud Ids UNI', digits=(6, 3))
+    ptp_uni_proud_ids_unit = fields.Many2one('ptp.proud.unit', string='Unit (proud) UNI')
     # Jednotlivá pole MAS
-    ptp_mas_sirka_value = fields.Float(string='Šířka', digits=(6, 3))
-    ptp_mas_sirka_unit = fields.Many2one('ptp.delka.unit', string='Šířka jednotka')
-    ptp_mas_material = fields.Many2one('ptp.mas.material', string='Materiál')
+    ptp_mas_sirka_value = fields.Float(string='Šířka MAS', digits=(6, 3))
+    ptp_mas_sirka_unit = fields.Many2one('ptp.delka.unit', string='Šířka jednotka MAS')
+    ptp_mas_material = fields.Many2one('ptp.mas.material', string='Materiál MAS')
     # Jednotlivá pole PAS
-    ptp_pas_typ_value = fields.Many2one('ptp.pas.typ', string='Typ pasty')
-    ptp_pas_slozeni = fields.Many2one('ptp.pas.slozeni', string='Složení')
+    ptp_pas_typ_value = fields.Many2one('ptp.pas.typ', string='Typ pasty PAS')
+    ptp_pas_slozeni = fields.Many2one('ptp.pas.slozeni', string='Složení PAS')
     # Pole pro kondenzátory
-    ptp_cap_value = fields.Float(string='Value (C)', digits=(6, 3))
-    ptp_cap_unit = fields.Many2one('ptp.cap.unit', string='Unit (C)')
-    ptp_cap_voltage_rating_value = fields.Float(string='Voltage Rating [VDC]', digits=(6, 3))
+    ptp_cap_value = fields.Float(string='Kapacita CAP', digits=(6, 3))
+    ptp_cap_unit = fields.Many2one('ptp.cap.unit', string='Unit (kapacita) CAP')
+    ptp_cap_voltage_rating_value = fields.Float(string='Voltage Rating [VDC] CAP', digits=(6, 3))
     ptp_cap_voltage_rating_unit = "V"
-    ptp_cap_dielectric = fields.Many2one('ptp.cap.dielectric', string='Dielectric')
-    ptp_cap_tolerance_value = fields.Float(string='Tolerance [%]', digits=(6, 3))
+    ptp_cap_dielectric = fields.Many2one('ptp.cap.dielectric', string='Dielectric CAP')
+    ptp_cap_tolerance_value = fields.Float(string='Tolerance [%] CAP', digits=(6, 3))
     ptp_cap_tolerance_unit = "%"
     # Pole pro rezistory
-    ptp_res_value = fields.Float(string='Value (R)', digits=(6, 3))
-    ptp_res_unit = fields.Many2one('ptp.res.unit', string='Unit (R)')
-    ptp_res_power_rating_value = fields.Float(string='Power Rating', digits=(6, 3))
-    ptp_res_power_rating_unit = "W"
-    ptp_res_tolerance_value = fields.Float(string='Tolerance [%]', digits=(6, 3))
+    ptp_res_value = fields.Float(string='Odpor RES', digits=(6, 3))
+    ptp_res_unit = fields.Many2one('ptp.res.unit', string='Unit (odpor) RES')
+    ptp_res_power_rating_value = fields.Float(string='Power Rating RES', digits=(6, 3))
+    ptp_res_power_rating_unit = "mW"
+    ptp_res_tolerance_value = fields.Float(string='Tolerance [%] RES', digits=(6, 3))
     ptp_res_tolerance_unit = "%"
-    ptp_res_voltage_rating_value = fields.Float(string='Voltage Rating [V]', digits=(6, 3))
+    ptp_res_voltage_rating_value = fields.Float(string='Voltage Rating RES', digits=(6, 3))
     ptp_res_voltage_rating_unit = "V"
     # Pole pro Feritové perličky
-    ptp_imp_value = fields.Float(string="Impedance", digits=(6, 3))
-    ptp_imp_unit = fields.Many2one('ptp.imp.unit', string='Unit (Z)')
+    ptp_imp_value = fields.Float(string="Impedance IMP", digits=(6, 3))
+    ptp_imp_unit = fields.Many2one('ptp.imp.unit', string='Unit (impedance) IMP')
     # Pole pro Induktory
-    ptp_ind_value = fields.Float(string="Induktance", digits=(6, 3))
-    ptp_ind_unit = fields.Many2one('ptp.ind.unit', string='Unit (X)')
+    ptp_ind_value = fields.Float(string="Induktance IND", digits=(6, 3))
+    ptp_ind_unit = fields.Many2one('ptp.ind.unit', string='Unit (induktance) IND')
     # Pole pro Tranzistory
-    ptp_tra_polarity = fields.Many2one('ptp.tra.polarity', string='Tranzistor polarity')
-    ptp_tra_type = fields.Many2one('ptp.tra.type', string='Tranzistor typ')
+    ptp_tra_polarity = fields.Many2one('ptp.tra.polarity', string='Tranzistor polarity TRA')
+    ptp_tra_type = fields.Many2one('ptp.tra.type', string='Tranzistor typ TRA')
     
     ptp_bat_kapacita_full_value = fields.Char(string="Ptp Bat Kapacita Full Value", compute="_compute_all_full_values", store=True)
     ptp_bat_napeti_full_value = fields.Char(string="Ptp Bat Napeti Full Value", compute="_compute_all_full_values", store=True)
@@ -336,7 +342,7 @@ class ProductTemplate(models.Model):
                 'ptp_res_power_rating', 'ptp_res_tolerance', 'ptp_res_voltage_rating',
             ]:
                 unit_overrides = {
-    'ptp_res_power_rating': 'W',
+    'ptp_res_power_rating': 'mW',
     'ptp_dps_pocet_vrstev': 'ks',
     'ptp_drb_pocet_clanku': 'ks',
     'ptp_lad_vlnova_delka': 'nm',
@@ -645,7 +651,7 @@ class ProductTemplate(models.Model):
                         raise ValidationError(f"Pole '{field.string}' je povinné.")
                 # Float / Char / Integer
                 elif isinstance(field, (fields.Float, fields.Char, fields.Integer)):
-                    if value in (None, '', 0):
+                    if value in (None, ''):
                         raise ValidationError(f"Pole '{field.string}' je povinné.")
 
     # --------------------------------------------------------------------------------
@@ -862,6 +868,7 @@ class PtpFootprint(models.Model):
     _name = 'ptp.footprint'
     _description = 'Footprint'
     name = fields.Char(string='Name', required=True)
+    time = fields.Float(string="Time", help="Processing time for this footprint (e.g., seconds).")
 
 
 class PtpHddKapacitaUnit(models.Model):
@@ -1008,14 +1015,14 @@ class PtpTlaTyp(models.Model):
     name = fields.Char(string='Name', required=True)
 
 
-class PtpTranPolarity(models.Model):
-    _name = 'ptp.tran.polarity'
+class PtpTraPolarity(models.Model):
+    _name = 'ptp.tra.polarity'
     _description = 'Polarita tranzistoru'
     name = fields.Char(string='Name', required=True)
 
 
-class PtpTranType(models.Model):
-    _name = 'ptp.tran.type'
+class PtpTraType(models.Model):
+    _name = 'ptp.tra.type'
     _description = 'Type tranzistoru'
     name = fields.Char(string='Name', required=True)
 

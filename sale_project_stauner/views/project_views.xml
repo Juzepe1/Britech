@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="project_form_inherit_stau_template" model="ir.ui.view">
+    <field name="name">project.project.form.stau.template</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.edit_project"/>
+    <field name="arch" type="xml">
+<xpath expr="//sheet/group" position="inside">
+    <group col="2">
+    <field name="stau_is_template" widget="boolean_toggle"/>
+    </group>
+</xpath>
+    </field>
+  </record>
+</odoo>

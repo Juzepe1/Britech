@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.documents.sale.order</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="70"/>
+        <field name="inherit_id" ref="documents.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='documents']" position="attributes">
+                <attribute name="notApp">0</attribute>
+            </xpath>
+            <xpath expr="//block[@id='files_centralization_section']" position="inside">
+                <setting company_dependent="1" help="Centralize files attached to sale orders">
+                    <field name="documents_sale_order_settings"/>
+                    <div class="content-group" invisible="not documents_sale_order_settings">
+                        <div class="row">
+                            <label class="o_form_label col-lg-3" for="sale_order_folder_id" string="Workspace"/>
+                            <field name="sale_order_folder_id" widget="documents_folder_many2one"
+                                options="{'no_create': True, 'no_create_edit': True}"/>
+                        </div>
+                        <div class="row">
+                            <label class="o_form_label col-lg-3" for="sale_order_tag_ids" string="Default Tags"/>
+                            <field name="sale_order_tag_ids" widget="many2many_tags"/>
+                        </div>
+                <div class="row mt8">
+                    <button type="object"
+                            name="action_open_documents_so_sync"
+                            string="Run initial sync (link existing attachments)"
+                            class="btn btn-secondary"/>
+                </div>
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
