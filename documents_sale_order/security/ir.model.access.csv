@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_documents_so_sync_wizard_settings,documents.sale.order.sync.wizard access (Settings),model_documents_sale_order_sync_wizard,base.group_system,1,1,1,1
+access_documents_so_sync_wizard_documents_manager,documents.sale.order.sync.wizard access (Documents Manager),model_documents_sale_order_sync_wizard,documents.group_documents_manager,1,1,1,1
+access_documents_so_sync_wizard_sales_manager,documents.sale.order.sync.wizard access (Sales Manager),model_documents_sale_order_sync_wizard,sales_team.group_sale_manager,1,1,1,1

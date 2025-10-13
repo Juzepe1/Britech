@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="document_view_search_inherit_documents_sale_order" model="ir.ui.view">
+        <field name="name">documents.view.search.inherit.documents_sale_order</field>
+        <field name="model">documents.document</field>
+        <field name="inherit_id" ref="documents.document_view_search"/>
+        <field name="arch" type="xml">
+            <field name="type" position="after">
+                <field name="sale_order_id"/>
+            </field>
+        </field>
+    </record>
+</odoo>
